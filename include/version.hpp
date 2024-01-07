@@ -1,0 +1,17 @@
+/*
+ * version.hpp
+ *
+ *  Created on: Nov 12, 2023
+ *      Author: Mouzenidis Panagiotis
+ */
+
+#ifndef INCLUDE_VERSION_HPP_
+#define INCLUDE_VERSION_HPP_
+
+#define CPPTOOLKIT_VERSION_MAJOR 0
+#define CPPTOOLKIT_VERSION_MINOR 1
+#define CPPTOOLKIT_VERSION_PATCH 0
+
+#define CPPTOOLKIT_VERSION       (CPPTOOLKIT_VERSION_MAJOR ## "." ## CPPTOOLKIT_VERSION_MINOR ## "." ## CPPTOOLKIT_VERSION_PATCH)
+
+#endif /* INCLUDE_VERSION_HPP_ */
