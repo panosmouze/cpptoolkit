@@ -1,22 +1,22 @@
 /*
- * CtLog.cpp
+ * CtLogSink.cpp
  *
  *  Created on: Jan 10, 2023
  *      Author: Mouzenidis Panagiotis
  */
-#include "io/sinks/CtLog.hpp"
+#include "io/sinks/CtLogSink.hpp"
 
 #include <iostream>
 
-CtLog::CtLog() : CtSink() {
+CtLogSink::CtLogSink() : CtSink() {
 
 }
 
-CtLog::~CtLog() {
+CtLogSink::~CtLogSink() {
 
 }
 
-void CtLog::write(std::string logEntry) {
+void CtLogSink::write(std::string logEntry) {
     lock();
     std::cout << logEntry << std::endl;
     unlock();

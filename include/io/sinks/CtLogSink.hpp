@@ -1,12 +1,12 @@
 /*
- * CtLog.hpp
+ * CtLogSink.hpp
  *
  *  Created on: Jan 10, 2023
  *      Author: Mouzenidis Panagiotis
  */
 
-#ifndef INCLUDE_IO_CTLOG_HPP_
-#define INCLUDE_IO_CTLOG_HPP_
+#ifndef INCLUDE_IO_CTLOGSINK_HPP_
+#define INCLUDE_IO_CTLOGSINK_HPP_
 
 #include "definitions.hpp"
 #include "io/sinks/CtSink.hpp"
@@ -16,21 +16,21 @@
  *
  * This class extends CtSink and provides a basic implementation for writing log entries.
  */
-class CtLog : public CtSink {
+class CtLogSink : public CtSink {
 public:
     /**
-     * @brief Constructs a CtLog object.
+     * @brief Constructs a CtLogSink object.
      *
-     * Initializes the CtLog object.
+     * Initializes the CtLogSink object.
      */
-    EXPORTED_API CtLog();
+    EXPORTED_API CtLogSink();
 
     /**
      * @brief Destructor for CtLog.
      *
      * Performs any necessary cleanup.
      */
-    EXPORTED_API ~CtLog();
+    EXPORTED_API ~CtLogSink();
 
     /**
      * @brief Writes a log entry.
@@ -40,4 +40,4 @@ public:
     EXPORTED_API void write(std::string logEntry) override;
 };
 
-#endif //INCLUDE_IO_CTLOG_HPP_
+#endif //INCLUDE_IO_CTLOGSINK_HPP_

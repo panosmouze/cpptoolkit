@@ -1,8 +1,8 @@
 #include "CtIO.hpp"
 
 int main() {
-    CtLog log;
-    CtFile file("log.txt");
+    CtLogSink log;
+    CtFileSink file("log.txt");
     CtLogger logger(CtLogger::Level::ERROR, "TestComp");
     logger.addSink(log);
     logger.addSink(file);
