@@ -11,18 +11,11 @@
 CtLogger::CtLogger(CtLogger::Level level, const std::string& componentName) : m_level(level), m_componentName(componentName) {
 }
 
-CtLogger::CtLogger(const std::string& m_logFileName, CtLogger::Level level, const std::string& componentName) : m_level(level), m_componentName(componentName) {
-    try {
-        m_logFile.open(m_logFileName, std::ios::out | std::ios::app);
-    } catch (...) {
-        throw CtFileError("");
-    }
+CtLogger::~CtLogger() {
 }
 
-CtLogger::~CtLogger() {
-    if (m_logFile.is_open()) {
-        m_logFile.close();
-    }
+void CtLogger::addSink(CtSink& sink) {
+    m_sinks.push_back(&sink);
 }
 
 void CtLogger::log_debug(const std::string& message) {
@@ -47,14 +40,11 @@ void CtLogger::log_critical(const std::string& message) {
 
 void CtLogger::log(CtLogger::Level level, const std::string& message) {
     if (level >= m_level) {
-        std::scoped_lock lock(m_mtx_control);
-
         std::string logEntry = generateLoggerMsg(level, m_componentName, message);
 
-        if (m_logFile.is_open()) {
-            m_logFile << logEntry << std::endl;
+        for (CtSink* sink: m_sinks) {
+            sink->write(logEntry);
         }
-        std::cout << logEntry << std::endl;
     }
 }
 

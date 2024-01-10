@@ -9,14 +9,12 @@
 #define INCLUDE_IO_CTLOGGER_HPP_
 
 #include "definitions.hpp"
+#include "io/sinks/CtSink.hpp"
 
 #include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <iomanip>
 #include <chrono>
-#include <mutex>
+#include <vector>
 
 /**
  * @brief A simple logger with log levels and timestamp.
@@ -37,19 +35,16 @@ public:
     EXPORTED_API explicit CtLogger(CtLogger::Level level = CtLogger::Level::DEBUG, const std::string& componentName = "");
 
     /**
-     * @brief Constructs a CtLogger with a log file name. 
-     *          This constructor may throw CtFileError if there is any kind of problem with the file.
-     * 
-     * @param logFileName The name of the log file.
-     * @param level The selected level. All messages that have level above or equal to this value will be logged.
-     * @param componentName The name of the component or module.
-     */
-    EXPORTED_API explicit CtLogger(const std::string& logFileName, CtLogger::Level level = CtLogger::Level::DEBUG, const std::string& componentName = "");
-
-    /**
      * @brief Destructor.
      */
     EXPORTED_API ~CtLogger();
+
+    /**
+     * @brief This method adds a new sink to the logger.
+     * 
+     * @param sink The sink to vbe added.
+     */
+    EXPORTED_API void addSink(CtSink& sink);
 
     /**
      * @brief Log a message with debug log level.
@@ -122,10 +117,9 @@ private:
     static const std::string generateLoggerMsg(CtLogger::Level level, const std::string& component_name, const std::string& message);
 
 private:
-    std::mutex m_mtx_control; ///< Mutex for controlling access to shared resources.
-    std::ofstream m_logFile; ///< Log file stream.
     CtLogger::Level m_level; ///< Level of message logging.
     std::string m_componentName; ///< Component name.
+    std::vector<CtSink*> m_sinks; ///< Vector containing sinks.
 };
 
 #endif //INCLUDE_IO_CTLOGGER_HPP_
