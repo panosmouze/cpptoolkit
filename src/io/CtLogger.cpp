@@ -14,8 +14,8 @@ CtLogger::CtLogger(CtLogger::Level level, const std::string& componentName) : m_
 CtLogger::~CtLogger() {
 }
 
-void CtLogger::addSink(CtSink& sink) {
-    m_sinks.push_back(&sink);
+void CtLogger::addSink(CtSink* sink) {
+    m_sinks.push_back(sink);
 }
 
 void CtLogger::log_debug(const std::string& message) {

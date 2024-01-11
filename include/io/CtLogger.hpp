@@ -44,7 +44,7 @@ public:
      * 
      * @param sink The sink to vbe added.
      */
-    EXPORTED_API void addSink(CtSink& sink);
+    EXPORTED_API void addSink(CtSink* sink);
 
     /**
      * @brief Log a message with debug log level.

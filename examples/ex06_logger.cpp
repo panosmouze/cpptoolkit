@@ -4,8 +4,8 @@ int main() {
     CtLogSink log;
     CtFileSink file("log.txt");
     CtLogger logger(CtLogger::Level::ERROR, "TestComp");
-    logger.addSink(log);
-    logger.addSink(file);
+    logger.addSink(&log);
+    logger.addSink(&file);
     logger.log_warning("warning 1");
     logger.log_debug("debug 1");
     logger.log_error("error 1");
