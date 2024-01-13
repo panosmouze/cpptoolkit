@@ -55,27 +55,24 @@ void CtServicePool::setSlotTime(uint32_t slot_time) {
     CtService::m_slot_time = slot_time;
 }
 
-void CtServicePool::run() {
-    uint64_t exec_time;
-    while(true) {
-        m_timer.tic();
-        {
-            std::scoped_lock lock(m_mtx_control);
-            if (m_tasks.size() == 0) {
-                break;
-            } else {
-                for (CtServicePack& pack : m_tasks) {
-                    if (m_slot_cnt % pack.nslots == 0) {
-                        m_worker_pool.addTask(pack.task);
-                    }
+void CtServicePool::loop() {
+    m_timer.tic();
+    {
+        std::scoped_lock lock(m_mtx_control);
+        if (m_tasks.size() == 0) {
+            return;
+        } else {
+            for (CtServicePack& pack : m_tasks) {
+                if (m_slot_cnt % pack.nslots == 0) {
+                    m_worker_pool.addTask(pack.task);
                 }
             }
         }
-        m_slot_cnt++;
-        if (!isRunning()) break;
-        exec_time = CtService::m_slot_time - m_timer.toc();
-        if (exec_time > 0) {
-            sleepFor(exec_time);
-        }
+    }
+    m_slot_cnt++;
+    if (!isRunning()) return;
+    m_exec_time = CtService::m_slot_time - m_timer.toc();
+    if (m_exec_time > 0) {
+        CtThread::sleepFor(m_exec_time);
     }
 }

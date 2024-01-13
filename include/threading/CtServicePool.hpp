@@ -93,9 +93,9 @@ public:
 
 private:
     /**
-     * @brief Overridden run function from CtThread, representing the main thread logic.
+     * @brief Overridden loop function from CtThread, representing the main thread logic.
      */
-    void run() override;
+    void loop() override;
 
 private:
     uint32_t m_nworkers; ///< The number of worker threads in the service pool.
@@ -104,6 +104,7 @@ private:
     std::mutex m_mtx_control; ///< Mutex for controlling access to shared resources.
     CtWorkerPool m_worker_pool; ///< Worker pool for executing tasks.
     CtTimer m_timer; ///< Timer for tracking time intervals.
+    uint64_t m_exec_time; ///< Variable used for time tracking during a loop.
 };
 
 template <typename F, typename... FArgs>

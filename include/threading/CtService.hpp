@@ -58,7 +58,7 @@ private:
     /**
      * @brief Overridden run function from CtThread, representing the main logic of the service.
      */
-    void run() override;
+    void loop() override;
 
 private:
     CtWorker m_worker; ///< Worker for executing the task.

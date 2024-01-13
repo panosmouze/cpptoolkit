@@ -32,13 +32,11 @@ void CtService::stopService() {
     m_worker.joinTask();
 }
 
-void CtService::run() {
-    while(isRunning()) {
-        try {
-            m_worker.runTask();
-        } catch(CtWorkerError& e) {
+void CtService::loop() {
+    try {
+        m_worker.runTask();
+    } catch(CtWorkerError& e) {
 
-        }
-        sleepFor(m_nslots*m_slot_time);
     }
+    CtThread::sleepFor(m_nslots*m_slot_time);
 }

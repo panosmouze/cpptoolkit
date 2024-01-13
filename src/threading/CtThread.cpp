@@ -19,6 +19,9 @@ CtThread::~CtThread() {
 }
 
 void CtThread::run() {
+    while(isRunning()) {
+        loop();
+    }
 }
 
 void CtThread::start() {

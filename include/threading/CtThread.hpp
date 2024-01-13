@@ -63,7 +63,7 @@ protected:
      * @brief Virtual function to be overridden by derived classes.
      *        Represents the main functionality of the thread.
      */
-    EXPORTED_API virtual void run();
+    EXPORTED_API virtual void loop() = 0;
 
 private:
     /**
@@ -71,6 +71,11 @@ private:
      * @param running The running state to set.
      */
     void setRunning(bool running);
+
+    /**
+     * @brief Run method executes main loop of each thread.
+     */
+    EXPORTED_API void run();
 
 private:
     std::atomic<bool> m_running; ///< Atomic flag indicating whether the thread is running.
