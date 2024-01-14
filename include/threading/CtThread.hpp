@@ -65,13 +65,14 @@ protected:
      */
     EXPORTED_API virtual void loop() = 0;
 
-private:
+protected:
     /**
      * @brief Set the running state of the thread.
      * @param running The running state to set.
      */
     void setRunning(bool running);
 
+private:
     /**
      * @brief Run method executes main loop of each thread.
      */
