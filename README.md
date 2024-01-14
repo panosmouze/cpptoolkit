@@ -13,7 +13,7 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
 - **Configuration Parsing:** A flexible configuration file parser.
 - **Logging:** Simple logging with log levels and timestamp.
 
-## Todo:
+## Todo
 - [ ] Implement unit tests using gtest.
 - [ ] Design and develop interprocess communication (IPC) functionality.
 

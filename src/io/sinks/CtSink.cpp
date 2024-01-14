@@ -1,7 +1,7 @@
 /*
- * CtLog.cpp
+ * CtSink.cpp
  *
- *  Created on: Jan 10, 2023
+ *  Created on: Jan 10, 2024
  *      Author: Mouzenidis Panagiotis
  */
 #include "io/sinks/CtSink.hpp"
