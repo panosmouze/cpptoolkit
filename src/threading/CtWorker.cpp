@@ -31,7 +31,7 @@ SOFTWARE.
 
 #include "threading/CtWorker.hpp"
 #include "utils/CtTask.hpp"
-#include "exceptions/CtWorkerError.hpp"
+#include "exceptions/CtThreadExceptions.hpp"
 
 CtWorker::CtWorker() : m_running(false) {
 }
@@ -71,6 +71,8 @@ void CtWorker::joinTask() {
 }
 
 void CtWorker::alreadyRunningCheck() {
-    if (isRunning()) throw CtWorkerError("CtWorker already running.");
+    if (isRunning()) {
+        throw CtWorkerError("CtWorker already running.");
+    }
     joinTask();
 }

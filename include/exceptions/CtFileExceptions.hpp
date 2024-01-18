@@ -23,20 +23,35 @@ SOFTWARE.
 */
 
 /**
- * @file CtKeyNotFoundError.hpp
+ * @file CtFileExceptions.hpp
  * @brief 
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTKEYNOTFOUNDERROR_HPP_
-#define INCLUDE_CTKEYNOTFOUNDERROR_HPP_
+#ifndef INCLUDE_CTFILEEXCEPTIONS_HPP_
+#define INCLUDE_CTFILEEXCEPTIONS_HPP_
 
 #include "exceptions/CtException.hpp"
 
-class CtKeyNotFoundError : public CtException {
+class CtFileError : public CtException {
 public:
-    explicit CtKeyNotFoundError(const std::string& msg): CtException(msg) {};
+    explicit CtFileError(const std::string& msg): CtException(msg) {};
 };
 
-#endif //INCLUDE_CTKEYNOTFOUNDERROR_HPP_
+class CtFileWriteError : public CtException {
+public:
+    explicit CtFileWriteError(const std::string& msg): CtException(msg) {};
+};
+
+class CtFileReadError : public CtException {
+public:
+    explicit CtFileReadError(const std::string& msg): CtException(msg) {};
+};
+
+class CtFileParseError : public CtException {
+public:
+    explicit CtFileParseError(const std::string& msg): CtException(msg) {};
+};
+
+#endif //INCLUDE_CTFILEEXCEPTIONS_HPP_

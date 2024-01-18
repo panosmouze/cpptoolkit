@@ -23,20 +23,30 @@ SOFTWARE.
 */
 
 /**
- * @file CtThreadError.hpp
+ * @file CtThreadExceptions.hpp
  * @brief 
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTTHREADERROR_HPP_
-#define INCLUDE_CTTHREADERROR_HPP_
+#ifndef INCLUDE_CTTHREADEXCEPTIONS_HPP_
+#define INCLUDE_CTTHREADEXCEPTIONS_HPP_
 
-#include "CtException.hpp"
+#include "exceptions/CtException.hpp"
 
 class CtThreadError : public CtException {
 public:
     explicit CtThreadError(const std::string& msg): CtException(msg) {};
 };
 
-#endif //INCLUDE_CTTHREADERROR_HPP_
+class CtServiceError : public CtException {
+public:
+    explicit CtServiceError(const std::string& msg): CtException(msg) {};
+};
+
+class CtWorkerError : public CtException {
+public:
+    explicit CtWorkerError(const std::string& msg): CtException(msg) {};
+};
+
+#endif //INCLUDE_CTTHREADEXCEPTIONS_HPP_

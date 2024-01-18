@@ -35,7 +35,7 @@ CtFileSink::CtFileSink(const std::string& logFileName) : CtSink() {
     try {
         m_logFile.open(logFileName, std::ios::out | std::ios::app);
     } catch (...) {
-        throw CtFileError("");
+        throw CtFileWriteError("");
     }
 }
 

@@ -30,7 +30,7 @@ SOFTWARE.
  */
 
 #include "threading/CtWorkerPool.hpp"
-#include "exceptions/CtWorkerError.hpp"
+#include "exceptions/CtThreadExceptions.hpp"
 
 CtWorkerPool::CtWorkerPool(uint32_t nworkers) : m_nworkers(nworkers), m_active_tasks(0), m_queued_tasks(0) {
     for (int idx = 0; idx < m_nworkers; idx++) {

@@ -33,7 +33,6 @@ SOFTWARE.
 #define INCLUDE_CTTHREAD_HPP_
 
 #include "definitions.hpp"
-#include "exceptions/CtThreadError.hpp"
 
 #include <thread>
 #include <atomic>

@@ -35,7 +35,7 @@ SOFTWARE.
 #include "definitions.hpp"
 #include "io/sinks/CtSink.hpp"
 
-#include "exceptions/CtFileError.hpp"
+#include "exceptions/CtFileExceptions.hpp"
 
 #include <fstream>
 #include <sstream>

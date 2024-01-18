@@ -30,6 +30,7 @@ SOFTWARE.
  */
 
 #include "threading/CtThread.hpp"
+#include "exceptions/CtThreadExceptions.hpp"
 
 #include <chrono>
 #include <thread>
@@ -53,7 +54,7 @@ void CtThread::start() {
         setRunning(true);
         m_thread = std::thread(&CtThread::run, this);
     } else {
-        throw CtThreadError("");
+        throw CtThreadError("Thread already running.");
     }
 }
 

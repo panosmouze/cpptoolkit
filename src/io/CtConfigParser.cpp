@@ -30,10 +30,8 @@ SOFTWARE.
  */
 
 #include "io/CtConfigParser.hpp"
-#include "exceptions/CtFileError.hpp"
-#include "exceptions/CtTypeParseError.hpp"
-#include "exceptions/CtFileParseError.hpp"
-#include "exceptions/CtKeyNotFoundError.hpp"
+#include "exceptions/CtFileExceptions.hpp"
+#include "exceptions/CtGenericExeptions.hpp"
 #include <string>
 #include <map>
 #include <fstream>
@@ -55,7 +53,7 @@ CtConfigParser::CtConfigParser(const std::string& configFile) : m_configFile(con
     } catch (const CtFileParseError& e) {
         throw e;
     } catch (...) {
-        throw CtFileError("");
+        throw CtFileReadError("File not found.");
     }
 }
 
@@ -72,12 +70,12 @@ void CtConfigParser::parseLine(const std::string& line) {
 
     if (hasSeparator && hasComment) {
         if (separatorPos > commentPos) {
-            throw CtFileParseError("");
+            throw CtFileParseError("Invalid comment.");
         } else {
             eol = commentPos;
         }
     } else if (!hasSeparator && !hasComment) {
-        throw CtFileParseError("");
+        throw CtFileParseError("Invalid line entry.");
     } else if (!hasSeparator && hasComment) {
         return;
     }
@@ -99,7 +97,7 @@ int32_t CtConfigParser::parseAsInt(const std::string& key) {
     try {
         parsed_value = stoi(str_value);
     } catch (...) {
-        throw CtTypeParseError("");
+        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as int."));
     }
     return parsed_value;
 }
@@ -110,7 +108,7 @@ uint32_t CtConfigParser::parseAsUInt(const std::string& key) {
     try {
         parsed_value = stoul(str_value);
     } catch (...) {
-        throw CtTypeParseError("");
+        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as uint."));
     }
     return parsed_value;
 }
@@ -121,7 +119,7 @@ float CtConfigParser::parseAsFloat(const std::string& key) {
     try {
         parsed_value = stof(str_value);
     } catch (...) {
-        throw CtTypeParseError("");
+        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as float."));
     }
     return parsed_value;
 }
@@ -132,7 +130,7 @@ double CtConfigParser::parseAsDouble(const std::string& key) {
     try {
         parsed_value = stod(str_value);
     } catch (...) {
-        throw CtTypeParseError("");
+        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as double."));
     }
     return parsed_value;
 }
@@ -145,6 +143,6 @@ std::string CtConfigParser::getValue(const std::string& key) {
     if (m_configValues.find(key) != m_configValues.end()) {
         return m_configValues[key];
     } else {
-        throw CtKeyNotFoundError("");
+        throw CtKeyNotFoundError(std::string("Key <") + key + std::string("> not found."));
     }
 }

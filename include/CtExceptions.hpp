@@ -33,13 +33,8 @@ SOFTWARE.
 #define INCLUDE_CTEXCEPTIONS_HPP_
 
 #include "exceptions/CtException.hpp"
-#include "exceptions/CtFileError.hpp"
-#include "exceptions/CtFileParseError.hpp"
-#include "exceptions/CtKeyNotFoundError.hpp"
-#include "exceptions/CtKeyNotFoundError.hpp"
-#include "exceptions/CtServiceError.hpp"
-#include "exceptions/CtThreadError.hpp"
-#include "exceptions/CtTypeParseError.hpp"
-#include "exceptions/CtWorkerError.hpp"
+#include "exceptions/CtGenericExeptions.hpp"
+#include "exceptions/CtFileExceptions.hpp"
+#include "exceptions/CtThreadExceptions
 
 #endif //INCLUDE_CTEXCEPTIONS_HPP_

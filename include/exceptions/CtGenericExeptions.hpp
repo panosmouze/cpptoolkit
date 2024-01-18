@@ -23,20 +23,25 @@ SOFTWARE.
 */
 
 /**
- * @file CtTypeParseError.hpp
+ * @file CtGenericExeptions.hpp
  * @brief 
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTTYPEPARSEERROR_HPP_
-#define INCLUDE_CTTYPEPARSEERROR_HPP_
+#ifndef INCLUDE_CTGENERICEXEPTIONS_HPP_
+#define INCLUDE_CTGENERICEXEPTIONS_HPP_
 
 #include "exceptions/CtException.hpp"
+
+class CtKeyNotFoundError : public CtException {
+public:
+    explicit CtKeyNotFoundError(const std::string& msg): CtException(msg) {};
+};
 
 class CtTypeParseError : public CtException {
 public:
     explicit CtTypeParseError(const std::string& msg): CtException(msg) {};
 };
 
-#endif //INCLUDE_CTTYPEPARSEERROR_HPP_
+#endif //INCLUDE_CTGENERICEXEPTIONS_HPP_

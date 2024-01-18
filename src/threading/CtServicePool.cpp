@@ -30,7 +30,7 @@ SOFTWARE.
  */
 
 #include "threading/CtServicePool.hpp"
-#include "exceptions/CtServiceError.hpp"
+#include "exceptions/CtThreadExceptions.hpp"
 
 CtServicePool::CtServicePool(uint32_t nworkers) : m_nworkers(nworkers), m_worker_pool(m_nworkers) {
     start();
@@ -50,13 +50,17 @@ void CtServicePool::addTask(uint32_t nslots, std::string id, CtTask& task) {
         } catch(CtThreadError& e) {
         }
     } else {
-        throw CtServiceError("Invalid interval_slot number (should be >0).");
+        throw CtServiceError("Invalid slot number (should be >0).");
     }
 }
 
 void CtServicePool::removeTask(std::string id) {
     std::scoped_lock lock(m_mtx_control);
-    m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), [id](CtServicePack pack) {return pack.id.compare(id) == 0; }), m_tasks.end());
+    m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), 
+                                    [id](CtServicePack pack) {
+                                        return pack.id.compare(id) == 0; 
+                                    }
+                                ), m_tasks.end());
 }
 
 void CtServicePool::startServices() {

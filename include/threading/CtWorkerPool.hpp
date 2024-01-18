@@ -34,7 +34,6 @@ SOFTWARE.
 
 #include "definitions.hpp"
 #include "threading/CtWorker.hpp"
-#include "threading/CtThread.hpp"
 #include "utils/CtTask.hpp"
 
 #include <queue>

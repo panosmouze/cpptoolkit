@@ -30,7 +30,6 @@ SOFTWARE.
  */
 
 #include "io/CtLogger.hpp"
-#include "exceptions/CtFileError.hpp"
 
 CtLogger::CtLogger(CtLogger::Level level, const std::string& componentName) : m_level(level), m_componentName(componentName) {
 }
