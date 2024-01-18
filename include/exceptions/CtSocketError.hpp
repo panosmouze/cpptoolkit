@@ -23,8 +23,20 @@ SOFTWARE.
 */
 
 /**
- * @file ctworker.cpp
+ * @file CtSocketError.hpp
  * @brief 
  * @date 18-01-2024
  * 
  */
+
+#ifndef INCLUDE_CTSOCKETERROR_HPP_
+#define INCLUDE_CTSOCKETERROR_HPP_
+
+#include "exceptions/CtException.hpp"
+
+class CtSocketError : public CtException {
+public:
+    explicit CtSocketError(const std::string& msg): CtException(msg) {};
+};
+
+#endif //INCLUDE_CTSOCKETERROR_HPP_
