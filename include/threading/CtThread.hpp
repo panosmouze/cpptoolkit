@@ -100,7 +100,7 @@ private:
     /**
      * @brief Run method executes main loop of each thread.
      */
-    EXPORTED_API void run();
+    void run();
 
 private:
     std::atomic<bool> m_running; ///< Atomic flag indicating whether the thread is running.

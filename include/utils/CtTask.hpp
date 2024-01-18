@@ -105,12 +105,12 @@ private:
 };
 
 template <typename F, typename... FArgs>
-EXPORTED_API void CtTask::setTaskFunc(F&& func, FArgs&&... fargs) {
+void CtTask::setTaskFunc(F&& func, FArgs&&... fargs) {
     m_task = std::bind(std::forward<F>(func), std::get<FArgs>(fargs)...);
 };
 
 template <typename C, typename... CArgs>
-EXPORTED_API void CtTask::setCallbackFunc(C&& callback, CArgs&&... cargs) {
+void CtTask::setCallbackFunc(C&& callback, CArgs&&... cargs) {
     m_callback = std::bind(std::forward<C>(callback), std::get<CArgs>(cargs)...);
 };
 

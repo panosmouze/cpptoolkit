@@ -109,7 +109,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-EXPORTED_API void CtWorkerPool::addTask(F&& func, FArgs&&... fargs) {
+void CtWorkerPool::addTask(F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(std::forward<F>(func), std::get<FArgs>(fargs)...));
     addTask(s_task);

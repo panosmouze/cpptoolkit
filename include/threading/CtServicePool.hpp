@@ -132,7 +132,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-EXPORTED_API void CtServicePool::addTaskFunc(uint32_t nslots, std::string id, F&& func, FArgs&&... fargs) {
+void CtServicePool::addTaskFunc(uint32_t nslots, std::string id, F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(std::forward<F>(func), std::get<FArgs>(fargs)...));
     addTask(nslots, id, s_task);
