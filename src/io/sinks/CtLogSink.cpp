@@ -42,7 +42,5 @@ CtLogSink::~CtLogSink() {
 }
 
 void CtLogSink::write(std::string logEntry) {
-    lock();
     std::cout << logEntry << std::endl;
-    unlock();
 }
