@@ -23,19 +23,36 @@ SOFTWARE.
 */
 
 /**
- * @file CtExceptions.hpp
+ * @file CtTypes.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 21-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTEXCEPTIONS_HPP_
-#define INCLUDE_CTEXCEPTIONS_HPP_
+#ifndef INCLUDE_CTTYPES_HPP_
+#define INCLUDE_CTTYPES_HPP_
 
-#include "exceptions/CtException.hpp"
-#include "exceptions/CtGenericExeptions.hpp"
-#include "exceptions/CtFileExceptions.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
-#include "exceptions/CtNetworkExceptions.hpp"
+#include <stdint.h>
+#include <string>
 
-#endif //INCLUDE_CTEXCEPTIONS_HPP_
+#define CTNET_BUFFER_SIZE 2048
+
+/**
+ * @brief Struct describing a network address.
+ * 
+ */
+typedef struct _CtNetAddress {
+    std::string addr;
+    uint16_t port;
+} CtNetAddress;
+
+/**
+ * @brief Struct describing data sent over network.
+ * 
+ */
+typedef struct _CtNetMessage {
+    uint8_t data[CTNET_BUFFER_SIZE];
+    uint32_t size = CTNET_BUFFER_SIZE;
+} CtNetMessage;
+
+#endif //INCLUDE_CTTYPES_HPP_

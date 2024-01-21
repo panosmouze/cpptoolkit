@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_DEFINITIONS_HPP_
 
 #include "version.hpp"
+#include "CtTypes.hpp"
 
 #ifdef _WIN32
     #define EXPORTED_API __declspec(dllexport)

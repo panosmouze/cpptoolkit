@@ -23,19 +23,16 @@ SOFTWARE.
 */
 
 /**
- * @file CtExceptions.hpp
+ * @file CtNetworking.hpp
  * @brief 
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTEXCEPTIONS_HPP_
-#define INCLUDE_CTEXCEPTIONS_HPP_
+#ifndef INCLUDE_CTNETWORKING_HPP_
+#define INCLUDE_CTNETWORKING_HPP_
 
-#include "exceptions/CtException.hpp"
-#include "exceptions/CtGenericExeptions.hpp"
-#include "exceptions/CtFileExceptions.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
-#include "exceptions/CtNetworkExceptions.hpp"
+#include "networking/sockets/CtSocketHelpers.hpp"
+#include "networking/sockets/CtSocketUdp.hpp"
 
-#endif //INCLUDE_CTEXCEPTIONS_HPP_
+#endif //INCLUDE_CTNETWORKING_HPP_

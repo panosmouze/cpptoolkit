@@ -47,6 +47,8 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/threading/CtServicePool.cpp
     ${SOURCE_DIR}/threading/CtWorker.cpp
     ${SOURCE_DIR}/threading/CtWorkerPool.cpp
+    ${SOURCE_DIR}/networking/sockets/CtSocketHelpers.cpp
+    ${SOURCE_DIR}/networking/sockets/CtSocketUdp.cpp
 )
 
 # Examples Build

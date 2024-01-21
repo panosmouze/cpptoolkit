@@ -23,19 +23,40 @@ SOFTWARE.
 */
 
 /**
- * @file CtExceptions.hpp
+ * @file CtNetworkExceptions.hpp
  * @brief 
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTEXCEPTIONS_HPP_
-#define INCLUDE_CTEXCEPTIONS_HPP_
+#ifndef INCLUDE_CTNETWORKEXCEPTIONS_HPP_
+#define INCLUDE_CTNETWORKEXCEPTIONS_HPP_
 
 #include "exceptions/CtException.hpp"
-#include "exceptions/CtGenericExeptions.hpp"
-#include "exceptions/CtFileExceptions.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
-#include "exceptions/CtNetworkExceptions.hpp"
 
-#endif //INCLUDE_CTEXCEPTIONS_HPP_
+class CtSocketError : public CtException {
+public:
+    explicit CtSocketError(const std::string& msg): CtException(msg) {};
+};
+
+class CtSocketBindError : public CtException {
+public:
+    explicit CtSocketBindError(const std::string& msg): CtException(msg) {};
+};
+
+class CtSocketPollError : public CtException {
+public:
+    explicit CtSocketPollError(const std::string& msg): CtException(msg) {};
+};
+
+class CtSocketReadError : public CtException {
+public:
+    explicit CtSocketReadError(const std::string& msg): CtException(msg) {};
+};
+
+class CtSocketWriteError : public CtException {
+public:
+    explicit CtSocketWriteError(const std::string& msg): CtException(msg) {};
+};
+
+#endif //INCLUDE_CTNETWORKEXCEPTIONS_HPP_
