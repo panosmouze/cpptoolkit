@@ -70,6 +70,9 @@ target_link_libraries(ex05_config ${TARGET_LIBRARY})
 add_executable(ex06_logger ${EXAMPLES_DIR}/ex06_logger.cpp)
 target_link_libraries(ex06_logger ${TARGET_LIBRARY})
 
+add_executable(ex07_networking_udp ${EXAMPLES_DIR}/ex07_networking_udp.cpp)
+target_link_libraries(ex07_networking_udp ${TARGET_LIBRARY})
+
 # Testing
 include(FetchContent)
 FetchContent_Declare(
