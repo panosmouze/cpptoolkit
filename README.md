@@ -12,10 +12,12 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
 - **Threading:** Simplified thread pool and worker management.
 - **Configuration Parsing:** A flexible configuration file parser.
 - **Logging:** Simple logging with log levels and timestamp.
+- **Interprocess Communication (IPC):** Simple UDP socket communication.
 
 ## Todo
 - [ ] Implement unit tests using gtest.
-- [ ] Design and develop interprocess communication (IPC) functionality.
+- [ ] Design and develop TCP socket communication.
+- [ ] Check Windows compatibility.
 
 ## Installation
 
