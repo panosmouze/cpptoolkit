@@ -3,6 +3,14 @@ project(cpptoolkit)
 
 set(CMAKE_CXX_STANDARD 20)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+if(NOT CMAKE_ENABLE_TESTS)
+    set(CMAKE_ENABLE_TESTS OFF)
+endif()
+
 if(MSVC)
     # Visual Studio
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
@@ -74,45 +82,49 @@ add_executable(ex07_networking_udp ${EXAMPLES_DIR}/ex07_networking_udp.cpp)
 target_link_libraries(ex07_networking_udp ${TARGET_LIBRARY})
 
 # Testing
-include(FetchContent)
-FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG release-1.11.0
-)
-FetchContent_MakeAvailable(googletest)
+if(CMAKE_ENABLE_TESTS)
 
-enable_testing()
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.11.0
+    )
+    FetchContent_MakeAvailable(googletest)
 
-add_executable(test_ctlogger ${TESTS_DIR}/ctlogger.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctlogger ${TARGET_LIBRARY} gtest_main)
+    enable_testing()
 
-add_test(NAME CtLoggerTests COMMAND test_ctlogger)
+    add_executable(test_ctlogger ${TESTS_DIR}/ctlogger.cpp ${TESTS_DIR}/main_test.cpp)
+    target_link_libraries(test_ctlogger ${TARGET_LIBRARY} gtest_main)
 
-add_executable(test_configparser ${TESTS_DIR}/ctconfigparser.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_configparser ${TARGET_LIBRARY} gtest_main)
+    add_test(NAME CtLoggerTests COMMAND test_ctlogger)
 
-add_test(NAME CtConfigParserTests COMMAND test_configparser)
+    add_executable(test_configparser ${TESTS_DIR}/ctconfigparser.cpp ${TESTS_DIR}/main_test.cpp)
+    target_link_libraries(test_configparser ${TARGET_LIBRARY} gtest_main)
 
-add_executable(test_ctservice ${TESTS_DIR}/ctservice.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctservice ${TARGET_LIBRARY} gtest_main)
+    add_test(NAME CtConfigParserTests COMMAND test_configparser)
 
-add_test(NAME CtServiceTests COMMAND test_ctservice)
+    add_executable(test_ctservice ${TESTS_DIR}/ctservice.cpp ${TESTS_DIR}/main_test.cpp)
+    target_link_libraries(test_ctservice ${TARGET_LIBRARY} gtest_main)
 
-add_executable(test_ctservicepool ${TESTS_DIR}/ctservicepool.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctservicepool ${TARGET_LIBRARY} gtest_main)
+    add_test(NAME CtServiceTests COMMAND test_ctservice)
 
-add_test(NAME CtServicePoolTests COMMAND test_ctservicepool)
+    add_executable(test_ctservicepool ${TESTS_DIR}/ctservicepool.cpp ${TESTS_DIR}/main_test.cpp)
+    target_link_libraries(test_ctservicepool ${TARGET_LIBRARY} gtest_main)
 
-add_executable(test_ctworker ${TESTS_DIR}/ctworker.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctworker ${TARGET_LIBRARY} gtest_main)
+    add_test(NAME CtServicePoolTests COMMAND test_ctservicepool)
 
-add_test(NAME CtWorkerTests COMMAND test_ctworker)
+    add_executable(test_ctworker ${TESTS_DIR}/ctworker.cpp ${TESTS_DIR}/main_test.cpp)
+    target_link_libraries(test_ctworker ${TARGET_LIBRARY} gtest_main)
 
-add_executable(test_ctworkerpool ${TESTS_DIR}/ctworkerpool.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctworkerpool ${TARGET_LIBRARY} gtest_main)
+    add_test(NAME CtWorkerTests COMMAND test_ctworker)
 
-add_test(NAME CtWorkerPoolTests COMMAND test_ctworkerpool)
+    add_executable(test_ctworkerpool ${TESTS_DIR}/ctworkerpool.cpp ${TESTS_DIR}/main_test.cpp)
+    target_link_libraries(test_ctworkerpool ${TARGET_LIBRARY} gtest_main)
+
+    add_test(NAME CtWorkerPoolTests COMMAND test_ctworkerpool)
+
+endif()
 
 if(MSVC)
     target_compile_definitions(${TARGET_LIBRARY} PRIVATE _WIN32)
