@@ -38,17 +38,22 @@ SOFTWARE.
 #include <stdexcept>
 
 CtConfigParser::CtConfigParser(const std::string& configFile) : m_configFile(configFile) {
-    try {
-        std::ifstream fileStream;
-        fileStream.open(m_configFile);
+}
 
-        if (fileStream.is_open()) {
+CtConfigParser::~CtConfigParser() {
+}
+
+void CtConfigParser::read() {
+    try {
+        m_fileStream.open(m_configFile, std::ofstream::in);
+
+        if (m_fileStream.is_open()) {
             std::string line;
-            while (std::getline(fileStream, line)) {
+            while (std::getline(m_fileStream, line)) {
                 parseLine(line);
             }
             
-            fileStream.close();
+            m_fileStream.close();
         }
     } catch (const CtFileParseError& e) {
         throw e;
@@ -57,8 +62,23 @@ CtConfigParser::CtConfigParser(const std::string& configFile) : m_configFile(con
     }
 }
 
-CtConfigParser::~CtConfigParser() {
+void CtConfigParser::write() {
+    try {
+        m_fileStream.open(m_configFile, std::ofstream::out | std::ofstream::trunc);
 
+        if (m_fileStream.is_open()) {
+            std::map<std::string, std::string>::iterator iter;
+            std::string line;
+            for (iter = m_configValues.begin(); iter != m_configValues.end(); iter++) {
+                line = iter->first + std::string(" = ") + iter->second + std::string("\n");
+                m_fileStream << line;
+            }
+            
+            m_fileStream.close();
+        }
+    } catch (...) {
+        throw CtFileWriteError("File not found.");
+    }
 }
 
 void CtConfigParser::parseLine(const std::string& line) {
@@ -145,4 +165,24 @@ std::string CtConfigParser::getValue(const std::string& key) {
     } else {
         throw CtKeyNotFoundError(std::string("Key <") + key + std::string("> not found."));
     }
+}
+
+void CtConfigParser::writeInt(const std::string& p_key, const int32_t& p_value) {
+    writeString(p_key, std::to_string(p_value));
+}
+
+void CtConfigParser::writeUInt(const std::string& p_key, const uint32_t& p_value) {
+    writeString(p_key, std::to_string(p_value));
+}
+
+void CtConfigParser::writeFloat(const std::string& p_key, const float& p_value) {
+    writeString(p_key, std::to_string(p_value));
+}
+
+void CtConfigParser::writeDouble(const std::string& p_key, const double& p_value) {
+    writeString(p_key, std::to_string(p_value));
+}
+
+void CtConfigParser::writeString(const std::string& p_key, const std::string& p_value) {
+    m_configValues[p_key] = p_value;
 }

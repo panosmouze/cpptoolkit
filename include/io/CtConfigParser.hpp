@@ -34,6 +34,7 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
+#include <fstream>
 #include <string>
 #include <map>
 
@@ -45,9 +46,6 @@ class CtConfigParser {
 public:
     /**
      * @brief Constructor for CtConfigParser.
-     *          This constructor can throw CtFileParseError if file cannot be parsed.
-     *          This constructor can throw CtFileError if there is a problem with the file.
-     * 
      * @param configFile The path to the configuration file to be parsed.
      */
     EXPORTED_API explicit CtConfigParser(const std::string& configFile);
@@ -56,6 +54,18 @@ public:
      * @brief Destructor for cleaning up resources.
      */
     EXPORTED_API ~CtConfigParser();
+
+    /**
+     * @brief Read data from config file. 
+     *          This method can throw CtFileParseError if file cannot be parsed.
+     *          This method can throw CtFileError if there is a problem with the file.
+     */
+    EXPORTED_API void read();
+
+    /**
+     * @brief Write data to config file.
+     */
+    EXPORTED_API void write();
 
     /**
      * @brief Parse a value as a 32-bit signed integer or 
@@ -105,6 +115,46 @@ public:
      * @return The parsed string.
      */
     EXPORTED_API std::string parseAsString(const std::string& key);
+    
+    /**
+     * @brief Write value to key as int.
+     * 
+     * @param p_key The key value.
+     * @param p_value The value to be written for this key.
+     */
+    EXPORTED_API void writeInt(const std::string& p_key, const int32_t& p_value);
+
+    /**
+     * @brief Write value to key as uint.
+     * 
+     * @param p_key The key value.
+     * @param p_value The value to be written for this key.
+     */
+    EXPORTED_API void writeUInt(const std::string& p_key, const uint32_t& p_value);
+
+    /**
+     * @brief Write value to key as float.
+     * 
+     * @param p_key The key value.
+     * @param p_value The value to be written for this key.
+     */
+    EXPORTED_API void writeFloat(const std::string& p_key, const float& p_value);
+
+    /**
+     * @brief Write value to key as double.
+     * 
+     * @param p_key The key value.
+     * @param p_value The value to be written for this key.
+     */
+    EXPORTED_API void writeDouble(const std::string& p_key, const double& p_value);
+
+    /**
+     * @brief Write value to key as string.
+     * 
+     * @param p_key The key value.
+     * @param p_value The value to be written for this key.
+     */
+    EXPORTED_API void writeString(const std::string& p_key, const std::string& p_value);
 
 private:
     /**
@@ -126,6 +176,7 @@ private:
     void parseLine(const std::string& line);
 
 private:
+    std::fstream m_fileStream; /**< Stream used for reading and writing to config file. */
     std::string m_configFile; /**< The path to the configuration file. */
     std::map<std::string, std::string> m_configValues; /**< A map to store configuration key-value pairs. */
 };

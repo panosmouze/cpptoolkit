@@ -35,10 +35,16 @@ SOFTWARE.
 
 int main() {
     CtConfigParser parser("config.ini");
+    parser.read();
     std::cout << parser.parseAsUInt("alpha") << std::endl;
     std::cout << parser.parseAsInt("beta") << std::endl;
     std::cout << parser.parseAsFloat("gamma") << std::endl;
     std::cout << parser.parseAsString("name") << std::endl;
     std::cout << parser.parseAsString("email") << std::endl;
+    parser.writeDouble("float_example", 1.1111111111111112);
+    parser.writeInt("int_example", -1);
+    parser.writeUInt("uint_example", 2);
+    parser.writeString("string_example", "2F");
+    parser.write();
     return 0;
 }
