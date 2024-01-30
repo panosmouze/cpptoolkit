@@ -4,13 +4,13 @@
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-C++ Toolkit is a lightweight and versatile C++ library that provides essential utilities for common tasks in C++ development. It includes modules for time management, threading, configuration parsing and logging.
+C++ Toolkit is a lightweight and versatile C++ library that provides essential utilities for common tasks in C++ development. It includes modules for time management, threading, IPC, configuration io and logging.
 
 ## Features
 
 - **Time Management:** Accurate and convenient time management utilities.
 - **Threading:** Simplified thread pool and worker management.
-- **Configuration Parsing:** A flexible configuration file parser.
+- **Configuration IO:** A flexible configuration file parser and writer.
 - **Logging:** Simple logging with log levels and timestamp.
 - **Interprocess Communication (IPC):** Simple UDP socket communication.
 
@@ -49,7 +49,7 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
 4. Run CMake:
 
     ```bash
-    cmake ..
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_ENABLE_TESTS=OFF
     ```
 
 5. Build the project:
