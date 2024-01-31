@@ -23,14 +23,14 @@ SOFTWARE.
 */
 
 /**
- * @file CtConfigParser.hpp
+ * @file CtConfigIO.hpp
  * @brief 
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTCONFIGPARSER_HPP_
-#define INCLUDE_CTCONFIGPARSER_HPP_
+#ifndef INCLUDE_CTCONFIGIO_HPP_
+#define INCLUDE_CTCONFIGIO_HPP_
 
 #include "definitions.hpp"
 
@@ -39,21 +39,21 @@ SOFTWARE.
 #include <map>
 
 /**
- * @class CtConfigParser
+ * @class CtConfigIO
  * @brief A configuration file parser class for extracting various data types from configuration values.
  */
-class CtConfigParser {
+class CtConfigIO {
 public:
     /**
-     * @brief Constructor for CtConfigParser.
+     * @brief Constructor for CtConfigIO.
      * @param configFile The path to the configuration file to be parsed.
      */
-    EXPORTED_API explicit CtConfigParser(const std::string& configFile);
+    EXPORTED_API explicit CtConfigIO(const std::string& configFile);
 
     /**
      * @brief Destructor for cleaning up resources.
      */
-    EXPORTED_API ~CtConfigParser();
+    EXPORTED_API ~CtConfigIO();
 
     /**
      * @brief Read data from config file. 
@@ -181,4 +181,4 @@ private:
     std::map<std::string, std::string> m_configValues; /**< A map to store configuration key-value pairs. */
 };
 
-#endif //INCLUDE_CTCONFIGPARSER_HPP_
+#endif //INCLUDE_CTCONFIGIO_HPP_

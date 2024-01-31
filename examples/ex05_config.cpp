@@ -34,7 +34,7 @@ SOFTWARE.
 #include <iostream>
 
 int main() {
-    CtConfigParser parser("config.ini");
+    CtConfigIO parser("config.ini");
     parser.read();
     std::cout << parser.parseAsUInt("alpha") << std::endl;
     std::cout << parser.parseAsInt("beta") << std::endl;

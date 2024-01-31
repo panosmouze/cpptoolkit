@@ -32,7 +32,7 @@ SOFTWARE.
 #ifndef INCLUDE_CTIO_HPP_
 #define INCLUDE_CTIO_HPP_
 
-#include "io/CtConfigParser.hpp"
+#include "io/CtConfigIO.hpp"
 #include "io/CtLogger.hpp"
 #include "io/sinks/CtSink.hpp"
 #include "io/sinks/CtFileSink.hpp"

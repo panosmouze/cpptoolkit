@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 /**
- * @file ctconfigparser.cpp
+ * @file ctconfigio.cpp
  * @brief 
  * @date 18-01-2024
  * 
