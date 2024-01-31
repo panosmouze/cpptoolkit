@@ -47,9 +47,9 @@ public:
      *
      * This method must be implemented by derived classes to handle log entry writing.
      *
-     * @param logEntry The log entry to be written.
+     * @param msg The log entry to be written.
      */
-    EXPORTED_API virtual void write(std::string logEntry) = 0;
+    EXPORTED_API virtual void write(const std::string& msg) = 0;
 
 protected:
     /**

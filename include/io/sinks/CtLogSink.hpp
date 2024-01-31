@@ -50,18 +50,18 @@ public:
     EXPORTED_API CtLogSink();
 
     /**
-     * @brief Destructor for CtLog.
+     * @brief Destructor for CtLogSink.
      *
      * Performs any necessary cleanup.
      */
     EXPORTED_API ~CtLogSink();
 
     /**
-     * @brief Writes a log entry.
+     * @brief Writes a message to the output stream.
      *
-     * @param logEntry The log entry to be written.
+     * @param msg The message to be written.
      */
-    EXPORTED_API void write(std::string logEntry) override;
+    EXPORTED_API void write(const std::string& msg) override;
 };
 
 #endif //INCLUDE_CTLOGSINK_HPP_

@@ -176,7 +176,6 @@ private:
     void parseLine(const std::string& line);
 
 private:
-    std::fstream m_fileStream; /**< Stream used for reading and writing to config file. */
     std::string m_configFile; /**< The path to the configuration file. */
     std::map<std::string, std::string> m_configValues; /**< A map to store configuration key-value pairs. */
 };

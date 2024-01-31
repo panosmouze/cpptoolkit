@@ -77,7 +77,7 @@ const std::string CtLogger::generateLoggerMsg(CtLogger::Level level, const std::
     std::stringstream timestamp;
     timestamp << std::put_time(std::localtime(&now_c), "%Y-%m-%d %X");
 
-    return std::string("[" + timestamp.str() + "] [" + levelToString(level) + "] " + componentName + ": " + message);
+    return std::string("[" + timestamp.str() + "] [" + levelToString(level) + "] " + componentName + ": " + message + "\n");
 }
 
 const std::string CtLogger::levelToString(CtLogger::Level level) {

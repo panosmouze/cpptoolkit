@@ -41,6 +41,6 @@ CtLogSink::~CtLogSink() {
 
 }
 
-void CtLogSink::write(std::string logEntry) {
-    std::cout << logEntry << std::endl;
+void CtLogSink::write(const std::string& msg) {
+    std::cout << msg;
 }

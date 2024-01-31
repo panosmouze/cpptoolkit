@@ -32,6 +32,10 @@ SOFTWARE.
 #include "io/CtConfigIO.hpp"
 #include "exceptions/CtFileExceptions.hpp"
 #include "exceptions/CtGenericExeptions.hpp"
+
+#include "io/sources/CtFileSource.hpp"
+#include "io/sinks/CtFileSink.hpp"
+
 #include <string>
 #include <map>
 #include <fstream>
@@ -45,15 +49,10 @@ CtConfigIO::~CtConfigIO() {
 
 void CtConfigIO::read() {
     try {
-        m_fileStream.open(m_configFile, std::ofstream::in);
-
-        if (m_fileStream.is_open()) {
-            std::string line;
-            while (std::getline(m_fileStream, line)) {
-                parseLine(line);
-            }
-            
-            m_fileStream.close();
+        CtFileSource s_source(m_configFile);
+        std::string line;
+        while (s_source.read(line)) {
+            parseLine(line);
         }
     } catch (const CtFileParseError& e) {
         throw e;
@@ -64,17 +63,12 @@ void CtConfigIO::read() {
 
 void CtConfigIO::write() {
     try {
-        m_fileStream.open(m_configFile, std::ofstream::out | std::ofstream::trunc);
-
-        if (m_fileStream.is_open()) {
-            std::map<std::string, std::string>::iterator iter;
-            std::string line;
-            for (iter = m_configValues.begin(); iter != m_configValues.end(); iter++) {
-                line = iter->first + std::string(" = ") + iter->second + std::string("\n");
-                m_fileStream << line;
-            }
-            
-            m_fileStream.close();
+        CtFileSink s_sink(m_configFile, CtFileSink::WriteMode::Truncate);
+        std::map<std::string, std::string>::iterator iter;
+        std::string line;
+        for (iter = m_configValues.begin(); iter != m_configValues.end(); iter++) {
+            line = iter->first + std::string(" = ") + iter->second + std::string("\n");
+            s_sink.write(line);
         }
     } catch (...) {
         throw CtFileWriteError("File not found.");

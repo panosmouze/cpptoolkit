@@ -48,11 +48,16 @@ SOFTWARE.
 class CtFileSink : public CtSink {
 public:
     /**
+     * @brief Enum representing write mode.
+     */
+    enum class WriteMode { Append, Truncate };
+
+    /**
      * @brief Constructs a CtFileSink object with the specified log file name.
      *
      * @param logFileName The name of the log file.
      */
-    EXPORTED_API CtFileSink(const std::string& logFileName);
+    EXPORTED_API CtFileSink(const std::string& logFileName, WriteMode mode = WriteMode::Append);
 
     /**
      * @brief Destructor for CtFileSink.
@@ -64,12 +69,13 @@ public:
     /**
      * @brief Writes a log entry to the file.
      *
-     * @param logEntry The log entry to be written.
+     * @param msg The log entry to be written.
      */
-    EXPORTED_API void write(std::string logEntry) override;
+    EXPORTED_API void write(const std::string& msg) override;
 
 private:
     std::ofstream m_logFile; ///< Log file stream.
+    CtFileSink::WriteMode m_mode; ///< Mode opening the stream.
 };
 
 #endif //INCLUDE_CTFILESINK_HPP_
