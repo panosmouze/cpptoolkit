@@ -23,21 +23,55 @@ SOFTWARE.
 */
 
 /**
- * @file CtIO.hpp
+ * @file CtFileSource.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 31-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTIO_HPP_
-#define INCLUDE_CTIO_HPP_
+#ifndef INCLUDE_CTFILESOURCE_HPP_
+#define INCLUDE_CTFILESOURCE_HPP_
 
-#include "io/CtConfigIO.hpp"
-#include "io/CtLogger.hpp"
-#include "io/sinks/CtSink.hpp"
-#include "io/sinks/CtFileSink.hpp"
-#include "io/sinks/CtLogSink.hpp"
+#include "definitions.hpp"
 #include "io/sources/CtSource.hpp"
-#include "io/sources/CtFileSource.hpp"
 
-#endif //INCLUDE_CTIO_HPP_
+#include "exceptions/CtFileExceptions.hpp"
+
+#include <fstream>
+#include <sstream>
+
+/**
+ * @brief Represents a simple file reading resource.
+ *
+ * This class extends CtSource and provides a basic implementation for reading files.
+ */
+class CtFileSource : public CtSource {
+public:
+
+    /**
+     * @brief Constructs a CtFileSource object.
+     *
+     * Initializes the CtFileSource object.
+     */
+    EXPORTED_API CtFileSource(const std::string& p_fileName);
+
+    /**
+     * @brief Destructor for CtFileSource.
+     *
+     * Performs any necessary cleanup.
+     */
+    EXPORTED_API ~CtFileSource();
+
+    /**
+     * @brief Reads a file reasource.
+     *
+     * @param msg The value returned from reading the resource.
+     * @return bool false if EOF or error.
+     */
+    EXPORTED_API bool read(std::string& msg) override;
+
+private:
+    std::ifstream m_file; ///< File stream.
+};
+
+#endif //INCLUDE_CTFILESOURCE_HPP_

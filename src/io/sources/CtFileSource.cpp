@@ -23,21 +23,37 @@ SOFTWARE.
 */
 
 /**
- * @file CtIO.hpp
+ * @file CtFileSource.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 31-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTIO_HPP_
-#define INCLUDE_CTIO_HPP_
-
-#include "io/CtConfigIO.hpp"
-#include "io/CtLogger.hpp"
-#include "io/sinks/CtSink.hpp"
-#include "io/sinks/CtFileSink.hpp"
-#include "io/sinks/CtLogSink.hpp"
-#include "io/sources/CtSource.hpp"
 #include "io/sources/CtFileSource.hpp"
 
-#endif //INCLUDE_CTIO_HPP_
+CtFileSource::CtFileSource(const std::string& p_fileName) {
+    try {
+        m_file.open(p_fileName, std::ofstream::in);
+    } catch (...) {
+        throw CtFileReadError("File cannot open.");
+    }
+}
+
+CtFileSource::~CtFileSource() {
+    if (m_file.is_open()) {            
+        m_file.close();
+    }
+}
+
+bool CtFileSource::read(std::string& msg) {
+    bool res;
+    lock();
+    if(std::getline(m_file, msg)) {
+        res = true;
+    } else {
+        msg = std::string("");
+        res = false;
+    }
+    unlock();
+    return res;
+}

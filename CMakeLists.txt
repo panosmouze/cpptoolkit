@@ -48,6 +48,8 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/io/sinks/CtFileSink.cpp
     ${SOURCE_DIR}/io/sinks/CtLogSink.cpp
     ${SOURCE_DIR}/io/sinks/CtSink.cpp
+    ${SOURCE_DIR}/io/sources/CtSource.cpp
+    ${SOURCE_DIR}/io/sources/CtFileSource.cpp
     ${SOURCE_DIR}/time/CtTimer.cpp
     ${SOURCE_DIR}/utils/CtTask.cpp
     ${SOURCE_DIR}/threading/CtThread.cpp
@@ -80,6 +82,9 @@ target_link_libraries(ex06_logger ${TARGET_LIBRARY})
 
 add_executable(ex07_networking_udp ${EXAMPLES_DIR}/ex07_networking_udp.cpp)
 target_link_libraries(ex07_networking_udp ${TARGET_LIBRARY})
+
+add_executable(ex08_ctfilesource ${EXAMPLES_DIR}/ex08_ctfilesource.cpp)
+target_link_libraries(ex08_ctfilesource ${TARGET_LIBRARY})
 
 # Testing
 if(CMAKE_ENABLE_TESTS)

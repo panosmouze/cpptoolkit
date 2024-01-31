@@ -23,21 +23,26 @@ SOFTWARE.
 */
 
 /**
- * @file CtIO.hpp
+ * @file CtSource.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 31-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTIO_HPP_
-#define INCLUDE_CTIO_HPP_
-
-#include "io/CtConfigIO.hpp"
-#include "io/CtLogger.hpp"
-#include "io/sinks/CtSink.hpp"
-#include "io/sinks/CtFileSink.hpp"
-#include "io/sinks/CtLogSink.hpp"
 #include "io/sources/CtSource.hpp"
-#include "io/sources/CtFileSource.hpp"
 
-#endif //INCLUDE_CTIO_HPP_
+CtSource::CtSource() {
+
+}
+
+CtSource::~CtSource() {
+
+}
+
+void CtSource::lock() {
+    m_mtx_control.lock();
+}
+
+void CtSource::unlock() {
+    m_mtx_control.unlock();
+}
