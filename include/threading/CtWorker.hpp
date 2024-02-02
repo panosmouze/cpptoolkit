@@ -110,7 +110,7 @@ private:
 template <typename F, typename... FArgs>
 void CtWorker::setTaskFunc(F&& func, FArgs&&... fargs) {
     CtTask s_task;
-    s_task.setTaskFunc(std::bind(std::forward<F>(func), std::get<FArgs>(fargs)...));
+    s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     setTask(s_task);
 };
 

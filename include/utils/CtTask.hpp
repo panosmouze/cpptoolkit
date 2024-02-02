@@ -106,12 +106,12 @@ private:
 
 template <typename F, typename... FArgs>
 void CtTask::setTaskFunc(F&& func, FArgs&&... fargs) {
-    m_task = std::bind(std::forward<F>(func), std::get<FArgs>(fargs)...);
+    m_task = std::bind(func, std::forward<FArgs>(fargs)...);
 };
 
 template <typename C, typename... CArgs>
 void CtTask::setCallbackFunc(C&& callback, CArgs&&... cargs) {
-    m_callback = std::bind(std::forward<C>(callback), std::get<CArgs>(cargs)...);
+    m_callback = std::bind(callback, std::forward<CArgs>(cargs)...);
 };
 
 #endif //INCLUDE_CTTASK_HPP_

@@ -92,7 +92,7 @@ private:
 template <typename F, typename... FArgs>
 CtService::CtService(uint32_t nslots, F&& func, FArgs&&... fargs) : m_nslots(nslots){
     CtTask s_task;
-    s_task.setTaskFunc(std::bind(std::forward<F>(func), std::get<FArgs>(fargs)...));
+    s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     m_worker.setTask(s_task);
 };
 
