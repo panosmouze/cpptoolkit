@@ -23,16 +23,25 @@ SOFTWARE.
 */
 
 /**
- * @file CtUtils.hpp
+ * @file CtEventExceptions.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 02-02-2024
  * 
  */
 
-#ifndef INCLUDE_CTUTILS_HPP_
-#define INCLUDE_CTUTILS_HPP_
+#ifndef INCLUDE_CTEVENTEXCEPTIONS_HPP_
+#define INCLUDE_CTEVENTEXCEPTIONS_HPP_
 
-#include "utils/CtTask.hpp"
-#include "utils/CtObject.hpp"
+#include "exceptions/CtException.hpp"
 
-#endif //INCLUDE_CTUTILS_HPP_
+class CtEventNotExistsError : public CtException {
+public:
+    explicit CtEventNotExistsError(const std::string& msg): CtException(msg) {};
+};
+
+class CtEventAlreadyExistsError : public CtException {
+public:
+    explicit CtEventAlreadyExistsError(const std::string& msg): CtException(msg) {};
+};
+
+#endif //INCLUDE_CTEVENTEXCEPTIONS_HPP_

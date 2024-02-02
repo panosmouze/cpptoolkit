@@ -52,6 +52,7 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/io/sources/CtFileSource.cpp
     ${SOURCE_DIR}/time/CtTimer.cpp
     ${SOURCE_DIR}/utils/CtTask.cpp
+    ${SOURCE_DIR}/utils/CtObject.cpp
     ${SOURCE_DIR}/threading/CtThread.cpp
     ${SOURCE_DIR}/threading/CtService.cpp
     ${SOURCE_DIR}/threading/CtServicePool.cpp
@@ -85,6 +86,9 @@ target_link_libraries(ex07_networking_udp ${TARGET_LIBRARY})
 
 add_executable(ex08_ctfilesource ${EXAMPLES_DIR}/ex08_ctfilesource.cpp)
 target_link_libraries(ex08_ctfilesource ${TARGET_LIBRARY})
+
+add_executable(ex09_ctevents ${EXAMPLES_DIR}/ex09_ctevents.cpp)
+target_link_libraries(ex09_ctevents ${TARGET_LIBRARY})
 
 # Testing
 if(CMAKE_ENABLE_TESTS)
