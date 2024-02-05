@@ -56,8 +56,8 @@ void CtConfigIO::read() {
         }
     } catch (const CtFileParseError& e) {
         throw e;
-    } catch (...) {
-        throw CtFileReadError("File not found.");
+    } catch (const CtFileReadError& e) {
+        throw e;
     }
 }
 
@@ -70,8 +70,8 @@ void CtConfigIO::write() {
             line = iter->first + std::string(" = ") + iter->second + std::string("\n");
             s_sink.write(line);
         }
-    } catch (...) {
-        throw CtFileWriteError("File not found.");
+    } catch (const CtFileWriteError& e) {
+        throw e;
     }
 }
 

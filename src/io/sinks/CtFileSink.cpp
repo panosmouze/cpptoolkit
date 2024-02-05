@@ -32,18 +32,17 @@ SOFTWARE.
 #include "io/sinks/CtFileSink.hpp"
 
 CtFileSink::CtFileSink(const std::string& logFileName, WriteMode mode): CtSink()  {
-    try {
-        switch (mode) {
-            case WriteMode::Append:
-                m_logFile.open(logFileName, std::ios::out | std::ios::app);
-                break;
-                default:
-            case WriteMode::Truncate:
-                m_logFile.open(logFileName, std::ios::out | std::ios::trunc);
-                break;
-        }
-    } catch (...) {
-        throw CtFileWriteError("");
+    switch (mode) {
+        case WriteMode::Append:
+            m_logFile.open(logFileName, std::ios::out | std::ios::app);
+            break;
+            default:
+        case WriteMode::Truncate:
+            m_logFile.open(logFileName, std::ios::out | std::ios::trunc);
+            break;
+    }
+    if (!m_logFile.is_open()) {
+        throw CtFileWriteError("File cannot open.");
     }
 }
 

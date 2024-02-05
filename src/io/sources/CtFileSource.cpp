@@ -32,9 +32,8 @@ SOFTWARE.
 #include "io/sources/CtFileSource.hpp"
 
 CtFileSource::CtFileSource(const std::string& p_fileName) {
-    try {
-        m_file.open(p_fileName, std::ofstream::in);
-    } catch (...) {
+    m_file.open(p_fileName, std::ofstream::in);
+    if (!m_file.is_open()) {
         throw CtFileReadError("File cannot open.");
     }
 }

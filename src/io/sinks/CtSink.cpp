@@ -34,6 +34,7 @@ SOFTWARE.
 CtSink::CtSink() {
 
 }
+
 CtSink::~CtSink() {
 
 }
