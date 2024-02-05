@@ -31,22 +31,82 @@ SOFTWARE.
 
 #include "CtThreading.hpp"
 #include "CtUtils.hpp"
-#include "CtTime.hpp"
+#include "CtIO.hpp"
 
-#include <iostream>
-#include <chrono>
-#include <thread>
+#include <atomic>
 
-int main() {
+CtLogger logger(CtLogger::Level::DEBUG, "WORKER_POOL_EX02");
+
+/** Helper functions */
+void f1(std::atomic<uint8_t>* cnt) {
+    (*cnt) += 1;
+}
+
+void callback(std::atomic<uint8_t>* cnt) {
+    (*cnt) -= 1;
+}
+
+/** Cases functions */
+
+/**
+ * @brief This case shows how to initialize a worker pool object with 10 workers.
+ *          The loop adds 100 tasks on the worker pool's queue using a lambda 
+ *          function. After that we wait for the tasks to be executed.
+ * 
+ */
+void case01() {
     CtWorkerPool pool(10);
-    CtTimer timer;
-    timer.tic();
+    std::atomic<uint8_t> cnt = 0;
     for (int i = 0; i < 100; i++) {
-        pool.addTask([](){
-            CtThread::sleepFor(100);
+        pool.addTask([&cnt](){
+            cnt++;
         });
     }
     pool.join();
-    std::cout << timer.toc() << std::endl;
+    logger.log_info(std::to_string(cnt));
+}
+
+/**
+ * @brief This case shows how to initialize a worker pool object with 10 workers.
+ *          The loop adds 100 tasks on the worker pool's queue using a normal 
+ *          function. After that we wait for the tasks to be executed.
+ * 
+ */
+void case02() {
+    CtWorkerPool pool(10);
+    std::atomic<uint8_t> cnt = 0;
+    for (int i = 0; i < 100; i++) {
+        pool.addTask(f1, &cnt);
+    }
+    pool.join();
+    logger.log_info(std::to_string(cnt));
+}
+
+/**
+ * @brief This case shows how to initialize a worker pool object with 10 workers.
+ *          The loop adds 100 tasks on the worker pool's queue using a CtTask obj. 
+ *          After that we wait for the tasks to be executed.
+ * 
+ */
+void case03() {
+    CtWorkerPool pool(10);
+    CtTask task;
+    std::atomic<uint8_t> cnt = 0;
+    for (int i = 0; i < 100; i++) {
+        task.setTaskFunc(f1, &cnt);
+        task.setCallbackFunc(callback, &cnt);
+        pool.addTask(task);
+    }
+    pool.join();
+    logger.log_info(std::to_string(cnt));
+}
+
+/** Run all cases */
+int main() {
+    CtLogSink logSink;
+    logger.addSink(&logSink);
+    case01();
+    case02();
+    case03();
     return 0;
 }

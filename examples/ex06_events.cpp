@@ -23,64 +23,78 @@ SOFTWARE.
 */
 
 /**
- * @file ex09_ctevents.cpp
+ * @file ex06_events.cpp
  * @brief 
  * @date 03-02-2024
  * 
  */
 
+#include "CtIO.hpp"
 #include "CtUtils.hpp"
 #include "CtThreading.hpp"
 
-#include <iostream>
-
-// Create a list of custom events
-enum class MyEvents {
-    EVENT1 = 1,
-    EVENT2 = 2,
-    EVENT3 = 3
-};
+CtLogger logger(CtLogger::Level::DEBUG, "CTEVENTS_EX06");
 
 // implement a CtObject class
 class CtMainPage : public CtObject {
 public: 
+    // Create a list of custom events
+    enum MyEvents : uint8_t {
+        EVENT1 = 1,
+        EVENT2 = 2,
+        EVENT3 = 3
+    };
+
     CtMainPage() {
-        registerEvent((uint8_t)MyEvents::EVENT1);
-        registerEvent((uint8_t)MyEvents::EVENT2);
-        registerEvent((uint8_t)MyEvents::EVENT3);
+        // register events to CtObject
+        registerEvent(EVENT1);
+        registerEvent(EVENT2);
+        registerEvent(EVENT3);
     }
 
     ~CtMainPage() {
 
     }
 
-    void print() {
-        triggerEvent((uint8_t)MyEvents::EVENT1);
+    void test1() {
+        // code for test1 func
+
+        // trigger for EVENT1
+        triggerEvent(EVENT1);
+    }
+
+    void test2() {
+        // code for test2 func
+        
+        // trigger for EVENT2
+        triggerEvent(EVENT2);
     }
 };
 
 void callback(int idx) {
-    std::cout << "EVENT1-" + std::to_string(idx) + " executed" << std::endl;
+    logger.log_info("EVENT1-3 executed with id: " + std::to_string(idx));;
 }
 
 int main() {
+    CtLogSink logSink;
+    logger.addSink(&logSink);
     CtMainPage page;
     CtTask task1, task2;
-    task1.setTaskFunc([](){std::cout << "EVENT1-1 executed" << std::endl;});
-    task2.setTaskFunc([](){std::cout << "EVENT1-2 executed" << std::endl;});
+    task1.setTaskFunc([](){logger.log_info("EVENT1-1 executed");});
+    task2.setTaskFunc([](){logger.log_info("EVENT1-2 executed");});
 
     // use of connectEvent
-    page.connectEvent((uint8_t)MyEvents::EVENT1, task1);
+    page.connectEvent(CtMainPage::EVENT1, task1);
 
     // use static definition of connectEvent
-    CtObject::connectEvent(&page, (uint8_t)MyEvents::EVENT1, task2);
+    CtObject::connectEvent(&page, CtMainPage::EVENT1, task2);
 
     // use of connectEvent given a lamda function
-    page.connectEvent((uint8_t)MyEvents::EVENT1, []{std::cout << "EVENT1-3 executed" << std::endl;});
+    page.connectEvent(CtMainPage::EVENT2, []{logger.log_info("EVENT2-1 executed");});
 
     // use of connectEvent given a normal function
-    page.connectEvent((uint8_t)MyEvents::EVENT1, callback, 4);
+    page.connectEvent(CtMainPage::EVENT1, callback, 4);
 
-    // print triggers EVENT1, so it executes all of the tasks connected to it.
-    page.print();
+    page.test1();
+    page.test2();
 }

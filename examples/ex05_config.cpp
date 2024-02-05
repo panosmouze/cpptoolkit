@@ -31,20 +31,76 @@ SOFTWARE.
 
 #include "CtIO.hpp"
 
-#include <iostream>
+CtLogger logger(CtLogger::Level::DEBUG, "CONFIG_EX05");
 
+/**
+ * @brief Write a new configuration file.
+ * 
+ */
+void case01() {
+    CtConfigIO config("config.ini");
+    try {
+        config.read();
+    } catch (const CtFileReadError& e) {
+        logger.log_error(e.what());
+    }
+    // write data to config object
+    config.writeInt("int_example", -6);
+    config.writeDouble("double_example", 43.12421435224);
+    config.writeUInt("uint_example", 7);
+    config.writeString("email", "panos@testmail.com");
+    // write data to the file
+    try {
+        config.write();
+    } catch (const CtFileWriteError& e) {
+        logger.log_error(e.what());
+    }
+}
+
+/**
+ * @brief Read a configuration file.
+ * 
+ */
+void case02() {
+    CtConfigIO config("config.ini");
+    // read data from the file
+    try {
+        config.read();
+    } catch (const CtFileReadError& e) {
+        logger.log_error(e.what());
+    }
+    logger.log_info(std::to_string(config.parseAsInt("int_example")));
+    logger.log_info(std::to_string(config.parseAsUInt("uint_example")));
+    logger.log_info(std::to_string(config.parseAsDouble("double_example")));
+    logger.log_info(config.parseAsString("email"));
+}
+
+/**
+ * @brief Read and write a configuration file.
+ * 
+ */
+void case03() {
+    CtConfigIO config("config.ini");
+    // read data from the file
+    config.read();
+    // add a new key value
+    config.writeString("username", "panos");
+    // overwrite an existing key value
+    config.writeString("email", "panosm@testmail.com");
+    // write data to the file
+    try {
+        config.write();
+    } catch (const CtFileWriteError& e) {
+        logger.log_error(e.what());
+    }
+}
+
+/** Run all cases.*/
 int main() {
-    CtConfigIO parser("config.ini");
-    parser.read();
-    std::cout << parser.parseAsUInt("alpha") << std::endl;
-    std::cout << parser.parseAsInt("beta") << std::endl;
-    std::cout << parser.parseAsFloat("gamma") << std::endl;
-    std::cout << parser.parseAsString("name") << std::endl;
-    std::cout << parser.parseAsString("email") << std::endl;
-    parser.writeDouble("float_example", 1.1111111111111112);
-    parser.writeInt("int_example", -1);
-    parser.writeUInt("uint_example", 2);
-    parser.writeString("string_example", "2F");
-    parser.write();
+    CtLogSink logSink;
+    logger.addSink(&logSink);
+    case01();
+    case02();
+    case03();
     return 0;
 }

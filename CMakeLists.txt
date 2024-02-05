@@ -63,6 +63,9 @@ add_library(${TARGET_LIBRARY} SHARED
 )
 
 # Examples Build
+add_executable(ex00_logger ${EXAMPLES_DIR}/ex00_logger.cpp)
+target_link_libraries(ex00_logger ${TARGET_LIBRARY})
+
 add_executable(ex01_worker ${EXAMPLES_DIR}/ex01_worker.cpp)
 target_link_libraries(ex01_worker ${TARGET_LIBRARY})
 
@@ -78,17 +81,11 @@ target_link_libraries(ex04_service_pool ${TARGET_LIBRARY})
 add_executable(ex05_config ${EXAMPLES_DIR}/ex05_config.cpp)
 target_link_libraries(ex05_config ${TARGET_LIBRARY})
 
-add_executable(ex06_logger ${EXAMPLES_DIR}/ex06_logger.cpp)
-target_link_libraries(ex06_logger ${TARGET_LIBRARY})
+add_executable(ex06_events ${EXAMPLES_DIR}/ex06_events.cpp)
+target_link_libraries(ex06_events ${TARGET_LIBRARY})
 
 add_executable(ex07_networking_udp ${EXAMPLES_DIR}/ex07_networking_udp.cpp)
 target_link_libraries(ex07_networking_udp ${TARGET_LIBRARY})
-
-add_executable(ex08_ctfilesource ${EXAMPLES_DIR}/ex08_ctfilesource.cpp)
-target_link_libraries(ex08_ctfilesource ${TARGET_LIBRARY})
-
-add_executable(ex09_ctevents ${EXAMPLES_DIR}/ex09_ctevents.cpp)
-target_link_libraries(ex09_ctevents ${TARGET_LIBRARY})
 
 # Testing
 if(CMAKE_ENABLE_TESTS)

@@ -31,25 +31,106 @@ SOFTWARE.
 
 #include "CtThreading.hpp"
 #include "CtUtils.hpp"
+#include "CtIO.hpp"
 
-#include <iostream>
-#include <chrono>
-#include <thread>
+CtLogger logger(CtLogger::Level::DEBUG, "SERVICE_POOL_EX04");
 
-int main() {
-    CtService::m_slot_time = 100;
-    CtServicePool pool(10);
-    int cnt[150] = {0};
-    for (int i = 0; i < 150; i++) {
-        pool.addTaskFunc(10, std::to_string(i), [&cnt, i](){
+/** Helper functions */
+
+void f1(uint8_t* cnt, int i) {
+    cnt[i]++;
+}
+
+/** Cases functions */
+
+/**
+ * @brief This case shows how to initialize a service pool object. This pool runs 150 services
+ *          using 10 workers. Each service runs every 100 slots (1s). In this case the service 
+ *          is initialized using a lambda function. After 2s another loop deletes the last 5 
+ *          services.
+ * 
+ */
+void case01() {
+    CtService::m_slot_time = 10;
+    CtServicePool pool(5);
+    uint8_t cnt[50] = {0};
+    for (int i = 0; i < 50; i++) {
+        pool.addTaskFunc(100, std::to_string(i), [&cnt, i](){
             cnt[i]++;
         });
     }
-    
-    CtThread::sleepFor(60000);
-    pool.shutdownServices();
-    for (int i = 0; i < 150; i++) {
-        std::cout << i << ": " << cnt[i] << std::endl;
+
+    CtThread::sleepFor(2000);
+    for (int i = 45; i < 50; i++) {
+        pool.removeTask(std::to_string(i));
     }
+    CtThread::sleepFor(3000);
+    pool.shutdownServices();
+    for (int i = 0; i < 50; i++) {
+        logger.log_info("idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]));
+    }
+}
+
+/**
+ * @brief This case shows how to initialize a service pool object. This pool runs 150 services
+ *          using 10 workers. Each service runs every 100 slots (1s). In this case the service 
+ *          is initialized using a normal function. After 2s another loop deletes the last 5 
+ *          services.
+ * 
+ */
+void case02() {
+    CtService::m_slot_time = 10;
+    CtServicePool pool(5);
+    uint8_t cnt[50] = {0};
+    for (int i = 0; i < 50; i++) {
+        pool.addTaskFunc(100, std::to_string(i), f1, cnt, i);
+    }
+
+    CtThread::sleepFor(2000);
+    for (int i = 45; i < 50; i++) {
+        pool.removeTask(std::to_string(i));
+    }
+    CtThread::sleepFor(3000);
+    pool.shutdownServices();
+    for (int i = 0; i < 50; i++) {
+        logger.log_info("idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]));
+    }
+}
+
+/**
+ * @brief This case shows how to initialize a service pool object. This pool runs 150 services
+ *          using 10 workers. Each service runs every 100 slots (1s). In this case the service 
+ *          is initialized using a CtTask object. After 2s another loop deletes the last 5 
+ *          services.
+ * 
+ */
+void case03() {
+    CtService::m_slot_time = 10;
+    CtServicePool pool(5);
+    uint8_t cnt[50] = {0};
+    CtTask task;
+    for (int i = 0; i < 50; i++) {
+        task.setTaskFunc(f1, cnt, i);
+        pool.addTask(100, std::to_string(i), task);
+    }
+
+    CtThread::sleepFor(2000);
+    for (int i = 45; i < 50; i++) {
+        pool.removeTask(std::to_string(i));
+    }
+    CtThread::sleepFor(3000);
+    pool.shutdownServices();
+    for (int i = 0; i < 50; i++) {
+        logger.log_info("idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]));
+    }
+}
+
+/** Run all cases */
+int main() {
+    CtLogSink logSink;
+    logger.addSink(&logSink);
+    case01();
+    case02();
+    case03();
     return 0;
 }

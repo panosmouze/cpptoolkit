@@ -23,20 +23,29 @@ SOFTWARE.
 */
 
 /**
- * @file ex06_logger.cpp
+ * @file ex00_logger.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 05-02-2024
  * 
  */
 
 #include "CtIO.hpp"
 
 int main() {
-    CtLogSink log;
-    CtFileSink file("log.txt");
+    // create logger object with log level set to ERROR and service name TestComp
     CtLogger logger(CtLogger::Level::ERROR, "TestComp");
+
+    // create sink object for terminal log
+    CtLogSink log;
+
+    // create sink object for file log
+    CtFileSink file("log.txt");
+
+    // add sinks to the logger object
     logger.addSink(&log);
     logger.addSink(&file);
+
+    // log messages
     logger.log_warning("warning 1");
     logger.log_debug("debug 1");
     logger.log_error("error 1");

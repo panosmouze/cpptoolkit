@@ -31,18 +31,30 @@ SOFTWARE.
 
 #include "CtThreading.hpp"
 #include "CtUtils.hpp"
+#include "CtIO.hpp"
 
-#include <iostream>
-#include <chrono>
-#include <thread>
+CtLogger logger(CtLogger::Level::DEBUG, "SERVICE_EX03");
 
-int main() {
-    int cnt = 0;
-    CtService service(100, [&cnt](){cnt++;});
+/** Cases functions */
+
+/**
+ * @brief This case shows how to initialize a worker object using a lambda function.
+ * 
+ */
+void case01() {
+    uint8_t cnt = 0;
+    CtService service(10, [&cnt](){cnt++;});
     service.runService();
-    
+
     CtThread::sleepFor(1900);
     service.stopService();
-    std::cout << cnt << std::endl;
+    logger.log_info(std::to_string(cnt));
+}
+
+/** Run all cases */
+int main() {
+    CtLogSink logSink;
+    logger.addSink(&logSink);
+    case01();
     return 0;
 }

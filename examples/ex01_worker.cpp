@@ -31,19 +31,70 @@ SOFTWARE.
 
 #include "CtThreading.hpp"
 #include "CtUtils.hpp"
+#include "CtIO.hpp"
 
-#include <iostream>
-#include <chrono>
-#include <thread>
+CtLogger logger(CtLogger::Level::DEBUG, "WORKER_EX01");
 
-int main() {
+/** Helper functions */
+void f1() {
+    logger.log_info("Task start f1");
+    CtThread::sleepFor(1000);
+    logger.log_info("Task stop f1");
+}
+
+void callback() {
+    logger.log_info("Callback called");
+}
+
+/** Cases functions */
+
+/**
+ * @brief This case shows how to initialize a worker object using a lambda function.
+ * 
+ */
+void case01() {
     CtWorker worker;
     worker.setTaskFunc([](){
-        std::cout << "Task start" << std::endl;
+        logger.log_info("Task start lambda 1");
         CtThread::sleepFor(1000);
-        std::cout << "Task stop" << std::endl;
+        logger.log_info("Task stop lambda 1");
     });
     worker.runTask();
     worker.joinTask();
+}
+
+/**
+ * @brief This case shows how to initialize a worker object using a normal function.
+ * 
+ */
+void case02() {
+    CtWorker worker;
+    worker.setTaskFunc(f1);
+    worker.runTask();
+    worker.joinTask();
+}
+
+/**
+ * @brief This case shows how to initialize a worker object using a task object.
+ *          In this case a callback function can be set to.
+ * 
+ */
+void case03() {
+    CtWorker worker;
+    CtTask task;
+    task.setTaskFunc(f1);
+    task.setCallbackFunc(callback);
+    worker.setTask(task);
+    worker.runTask();
+    worker.joinTask();
+}
+
+/** Run all cases */
+int main() {
+    CtLogSink logSink;
+    logger.addSink(&logSink);
+    case01();
+    case02();
+    case03();
     return 0;
 }
