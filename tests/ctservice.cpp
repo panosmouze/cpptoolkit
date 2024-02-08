@@ -28,3 +28,44 @@ SOFTWARE.
  * @date 18-01-2024
  * 
  */
+
+#include <gtest/gtest.h>
+#include "CtThreading.hpp"
+
+void f1(uint32_t* idx) {
+    *idx += 1;
+}
+
+
+TEST(CtService, ServiceFunctionalityUsingNormalFunction) {
+    uint32_t idx = 0;
+    // set slot time to 100ms
+    CtService::m_slot_time = 100;
+    // create a new service and run f1 every 10 slots => 1s
+    CtService service(10, f1, &idx);
+    // run service
+    service.runService();
+    // sleep for 1500ms
+    CtThread::sleepFor(1500);
+    // stop service
+    service.stopService();
+    ASSERT_EQ(idx, 2);
+};
+
+
+TEST(CtService, ServiceFunctionalityUsingCtTask) {
+    uint32_t idx = 0;
+    // set slot time to 100ms
+    CtService::m_slot_time = 100;
+    CtTask task;
+    task.setTaskFunc([&idx](){idx++;});
+    // create a new service and run task every 10 slots => 1s
+    CtService service(10, task);
+    // run service
+    service.runService();
+    // sleep for 1500ms
+    CtThread::sleepFor(1500);
+    // stop service
+    service.stopService();
+    ASSERT_EQ(idx, 2);
+};

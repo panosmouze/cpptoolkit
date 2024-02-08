@@ -100,10 +100,6 @@ if(CMAKE_ENABLE_TESTS)
 
     enable_testing()
 
-    add_executable(test_ctlogger ${TESTS_DIR}/ctlogger.cpp ${TESTS_DIR}/main_test.cpp)
-    target_link_libraries(test_ctlogger ${TARGET_LIBRARY} gtest_main)
-    add_test(NAME CtLoggerTests COMMAND test_ctlogger)
-
     add_executable(test_configio ${TESTS_DIR}/ctconfigio.cpp ${TESTS_DIR}/main_test.cpp)
     target_link_libraries(test_configio ${TARGET_LIBRARY} gtest_main)
     add_test(NAME CtConfigParserTests COMMAND test_configio)

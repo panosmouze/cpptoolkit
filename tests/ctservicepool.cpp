@@ -28,3 +28,54 @@ SOFTWARE.
  * @date 18-01-2024
  * 
  */
+
+#include <gtest/gtest.h>
+#include "CtThreading.hpp"
+
+void f1(uint32_t* idx) {
+    *idx += 1;
+}
+
+
+TEST(CtServicePool, ServicePoolFunctionalityUsingNormalFunction) {
+    uint32_t idx[15] = {0};
+    // set slot time to 100ms
+    CtService::m_slot_time = 100;
+    // create a new service and run f1 every 10 slots => 1s
+    CtServicePool pool(2);
+    for (uint8_t i = 0; i< 15; i++) {
+        pool.addTaskFunc(i+1, std::to_string(i), f1, &idx[i]);
+    }
+    // start services
+    pool.startServices();
+    // sleep for 3000ms
+    CtThread::sleepFor(3000);
+    // stop services
+    pool.shutdownServices();
+    for (uint8_t i = 0; i < 14; i++) {
+        ASSERT_GT(idx[i], 0);
+    }
+};
+
+
+TEST(CtServicePool, ServicePoolFunctionalityUsingCtTask) {
+    uint32_t idx[15] = {0};
+    // set slot time to 100ms
+    CtService::m_slot_time = 100;
+    // create a new service and run f1 every 10 slots => 1s
+    CtServicePool pool(2);
+    for (uint8_t i = 0; i< 15; i++) {
+        pool.addTaskFunc(i+2, std::to_string(i), [&idx, i](){
+            idx[i]++;
+        });
+    }
+    // start services
+    pool.startServices();
+    // sleep for 3000ms
+    CtThread::sleepFor(3000);
+    // stop services
+    pool.shutdownServices();
+    for (uint8_t i = 0; i < 14; i++) {
+        ASSERT_GT(idx[i], 0);
+    }
+};

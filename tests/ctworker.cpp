@@ -28,3 +28,47 @@ SOFTWARE.
  * @date 18-01-2024
  * 
  */
+
+#include <gtest/gtest.h>
+#include "CtThreading.hpp"
+
+void f1(bool* flag) {
+    *flag = true;
+}
+
+void callback(bool* flag) {
+    *flag = true;
+}
+
+TEST(CtWorker, WorkerFunctionalityUsingNormalFunction) {
+    bool task_flag = false;
+    bool callback_flag = false;
+    // create a new service and run f1 every 10 slots => 1s
+    CtWorker worker;
+    worker.setTaskFunc(f1, &task_flag);
+    // run service
+    worker.runTask();
+    // wait for worker to finish the task
+    worker.joinTask();
+    ASSERT_EQ(task_flag, true);
+    ASSERT_EQ(callback_flag, false);
+};
+
+
+TEST(CtWorker, WorkerFunctionalityUsingCtTask) {
+    bool task_flag = false;
+    bool callback_flag = false;
+    // setup task
+    CtTask task;
+    task.setTaskFunc(f1, &task_flag);
+    task.setCallbackFunc(callback, &callback_flag);
+    // create a new worker
+    CtWorker worker;
+    worker.setTask(task);
+    // run task
+    worker.runTask();
+    // wait for worker to finish the task
+    worker.joinTask();
+    ASSERT_EQ(task_flag, true);
+    ASSERT_EQ(callback_flag, true);
+};
