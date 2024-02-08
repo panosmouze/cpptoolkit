@@ -156,6 +156,13 @@ public:
      */
     EXPORTED_API void writeString(const std::string& p_key, const std::string& p_value);
 
+public:
+    /**
+     * @brief Max number of characters per line in configuration file.
+     * 
+     */
+    static uint32_t maxNumberOfCharacters;
+
 private:
     /**
      * @brief This method returns the value assosiated with the given key or 

@@ -39,6 +39,7 @@ SOFTWARE.
 
 #include <fstream>
 #include <sstream>
+#include <cstring>
 
 /**
  * @brief Represents a simple file reading resource.
@@ -49,11 +50,13 @@ class CtFileSource : public CtSource {
 public:
 
     /**
-     * @brief Constructs a CtFileSource object.
-     *
-     * Initializes the CtFileSource object.
+     * @brief Constructs the CtFileSource object.
+     * 
+     * @param p_fileName Filename.
+     * @param p_delim Source file delimiter.
+     * @param p_delim_size Source file delimiter size.
      */
-    EXPORTED_API CtFileSource(const std::string& p_fileName);
+    EXPORTED_API CtFileSource(const std::string& p_fileName, const char* p_delim = "\n", uint8_t p_delim_size = 1);
 
     /**
      * @brief Destructor for CtFileSource.
@@ -68,10 +71,12 @@ public:
      * @param msg The value returned from reading the resource.
      * @return bool false if EOF or error.
      */
-    EXPORTED_API bool read(std::string& msg) override;
+    EXPORTED_API bool read(CtData* data) override;
 
 private:
     std::ifstream m_file; ///< File stream.
+    char* m_delim; ///< Batch read delimeter.
+    uint8_t m_delim_size; ///< Delimeter size.
 };
 
 #endif //INCLUDE_CTFILESOURCE_HPP_

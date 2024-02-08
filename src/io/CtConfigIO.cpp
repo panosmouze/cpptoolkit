@@ -41,6 +41,8 @@ SOFTWARE.
 #include <fstream>
 #include <stdexcept>
 
+uint32_t CtConfigIO::maxNumberOfCharacters = 512;
+
 CtConfigIO::CtConfigIO(const std::string& configFile) : m_configFile(configFile) {
 }
 
@@ -49,9 +51,10 @@ CtConfigIO::~CtConfigIO() {
 
 void CtConfigIO::read() {
     try {
-        CtFileSource s_source(m_configFile);
-        std::string line;
-        while (s_source.read(line)) {
+        CtFileSource s_source(m_configFile, "\n", 1);
+        CtFileData data(maxNumberOfCharacters);
+        while (s_source.read(&data)) {
+            std::string line(data.data, data.rsize);
             parseLine(line);
         }
     } catch (const CtFileParseError& e) {

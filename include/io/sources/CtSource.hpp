@@ -33,6 +33,8 @@ SOFTWARE.
 #define INCLUDE_CTSOURCE_HPP_
 
 #include "definitions.hpp"
+#include "io/CtIOTypes.hpp"
+
 #include <mutex>
 
 /**
@@ -46,9 +48,9 @@ public:
      * @brief Reads a reasource.
      *
      * @param msg The value returned from reading the resource.
-     * @return bool false if EOF or error.
+     * @return bool false if EOF.
      */
-    EXPORTED_API virtual bool read(std::string& msg) = 0;
+    EXPORTED_API virtual bool read(CtData* data) = 0;
 
 protected:
     /**
@@ -65,17 +67,7 @@ protected:
      */
     EXPORTED_API virtual ~CtSource();
 
-    /**
-     * @brief Locks the internal mutex for thread-safe operations.
-     */
-    void lock();
-
-    /**
-     * @brief Unlocks the internal mutex.
-     */
-    void unlock();
-
-private:
+protected:
     std::mutex m_mtx_control; ///< Internal mutex for synchronization.
 };
 

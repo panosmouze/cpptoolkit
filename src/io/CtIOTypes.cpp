@@ -23,19 +23,19 @@ SOFTWARE.
 */
 
 /**
- * @file CtSource.cpp
+ * @file CtIOTypes.cpp
  * @brief 
- * @date 31-01-2024
+ * @date 08-02-2024
  * 
  */
 
-#include "io/sources/CtSource.hpp"
+#include "io/CtIOTypes.hpp"
 
-CtSource::CtSource() {
+CtFileData::CtFileData(uint32_t p_size) : size(p_size) {
+    rsize = 0;
+    data = new char[size];
+};
 
-}
-
-CtSource::~CtSource() {
-
-}
-
+CtFileData::~CtFileData() {
+    delete[] data;
+};
