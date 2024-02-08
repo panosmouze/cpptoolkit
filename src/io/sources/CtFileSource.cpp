@@ -34,9 +34,13 @@ SOFTWARE.
 #include <cstring>
 
 CtFileSource::CtFileSource(const std::string& p_fileName, const char* p_delim, uint8_t p_delim_size) {
-    m_delim_size = p_delim_size;
-    m_delim = new char[m_delim_size];
-    memcpy(m_delim, p_delim, m_delim_size);
+    if (p_delim_size > 0 && p_delim != nullptr) {
+        m_delim_size = p_delim_size;
+        m_delim = new char[m_delim_size];
+        memcpy(m_delim, p_delim, m_delim_size);
+    } else {
+        m_delim = nullptr;
+    }
     m_file.open(p_fileName, std::ofstream::in);
     if (!m_file.is_open()) {
         throw CtFileReadError("File cannot open.");
@@ -47,7 +51,9 @@ CtFileSource::~CtFileSource() {
     if (m_file.is_open()) {            
         m_file.close();
     }
-    delete[] m_delim;
+    if (m_delim != nullptr) {
+        delete[] m_delim;
+    }
 }
 
 bool CtFileSource::read(CtData* p_data) {
@@ -65,7 +71,7 @@ bool CtFileSource::read(CtData* p_data) {
         while (m_file.get(next_char)) {
             s_data->data[i++] = next_char;
             
-            if (i >= m_delim_size) {
+            if (m_delim != nullptr && i >= m_delim_size) {
                 delim_ptr_idx = i - m_delim_size;
                 delim_ptr = &s_data->data[delim_ptr_idx];
 

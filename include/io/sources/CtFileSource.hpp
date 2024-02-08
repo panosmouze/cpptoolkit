@@ -56,7 +56,7 @@ public:
      * @param p_delim Source file delimiter.
      * @param p_delim_size Source file delimiter size.
      */
-    EXPORTED_API CtFileSource(const std::string& p_fileName, const char* p_delim = "\n", uint8_t p_delim_size = 1);
+    EXPORTED_API CtFileSource(const std::string& p_fileName, const char* p_delim = nullptr, uint8_t p_delim_size = 0);
 
     /**
      * @brief Destructor for CtFileSource.
@@ -75,7 +75,7 @@ public:
 
 private:
     std::ifstream m_file; ///< File stream.
-    char* m_delim; ///< Batch read delimeter.
+    char* m_delim; ///< Batch read delimiter.
     uint8_t m_delim_size; ///< Delimeter size.
 };
 
