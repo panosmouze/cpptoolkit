@@ -23,19 +23,35 @@ SOFTWARE.
 */
 
 /**
- * @file CtSource.cpp
+ * @file CtIOTypes.hpp
  * @brief 
- * @date 31-01-2024
+ * @date 08-02-2024
  * 
  */
 
-#include "io/sources/CtSource.hpp"
+#ifndef INCLUDE_CTIOTYPES_HPP_
+#define INCLUDE_CTIOTYPES_HPP_
 
-CtSource::CtSource() {
+#include "definitions.hpp"
 
-}
+/**
+ * @brief Abstract struct used as base struct for data IO in sources and sinks.
+ * 
+ */
+struct CtData {
+};
 
-CtSource::~CtSource() {
+/**
+ * @brief Struct used for data in file IO operations.
+ * 
+ */
+struct CtFileData : CtData {
+    char* data; ///< Data buffer.
+    const uint32_t size; ///< Total number of characters the buffer can hold.
+    uint32_t rsize; ///< Real number of characters the buffer holds.
 
-}
+    EXPORTED_API CtFileData(uint32_t p_size);
+    EXPORTED_API ~CtFileData();
+};
 
+#endif //INCLUDE_CTIOTYPES_HPP_

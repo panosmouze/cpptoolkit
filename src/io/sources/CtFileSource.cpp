@@ -30,8 +30,13 @@ SOFTWARE.
  */
 
 #include "io/sources/CtFileSource.hpp"
+#include <mutex>
+#include <cstring>
 
-CtFileSource::CtFileSource(const std::string& p_fileName) {
+CtFileSource::CtFileSource(const std::string& p_fileName, const char* p_delim, uint8_t p_delim_size) {
+    m_delim_size = p_delim_size;
+    m_delim = new char[m_delim_size];
+    memcpy(m_delim, p_delim, m_delim_size);
     m_file.open(p_fileName, std::ofstream::in);
     if (!m_file.is_open()) {
         throw CtFileReadError("File cannot open.");
@@ -42,17 +47,42 @@ CtFileSource::~CtFileSource() {
     if (m_file.is_open()) {            
         m_file.close();
     }
+    delete[] m_delim;
 }
 
-bool CtFileSource::read(std::string& msg) {
-    bool res;
-    lock();
-    if(std::getline(m_file, msg)) {
-        res = true;
-    } else {
-        msg = std::string("");
-        res = false;
+bool CtFileSource::read(CtData* p_data) {
+    std::scoped_lock lock(m_mtx_control);
+
+    CtFileData* s_data = static_cast<CtFileData*>(p_data);
+    bool res = false;
+
+    if (m_file.is_open() && s_data->data != nullptr && s_data->size > 0) {
+        char next_char;
+        char* delim_ptr = nullptr;
+        uint32_t i = 0;
+        uint32_t delim_ptr_idx = 0;
+
+        while (m_file.get(next_char)) {
+            s_data->data[i++] = next_char;
+            
+            if (i >= m_delim_size) {
+                delim_ptr_idx = i - m_delim_size;
+                delim_ptr = &s_data->data[delim_ptr_idx];
+
+                if (memcmp(delim_ptr, m_delim, m_delim_size) == 0) {
+                    i = delim_ptr_idx;
+                    break;
+                }
+            }
+
+            if (i >= s_data->size) {
+                break;
+            }
+        }
+        
+        s_data->rsize = i;
+        res = (i > 0);
     }
-    unlock();
+    
     return res;
 }

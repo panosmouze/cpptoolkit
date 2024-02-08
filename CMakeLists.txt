@@ -45,6 +45,7 @@ include_directories(${INCLUDE_DIR})
 add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/io/CtLogger.cpp
     ${SOURCE_DIR}/io/CtConfigIO.cpp
+    ${SOURCE_DIR}/io/CtIOTypes.cpp
     ${SOURCE_DIR}/io/sinks/CtFileSink.cpp
     ${SOURCE_DIR}/io/sinks/CtLogSink.cpp
     ${SOURCE_DIR}/io/sinks/CtSink.cpp
