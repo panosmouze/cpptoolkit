@@ -56,7 +56,7 @@ public:
      * @param p_delim Source file delimiter.
      * @param p_delim_size Source file delimiter size.
      */
-    EXPORTED_API CtFileSource(const std::string& p_fileName, const char* p_delim = nullptr, uint8_t p_delim_size = 0);
+    EXPORTED_API CtFileSource(const std::string& p_fileName);
 
     /**
      * @brief Destructor for CtFileSource.
@@ -72,6 +72,14 @@ public:
      * @return bool false if EOF or error.
      */
     EXPORTED_API bool read(CtData* data) override;
+
+    /**
+     * @brief Set the the delimiter of read() method.
+     * 
+     * @param p_delim The delimiter.
+     * @param p_delim_size The delimiter size.
+     */
+    EXPORTED_API void setDelimiter(const char* p_delim, uint8_t p_delim_size);
 
 private:
     std::ifstream m_file; ///< File stream.

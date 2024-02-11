@@ -33,14 +33,9 @@ SOFTWARE.
 #include <mutex>
 #include <cstring>
 
-CtFileSource::CtFileSource(const std::string& p_fileName, const char* p_delim, uint8_t p_delim_size) {
-    if (p_delim_size > 0 && p_delim != nullptr) {
-        m_delim_size = p_delim_size;
-        m_delim = new char[m_delim_size];
-        memcpy(m_delim, p_delim, m_delim_size);
-    } else {
-        m_delim = nullptr;
-    }
+CtFileSource::CtFileSource(const std::string& p_fileName) {
+    m_delim = nullptr;
+    m_delim_size = 0;
     m_file.open(p_fileName, std::ofstream::in);
     if (!m_file.is_open()) {
         throw CtFileReadError("File cannot open.");
@@ -53,6 +48,14 @@ CtFileSource::~CtFileSource() {
     }
     if (m_delim != nullptr) {
         delete[] m_delim;
+    }
+}
+
+void CtFileSource::setDelimiter(const char* p_delim, uint8_t p_delim_size) {
+    if (p_delim_size > 0 && p_delim != nullptr) {
+        m_delim_size = p_delim_size;
+        m_delim = new char[m_delim_size];
+        memcpy(m_delim, p_delim, m_delim_size);
     }
 }
 

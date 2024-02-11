@@ -51,7 +51,8 @@ CtConfigIO::~CtConfigIO() {
 
 void CtConfigIO::read() {
     try {
-        CtFileSource s_source(m_configFile, "\n", 1);
+        CtFileSource s_source(m_configFile);
+        s_source.setDelimiter("\n", 1);
         CtFileData data(maxNumberOfCharacters);
         while (s_source.read(&data)) {
             std::string line(data.data, data.rsize);
