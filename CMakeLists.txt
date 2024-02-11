@@ -46,11 +46,14 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/io/CtLogger.cpp
     ${SOURCE_DIR}/io/CtConfigIO.cpp
     ${SOURCE_DIR}/io/CtIOTypes.cpp
+    ${SOURCE_DIR}/io/CtBlock.cpp
     ${SOURCE_DIR}/io/sinks/CtFileSink.cpp
     ${SOURCE_DIR}/io/sinks/CtLogSink.cpp
     ${SOURCE_DIR}/io/sinks/CtSink.cpp
     ${SOURCE_DIR}/io/sources/CtSource.cpp
     ${SOURCE_DIR}/io/sources/CtFileSource.cpp
+    ${SOURCE_DIR}/io/sources/CtTextFileSource.cpp
+    ${SOURCE_DIR}/io/sources/CtBinaryFileSource.cpp
     ${SOURCE_DIR}/time/CtTimer.cpp
     ${SOURCE_DIR}/utils/CtTask.cpp
     ${SOURCE_DIR}/utils/CtObject.cpp

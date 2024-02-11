@@ -23,27 +23,29 @@ SOFTWARE.
 */
 
 /**
- * @file CtIOTypes.cpp
+ * @file CtBlock.hpp
  * @brief 
- * @date 08-02-2024
+ * @date 11-02-2024
  * 
  */
 
+#ifndef INCLUDE_CTBLOCK_HPP_
+#define INCLUDE_CTBLOCK_HPP_
+
+#include "definitions.hpp"
+
 #include "io/CtIOTypes.hpp"
 
-CtData::CtData(CtDataType p_type) : type(p_type) {
+class CtBlock {
+public:
+    EXPORTED_API CtBlockType getBlockType();
 
-}
+protected:
+    EXPORTED_API CtBlock(CtBlockType p_type);
+    EXPORTED_API ~CtBlock();
 
-CtBinaryData::CtBinaryData(uint32_t p_size) : size(p_size), CtData(CtDataType::CtBinaryData) {
-    rsize = 0;
-    data = new char[size];
-}
+protected:
+    const CtBlockType m_type;
+};
 
-CtBinaryData::~CtBinaryData() {
-    delete[] data;
-}
-
-CtTextData::CtTextData() : CtData(CtDataType::CtTextData) {
-
-}
+#endif //INCLUDE_CTBLOCK_HPP_

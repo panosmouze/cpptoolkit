@@ -33,7 +33,7 @@ SOFTWARE.
 #include <mutex>
 #include <cstring>
 
-CtFileSource::CtFileSource(const std::string& p_fileName) {
+CtFileSource::CtFileSource(const std::string& p_fileName, CtBlockType p_type) : CtSource(p_type) {
     m_delim = nullptr;
     m_delim_size = 0;
     m_file.open(p_fileName, std::ofstream::in);
@@ -59,24 +59,21 @@ void CtFileSource::setDelimiter(const char* p_delim, uint8_t p_delim_size) {
     }
 }
 
-bool CtFileSource::read(CtData* p_data) {
-    std::scoped_lock lock(m_mtx_control);
-
-    CtFileData* s_data = static_cast<CtFileData*>(p_data);
+bool CtFileSource::getData(CtBinaryData* p_data) {
     bool res = false;
 
-    if (m_file.is_open() && s_data->data != nullptr && s_data->size > 0) {
+    if (m_file.is_open() && p_data->data != nullptr && p_data->size > 0) {
         char next_char;
         char* delim_ptr = nullptr;
         uint32_t i = 0;
         uint32_t delim_ptr_idx = 0;
 
         while (m_file.get(next_char)) {
-            s_data->data[i++] = next_char;
+            p_data->data[i++] = next_char;
             
             if (m_delim != nullptr && i >= m_delim_size) {
                 delim_ptr_idx = i - m_delim_size;
-                delim_ptr = &s_data->data[delim_ptr_idx];
+                delim_ptr = &p_data->data[delim_ptr_idx];
 
                 if (memcmp(delim_ptr, m_delim, m_delim_size) == 0) {
                     i = delim_ptr_idx;
@@ -84,12 +81,12 @@ bool CtFileSource::read(CtData* p_data) {
                 }
             }
 
-            if (i >= s_data->size) {
+            if (i >= p_data->size) {
                 break;
             }
         }
         
-        s_data->rsize = i;
+        p_data->rsize = i;
         res = (i > 0);
     }
     

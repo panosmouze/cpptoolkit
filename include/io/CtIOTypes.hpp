@@ -34,24 +34,47 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
+enum class CtBlockType {
+    CtTextFileSource,
+    CtBinaryFileSource
+};
+
+enum class CtDataType {
+    CtBinaryData,
+    CtTextData
+};
+
 /**
  * @brief Abstract struct used as base struct for data IO in sources and sinks.
  * 
  */
 struct CtData {
+    const CtDataType type;
+
+    EXPORTED_API CtData(CtDataType p_type);
 };
 
 /**
- * @brief Struct used for data in file IO operations.
+ * @brief Struct used for raw data in IO operations.
  * 
  */
-struct CtFileData : CtData {
-    char* data; ///< Data buffer.
+struct CtBinaryData : CtData {
+    char* data; ///< Raw data buffer.
     const uint32_t size; ///< Total number of characters the buffer can hold.
     uint32_t rsize; ///< Real number of characters the buffer holds.
 
-    EXPORTED_API CtFileData(uint32_t p_size);
-    EXPORTED_API ~CtFileData();
+    EXPORTED_API CtBinaryData(uint32_t p_size);
+    EXPORTED_API ~CtBinaryData();
+};
+
+/**
+ * @brief Struct used for text data in IO operations.
+ * 
+ */
+struct CtTextData : CtData {
+    std::string line; ///< String data buffer.
+
+    EXPORTED_API CtTextData();
 };
 
 #endif //INCLUDE_CTIOTYPES_HPP_

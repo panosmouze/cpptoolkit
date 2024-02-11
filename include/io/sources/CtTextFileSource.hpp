@@ -23,27 +23,27 @@ SOFTWARE.
 */
 
 /**
- * @file CtIOTypes.cpp
+ * @file CtTextFileSource.hpp
  * @brief 
- * @date 08-02-2024
+ * @date 11-02-2024
  * 
  */
 
-#include "io/CtIOTypes.hpp"
+#ifndef INCLUDE_CTTEXTFILESOURCE_HPP_
+#define INCLUDE_CTTEXTFILESOURCE_HPP_
 
-CtData::CtData(CtDataType p_type) : type(p_type) {
+#include "definitions.hpp"
 
-}
+#include "io/sources/CtFileSource.hpp"
 
-CtBinaryData::CtBinaryData(uint32_t p_size) : size(p_size), CtData(CtDataType::CtBinaryData) {
-    rsize = 0;
-    data = new char[size];
-}
+class CtTextFileSource : public CtFileSource {
+public:
+    static uint32_t bufferSize;
 
-CtBinaryData::~CtBinaryData() {
-    delete[] data;
-}
+    EXPORTED_API CtTextFileSource(const std::string& p_fileName);
+    EXPORTED_API ~CtTextFileSource();
 
-CtTextData::CtTextData() : CtData(CtDataType::CtTextData) {
+    EXPORTED_API bool read(CtData* data) override;
+};
 
-}
+#endif //INCLUDE_CTTEXTFILESOURCE_HPP_

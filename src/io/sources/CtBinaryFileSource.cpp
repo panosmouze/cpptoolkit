@@ -23,27 +23,29 @@ SOFTWARE.
 */
 
 /**
- * @file CtIOTypes.cpp
+ * @file CtBinaryFileSource.cpp
  * @brief 
- * @date 08-02-2024
+ * @date 11-02-2024
  * 
  */
 
-#include "io/CtIOTypes.hpp"
+#include "io/sources/CtBinaryFileSource.hpp"
 
-CtData::CtData(CtDataType p_type) : type(p_type) {
+#include "exceptions/CtGenericExeptions.hpp"
 
+CtBinaryFileSource::CtBinaryFileSource(const std::string& p_fileName) : CtFileSource(p_fileName, CtBlockType::CtBinaryFileSource) {
+    setOutType(CtDataType::CtBinaryData);
 }
 
-CtBinaryData::CtBinaryData(uint32_t p_size) : size(p_size), CtData(CtDataType::CtBinaryData) {
-    rsize = 0;
-    data = new char[size];
+CtBinaryFileSource::~CtBinaryFileSource() {
+    
 }
 
-CtBinaryData::~CtBinaryData() {
-    delete[] data;
-}
+bool CtBinaryFileSource::read(CtData* p_data) {
+    if (!acceptOutType(p_data->type)) {
+        throw CtTypeParseError("Out type error in CtBinaryFileSource");
+    }
 
-CtTextData::CtTextData() : CtData(CtDataType::CtTextData) {
-
+    CtBinaryData* s_data = static_cast<CtBinaryData*>(p_data);
+    return getData(s_data);
 }

@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTSOURCE_HPP_
 
 #include "definitions.hpp"
+#include "io/CtBlock.hpp"
 #include "io/CtIOTypes.hpp"
 
 #include <mutex>
@@ -42,7 +43,7 @@ SOFTWARE.
  *
  * This class provides an interface for sources and includes basic synchronization mechanisms.
  */
-class CtSource {
+class CtSource : public CtBlock {
 public:
     /**
      * @brief Reads a reasource.
@@ -50,15 +51,18 @@ public:
      * @param msg The value returned from reading the resource.
      * @return bool false if EOF.
      */
-    EXPORTED_API virtual bool read(CtData* data) = 0;
+    EXPORTED_API virtual bool read(CtData* p_data) = 0;
+
+    EXPORTED_API bool acceptOutType(CtDataType p_type);
 
 protected:
+    EXPORTED_API void setOutType(CtDataType p_type);
     /**
      * @brief Constructor for CtSource.
      *
      * Initializes the CtSource object.
      */
-    EXPORTED_API CtSource();
+    EXPORTED_API CtSource(CtBlockType p_type);
 
     /**
      * @brief Virtual destructor for CtSource.
@@ -69,6 +73,9 @@ protected:
 
 protected:
     std::mutex m_mtx_control; ///< Internal mutex for synchronization.
+
+private:
+    CtDataType m_outType;
 };
 
 #endif //INCLUDE_CTSOURCE_HPP_

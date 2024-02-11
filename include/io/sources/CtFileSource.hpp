@@ -48,7 +48,15 @@ SOFTWARE.
  */
 class CtFileSource : public CtSource {
 public:
+    /**
+     * @brief Reads a file reasource.
+     *
+     * @param msg The value returned from reading the resource.
+     * @return bool false if EOF or error.
+     */
+    EXPORTED_API virtual bool read(CtData* data) override = 0;
 
+protected:
     /**
      * @brief Constructs the CtFileSource object.
      * 
@@ -56,7 +64,7 @@ public:
      * @param p_delim Source file delimiter.
      * @param p_delim_size Source file delimiter size.
      */
-    EXPORTED_API CtFileSource(const std::string& p_fileName);
+    EXPORTED_API CtFileSource(const std::string& p_fileName, CtBlockType p_type);
 
     /**
      * @brief Destructor for CtFileSource.
@@ -66,20 +74,19 @@ public:
     EXPORTED_API ~CtFileSource();
 
     /**
-     * @brief Reads a file reasource.
-     *
-     * @param msg The value returned from reading the resource.
-     * @return bool false if EOF or error.
-     */
-    EXPORTED_API bool read(CtData* data) override;
-
-    /**
      * @brief Set the the delimiter of read() method.
      * 
      * @param p_delim The delimiter.
      * @param p_delim_size The delimiter size.
      */
     EXPORTED_API void setDelimiter(const char* p_delim, uint8_t p_delim_size);
+
+    /**
+     * @brief Get next available data.
+     * 
+     * @param p_data 
+     */
+    EXPORTED_API bool getData(CtBinaryData* p_data);
 
 private:
     std::ifstream m_file; ///< File stream.

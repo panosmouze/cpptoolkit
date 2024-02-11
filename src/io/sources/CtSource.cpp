@@ -31,11 +31,17 @@ SOFTWARE.
 
 #include "io/sources/CtSource.hpp"
 
-CtSource::CtSource() {
-
+CtSource::CtSource(CtBlockType p_type) : CtBlock(p_type) {
 }
 
 CtSource::~CtSource() {
 
 }
 
+void CtSource::setOutType(CtDataType p_type) {
+    m_outType = p_type;
+}
+
+bool CtSource::acceptOutType(CtDataType p_type) {
+    return (p_type == m_outType);
+}

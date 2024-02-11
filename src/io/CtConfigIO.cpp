@@ -33,7 +33,7 @@ SOFTWARE.
 #include "exceptions/CtFileExceptions.hpp"
 #include "exceptions/CtGenericExeptions.hpp"
 
-#include "io/sources/CtFileSource.hpp"
+#include "io/sources/CtTextFileSource.hpp"
 #include "io/sinks/CtFileSink.hpp"
 
 #include <string>
@@ -51,12 +51,10 @@ CtConfigIO::~CtConfigIO() {
 
 void CtConfigIO::read() {
     try {
-        CtFileSource s_source(m_configFile);
-        s_source.setDelimiter("\n", 1);
-        CtFileData data(maxNumberOfCharacters);
+        CtTextFileSource s_source(m_configFile);
+        CtTextData data;
         while (s_source.read(&data)) {
-            std::string line(data.data, data.rsize);
-            parseLine(line);
+            parseLine(data.line);
         }
     } catch (const CtFileParseError& e) {
         throw e;

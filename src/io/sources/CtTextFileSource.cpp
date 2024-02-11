@@ -23,27 +23,40 @@ SOFTWARE.
 */
 
 /**
- * @file CtIOTypes.cpp
+ * @file CtTextFileSource.cpp
  * @brief 
- * @date 08-02-2024
+ * @date 11-02-2024
  * 
  */
 
-#include "io/CtIOTypes.hpp"
+#include "io/sources/CtTextFileSource.hpp"
 
-CtData::CtData(CtDataType p_type) : type(p_type) {
+#include "exceptions/CtGenericExeptions.hpp"
 
+#include <iostream>
+
+uint32_t CtTextFileSource::bufferSize = 2048;
+
+CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName, CtBlockType::CtTextFileSource) {
+    setOutType(CtDataType::CtTextData);
+    setDelimiter("\n", 1);
 }
 
-CtBinaryData::CtBinaryData(uint32_t p_size) : size(p_size), CtData(CtDataType::CtBinaryData) {
-    rsize = 0;
-    data = new char[size];
+CtTextFileSource::~CtTextFileSource() {
+    
 }
 
-CtBinaryData::~CtBinaryData() {
-    delete[] data;
-}
+bool CtTextFileSource::read(CtData* p_data) {
+    if (!acceptOutType(p_data->type)) {
+        throw CtTypeParseError("Out type error in CtTextFileSource");
+    }
 
-CtTextData::CtTextData() : CtData(CtDataType::CtTextData) {
+    CtTextData* s_data = static_cast<CtTextData*>(p_data);
 
+    CtBinaryData data(bufferSize);
+    bool res = getData(&data);
+    if (res) {
+        s_data->line = std::string(data.data, data.rsize);
+    }
+    return res;
 }
