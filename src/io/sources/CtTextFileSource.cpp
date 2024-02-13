@@ -35,7 +35,7 @@ SOFTWARE.
 
 #include <iostream>
 
-uint32_t CtTextFileSource::bufferSize = 2048;
+uint32_t CtTextFileSource::bufferSize = 1024;
 
 CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName, CtBlockType::CtTextFileSource) {
     setOutType(CtDataType::CtTextData);
@@ -51,11 +51,10 @@ bool CtTextFileSource::read(CtData* p_data) {
         throw CtTypeParseError("Out type error in CtTextFileSource");
     }
 
-    CtTextData* s_data = static_cast<CtTextData*>(p_data);
-
     CtBinaryData data(bufferSize);
-    bool res = getData(&data);
+    bool res = CtFileSource::read(&data);
     if (res) {
+        CtTextData* s_data = static_cast<CtTextData*>(p_data);
         s_data->line = std::string(data.data, data.rsize);
     }
     return res;

@@ -59,21 +59,22 @@ void CtFileSource::setDelimiter(const char* p_delim, uint8_t p_delim_size) {
     }
 }
 
-bool CtFileSource::getData(CtBinaryData* p_data) {
+bool CtFileSource::read(CtData* p_data) {
     bool res = false;
+    CtBinaryData* s_data = static_cast<CtBinaryData*>(p_data);
 
-    if (m_file.is_open() && p_data->data != nullptr && p_data->size > 0) {
+    if (m_file.is_open() && s_data->data != nullptr && s_data->size > 0) {
         char next_char;
         char* delim_ptr = nullptr;
         uint32_t i = 0;
         uint32_t delim_ptr_idx = 0;
 
         while (m_file.get(next_char)) {
-            p_data->data[i++] = next_char;
+            s_data->data[i++] = next_char;
             
             if (m_delim != nullptr && i >= m_delim_size) {
                 delim_ptr_idx = i - m_delim_size;
-                delim_ptr = &p_data->data[delim_ptr_idx];
+                delim_ptr = &s_data->data[delim_ptr_idx];
 
                 if (memcmp(delim_ptr, m_delim, m_delim_size) == 0) {
                     i = delim_ptr_idx;
@@ -81,12 +82,12 @@ bool CtFileSource::getData(CtBinaryData* p_data) {
                 }
             }
 
-            if (i >= p_data->size) {
+            if (i >= s_data->size) {
                 break;
             }
         }
         
-        p_data->rsize = i;
+        s_data->rsize = i;
         res = (i > 0);
     }
     

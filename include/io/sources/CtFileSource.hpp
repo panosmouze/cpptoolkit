@@ -54,7 +54,7 @@ public:
      * @param msg The value returned from reading the resource.
      * @return bool false if EOF or error.
      */
-    EXPORTED_API virtual bool read(CtData* data) override = 0;
+    EXPORTED_API bool read(CtData* data) override;
 
 protected:
     /**
@@ -80,13 +80,6 @@ protected:
      * @param p_delim_size The delimiter size.
      */
     EXPORTED_API void setDelimiter(const char* p_delim, uint8_t p_delim_size);
-
-    /**
-     * @brief Get next available data.
-     * 
-     * @param p_data 
-     */
-    EXPORTED_API bool getData(CtBinaryData* p_data);
 
 private:
     std::ifstream m_file; ///< File stream.

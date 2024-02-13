@@ -47,5 +47,5 @@ bool CtBinaryFileSource::read(CtData* p_data) {
     }
 
     CtBinaryData* s_data = static_cast<CtBinaryData*>(p_data);
-    return getData(s_data);
+    return CtFileSource::read(s_data);
 }
