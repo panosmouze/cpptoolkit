@@ -32,12 +32,14 @@ SOFTWARE.
 #ifndef INCLUDE_CTIO_HPP_
 #define INCLUDE_CTIO_HPP_
 
-#include "io/CtConfigIO.hpp"
-#include "io/CtLogger.hpp"
+#include "io/CtBlock.hpp"
+#include "io/CtIOTypes.hpp"
 #include "io/sinks/CtSink.hpp"
 #include "io/sinks/CtFileSink.hpp"
 #include "io/sinks/CtLogSink.hpp"
 #include "io/sources/CtSource.hpp"
 #include "io/sources/CtFileSource.hpp"
+#include "io/sources/CtTextFileSource.hpp"
+#include "io/sources/CtBinaryFileSource.hpp"
 
 #endif //INCLUDE_CTIO_HPP_

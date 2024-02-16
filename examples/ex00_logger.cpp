@@ -29,6 +29,7 @@ SOFTWARE.
  * 
  */
 
+#include "CtUtils.hpp"
 #include "CtIO.hpp"
 
 int main() {

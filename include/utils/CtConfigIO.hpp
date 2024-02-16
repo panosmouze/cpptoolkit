@@ -34,6 +34,8 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
+#include "io/sources/CtTextFileSource.hpp"
+
 #include <fstream>
 #include <string>
 #include <map>
@@ -44,6 +46,12 @@ SOFTWARE.
  */
 class CtConfigIO {
 public:
+    enum class CtConfigIOState {
+        IDLE,
+        READING,
+        WRITING
+    };
+
     /**
      * @brief Constructor for CtConfigIO.
      * @param configFile The path to the configuration file to be parsed.
@@ -55,17 +63,19 @@ public:
      */
     EXPORTED_API ~CtConfigIO();
 
+    EXPORTED_API void join();
+
     /**
      * @brief Read data from config file. 
      *          This method can throw CtFileParseError if file cannot be parsed.
      *          This method can throw CtFileError if there is a problem with the file.
      */
-    EXPORTED_API void read();
+    EXPORTED_API CtConfigIO& read();
 
     /**
      * @brief Write data to config file.
      */
-    EXPORTED_API void write();
+    EXPORTED_API CtConfigIO& write();
 
     /**
      * @brief Parse a value as a 32-bit signed integer or 
@@ -182,7 +192,14 @@ private:
      */
     void parseLine(const std::string& line);
 
+    void setState(CtConfigIOState p_state);
+    CtConfigIOState getState();
+    bool isAvailable();
+
 private:
+    std::mutex m_mtx_control; ///< Internal mutex for synchronization.
+    std::atomic<CtConfigIOState> m_state;
+    CtTextFileSource* s_source;
     std::string m_configFile; /**< The path to the configuration file. */
     std::map<std::string, std::string> m_configValues; /**< A map to store configuration key-value pairs. */
 };

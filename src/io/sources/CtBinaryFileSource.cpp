@@ -41,11 +41,6 @@ CtBinaryFileSource::~CtBinaryFileSource() {
     
 }
 
-bool CtBinaryFileSource::read(CtData* p_data) {
-    if (!acceptOutType(p_data->type)) {
-        throw CtTypeParseError("Out type error in CtBinaryFileSource");
-    }
-
-    CtBinaryData* s_data = static_cast<CtBinaryData*>(p_data);
-    return CtFileSource::read(s_data);
+CtData* CtBinaryFileSource::get() {
+    return CtFileSource::get();
 }

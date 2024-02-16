@@ -32,6 +32,8 @@ SOFTWARE.
 #include "io/sources/CtSource.hpp"
 
 CtSource::CtSource(CtBlockType p_type) : CtBlock(p_type) {
+    registerEvent((uint8_t)CtSourceEvent::DATA_AVAIL);
+    registerEvent((uint8_t)CtSourceEvent::DATA_EOF);
 }
 
 CtSource::~CtSource() {
@@ -44,4 +46,19 @@ void CtSource::setOutType(CtDataType p_type) {
 
 bool CtSource::acceptOutType(CtDataType p_type) {
     return (p_type == m_outType);
+}
+
+CtData* CtSource::get() {
+    std::scoped_lock lock(m_mtx_control);
+    CtData* data = nullptr;
+    if (m_queue.size() > 0) {
+        data = m_queue.front();
+        m_queue.pop();
+    }
+    return data;
+}
+
+void CtSource::set(CtData* data) {
+    std::scoped_lock lock(m_mtx_control);
+    m_queue.push(data);
 }

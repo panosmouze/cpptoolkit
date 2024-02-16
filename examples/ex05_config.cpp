@@ -30,6 +30,7 @@ SOFTWARE.
  */
 
 #include "CtIO.hpp"
+#include "CtUtils.hpp"
 
 CtLogger logger(CtLogger::Level::DEBUG, "CONFIG_EX05");
 
@@ -40,7 +41,7 @@ CtLogger logger(CtLogger::Level::DEBUG, "CONFIG_EX05");
 void case01() {
     CtConfigIO config("config.ini");
     try {
-        config.read();
+        config.read().join();
     } catch (const CtFileReadError& e) {
         logger.log_error(e.what());
     }
@@ -65,7 +66,7 @@ void case02() {
     CtConfigIO config("config.ini");
     // read data from the file
     try {
-        config.read();
+        config.read().join();
     } catch (const CtFileReadError& e) {
         logger.log_error(e.what());
     }
@@ -82,7 +83,7 @@ void case02() {
 void case03() {
     CtConfigIO config("config.ini");
     // read data from the file
-    config.read();
+    config.read().join();
     // add a new key value
     config.writeString("username", "panos");
     // overwrite an existing key value

@@ -29,7 +29,7 @@ SOFTWARE.
  * 
  */
 
-#include "io/CtConfigIO.hpp"
+#include "utils/CtConfigIO.hpp"
 #include "exceptions/CtFileExceptions.hpp"
 #include "exceptions/CtGenericExeptions.hpp"
 
@@ -44,26 +44,54 @@ SOFTWARE.
 uint32_t CtConfigIO::maxNumberOfCharacters = 512;
 
 CtConfigIO::CtConfigIO(const std::string& configFile) : m_configFile(configFile) {
+    s_source = nullptr;
 }
 
 CtConfigIO::~CtConfigIO() {
-}
-
-void CtConfigIO::read() {
-    try {
-        CtTextFileSource s_source(m_configFile);
-        CtTextData data;
-        while (s_source.read(&data)) {
-            parseLine(data.line);
-        }
-    } catch (const CtFileParseError& e) {
-        throw e;
-    } catch (const CtFileReadError& e) {
-        throw e;
+    join();
+    if (s_source != nullptr) {
+        delete s_source;
     }
 }
 
-void CtConfigIO::write() {
+void CtConfigIO::setState(CtConfigIOState p_state) {
+    m_state.store(p_state);
+}
+
+CtConfigIO::CtConfigIOState CtConfigIO::getState() {
+    return m_state.load();
+}
+
+CtConfigIO& CtConfigIO::read() {
+    std::scoped_lock lock(m_mtx_control);
+    if (!isAvailable()) {
+        throw CtFileWriteError("CtConfigIO is running already.");
+    }
+    setState(CtConfigIOState::READING);
+    s_source = new CtTextFileSource(m_configFile);
+    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_AVAIL, [this]{
+        CtTextData* data = static_cast<CtTextData*>(s_source->get());
+        try {
+            parseLine(data->line);
+            delete data;
+        } catch (const CtFileParseError& e) {
+            throw e;
+        } catch (const CtFileReadError& e) {
+            throw e;
+        }
+    });
+    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_EOF, [this]{
+        setState(CtConfigIOState::IDLE);
+    });
+    return *this;
+}
+
+CtConfigIO& CtConfigIO::write() {
+    std::scoped_lock lock(m_mtx_control);
+    if (!isAvailable()) {
+        throw CtFileWriteError("CtConfigIO is running already.");
+    }
+    setState(CtConfigIOState::WRITING);
     try {
         CtFileSink s_sink(m_configFile, CtFileSink::WriteMode::Truncate);
         std::map<std::string, std::string>::iterator iter;
@@ -75,6 +103,16 @@ void CtConfigIO::write() {
     } catch (const CtFileWriteError& e) {
         throw e;
     }
+    setState(CtConfigIOState::IDLE);
+    return *this;
+}
+
+void CtConfigIO::join() {
+    while(!isAvailable()){};
+}
+
+bool CtConfigIO::isAvailable() {
+    return getState() == CtConfigIOState::IDLE;
 }
 
 void CtConfigIO::parseLine(const std::string& line) {

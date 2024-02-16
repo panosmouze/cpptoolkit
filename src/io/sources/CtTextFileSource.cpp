@@ -46,16 +46,13 @@ CtTextFileSource::~CtTextFileSource() {
     
 }
 
-bool CtTextFileSource::read(CtData* p_data) {
-    if (!acceptOutType(p_data->type)) {
-        throw CtTypeParseError("Out type error in CtTextFileSource");
+CtData* CtTextFileSource::get() {
+    CtBinaryData* s_data = static_cast<CtBinaryData*>(CtFileSource::get());
+    CtTextData* res_data = nullptr;
+    if (s_data != nullptr) {
+        res_data = new CtTextData;
+        res_data->line = std::string(s_data->data, s_data->rsize);
+        delete s_data;
     }
-
-    CtBinaryData data(bufferSize);
-    bool res = CtFileSource::read(&data);
-    if (res) {
-        CtTextData* s_data = static_cast<CtTextData*>(p_data);
-        s_data->line = std::string(data.data, data.rsize);
-    }
-    return res;
+    return res_data;
 }

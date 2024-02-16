@@ -29,7 +29,7 @@ SOFTWARE.
  * 
  */
 
-#include "io/CtLogger.hpp"
+#include "utils/CtLogger.hpp"
 
 CtLogger::CtLogger(CtLogger::Level level, const std::string& componentName) : m_level(level), m_componentName(componentName) {
 }
