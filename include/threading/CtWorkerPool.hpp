@@ -34,6 +34,7 @@ SOFTWARE.
 
 #include "definitions.hpp"
 #include "threading/CtWorker.hpp"
+#include "threading/CtThread.hpp"
 #include "utils/CtTask.hpp"
 
 #include <queue>
@@ -45,7 +46,7 @@ SOFTWARE.
  * @class CtWorkerPool
  * @brief Manages a pool of worker threads for executing tasks concurrently.
  */
-class CtWorkerPool {
+class CtWorkerPool : CtThread {
 public:
     /**
      * @brief Constructor for CtWorkerPool.
@@ -79,10 +80,6 @@ public:
     EXPORTED_API void join();
 
 private:
-    /**
-     * @brief Main function running by task assigner worker.
-     */
-    void taskAssignerFunc();
 
     /**
      * @brief Assign a task to a specified worker.
@@ -95,6 +92,8 @@ private:
      * @brief Free resources and clear the worker pool.
      */
     void free();
+
+    void loop() override;
 
 private:
     uint32_t m_nworkers; ///< Number of worker threads in the pool.
