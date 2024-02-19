@@ -60,9 +60,7 @@ void CtThread::start() {
 
 void CtThread::stop() {
     setRunning(false);
-    if (m_thread.joinable()) {
-        m_thread.join();
-    }
+    join();
 }
 
 void CtThread::join() {
