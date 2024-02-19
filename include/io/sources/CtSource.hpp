@@ -54,6 +54,9 @@ public:
     EXPORTED_API virtual CtData* get();
     EXPORTED_API virtual void set(CtData* data);
     EXPORTED_API bool acceptOutType(CtDataType p_type);
+    EXPORTED_API void start();
+    EXPORTED_API void stop();
+    EXPORTED_API void join();
 
 protected:
     /**

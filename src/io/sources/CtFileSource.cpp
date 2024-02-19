@@ -40,7 +40,6 @@ CtFileSource::CtFileSource(const std::string& p_fileName, CtBlockType p_type) : 
     if (!m_file.is_open()) {
         throw CtFileReadError("File cannot open.");
     }
-    start();
 }
 
 CtFileSource::~CtFileSource() {
@@ -107,6 +106,7 @@ void CtFileSource::loop() {
         } else {
             delete data;
             triggerEvent(static_cast<uint8_t>(CtSourceEvent::DATA_EOF));
+            setRunning(false);
         }
     }
 }

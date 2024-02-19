@@ -40,6 +40,18 @@ CtSource::~CtSource() {
 
 }
 
+void CtSource::start() {
+    CtThread::start();
+}
+
+void CtSource::stop() {
+    CtThread::stop();
+}
+
+void CtSource::join() {
+    CtBlock::waitPendingEvents();
+}
+
 void CtSource::setOutType(CtDataType p_type) {
     m_outType = p_type;
 }
