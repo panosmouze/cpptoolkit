@@ -63,19 +63,17 @@ public:
      */
     EXPORTED_API ~CtConfigIO();
 
-    EXPORTED_API void join();
-
     /**
      * @brief Read data from config file. 
      *          This method can throw CtFileParseError if file cannot be parsed.
      *          This method can throw CtFileError if there is a problem with the file.
      */
-    EXPORTED_API CtConfigIO& read();
+    EXPORTED_API void read();
 
     /**
      * @brief Write data to config file.
      */
-    EXPORTED_API CtConfigIO& write();
+    EXPORTED_API void write();
 
     /**
      * @brief Parse a value as a 32-bit signed integer or 
@@ -174,6 +172,8 @@ public:
     static uint32_t maxNumberOfCharacters;
 
 private:
+    void wait();
+
     /**
      * @brief This method returns the value assosiated with the given key or 
      *          throw CtKeyNotFoundError if key is not found in the map.
@@ -194,7 +194,6 @@ private:
 
     void setState(CtConfigIOState p_state);
     CtConfigIOState getState();
-    bool isAvailable();
 
 private:
     std::mutex m_mtx_control; ///< Internal mutex for synchronization.

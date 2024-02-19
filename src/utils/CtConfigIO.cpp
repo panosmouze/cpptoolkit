@@ -48,7 +48,7 @@ CtConfigIO::CtConfigIO(const std::string& configFile) : m_configFile(configFile)
 }
 
 CtConfigIO::~CtConfigIO() {
-    join();
+    wait();
     if (s_source != nullptr) {
         delete s_source;
     }
@@ -62,13 +62,13 @@ CtConfigIO::CtConfigIOState CtConfigIO::getState() {
     return m_state.load();
 }
 
-CtConfigIO& CtConfigIO::read() {
+void CtConfigIO::read() {
     std::scoped_lock lock(m_mtx_control);
-    if (!isAvailable()) {
+    if (getState() != CtConfigIOState::IDLE) {
         throw CtFileWriteError("CtConfigIO is running already.");
     }
-    setState(CtConfigIOState::READING);
     s_source = new CtTextFileSource(m_configFile);
+    setState(CtConfigIOState::READING);
     s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_AVAIL, [this]{
         CtTextData* data = static_cast<CtTextData*>(s_source->get());
         try {
@@ -83,12 +83,14 @@ CtConfigIO& CtConfigIO::read() {
     s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_EOF, [this]{
         setState(CtConfigIOState::IDLE);
     });
-    return *this;
+    s_source->start();
+    s_source->join();
+    this->wait();
 }
 
-CtConfigIO& CtConfigIO::write() {
+void CtConfigIO::write() {
     std::scoped_lock lock(m_mtx_control);
-    if (!isAvailable()) {
+    if (getState() != CtConfigIOState::IDLE) {
         throw CtFileWriteError("CtConfigIO is running already.");
     }
     setState(CtConfigIOState::WRITING);
@@ -104,15 +106,11 @@ CtConfigIO& CtConfigIO::write() {
         throw e;
     }
     setState(CtConfigIOState::IDLE);
-    return *this;
+    this->wait();
 }
 
-void CtConfigIO::join() {
-    while(!isAvailable()){};
-}
-
-bool CtConfigIO::isAvailable() {
-    return getState() == CtConfigIOState::IDLE;
+void CtConfigIO::wait() {
+    while(getState() != CtConfigIOState::IDLE){};
 }
 
 void CtConfigIO::parseLine(const std::string& line) {
