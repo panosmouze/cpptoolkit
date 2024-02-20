@@ -51,6 +51,7 @@ void CtThread::run() {
 
 void CtThread::start() {
     if (!isRunning()) {
+        join();
         setRunning(true);
         m_thread = std::thread(&CtThread::run, this);
     } else {
