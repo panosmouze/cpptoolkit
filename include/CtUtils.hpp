@@ -32,6 +32,8 @@ SOFTWARE.
 #ifndef INCLUDE_CTUTILS_HPP_
 #define INCLUDE_CTUTILS_HPP_
 
+#include "utils/CtConfigIO.hpp"
+#include "utils/CtLogger.hpp"
 #include "utils/CtTask.hpp"
 #include "utils/CtObject.hpp"
 

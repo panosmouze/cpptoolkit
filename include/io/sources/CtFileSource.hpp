@@ -47,7 +47,7 @@ SOFTWARE.
  * This class extends CtSource and provides a basic implementation for reading files.
  */
 class CtFileSource : public CtSource {
-public:
+protected:
     /**
      * @brief Reads a file reasource.
      *
@@ -56,7 +56,6 @@ public:
      */
     EXPORTED_API bool read(CtData* data) override;
 
-protected:
     /**
      * @brief Constructs the CtFileSource object.
      * 
@@ -80,6 +79,9 @@ protected:
      * @param p_delim_size The delimiter size.
      */
     EXPORTED_API void setDelimiter(const char* p_delim, uint8_t p_delim_size);
+
+private:
+    void loop() override;
 
 private:
     std::ifstream m_file; ///< File stream.

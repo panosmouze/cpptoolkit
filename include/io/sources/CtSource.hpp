@@ -37,6 +37,7 @@ SOFTWARE.
 #include "io/CtIOTypes.hpp"
 
 #include <mutex>
+#include <queue>
 
 /**
  * @brief Abstract base class representing a source for reading resources.
@@ -45,6 +46,19 @@ SOFTWARE.
  */
 class CtSource : public CtBlock {
 public:
+    enum class CtSourceEvent : uint8_t {
+        DATA_AVAIL,
+        DATA_EOF
+    };
+
+    EXPORTED_API virtual CtData* get();
+    EXPORTED_API virtual void set(CtData* data);
+    EXPORTED_API bool acceptOutType(CtDataType p_type);
+    EXPORTED_API void start();
+    EXPORTED_API void stop();
+    EXPORTED_API void join();
+
+protected:
     /**
      * @brief Reads a reasource.
      *
@@ -53,9 +67,6 @@ public:
      */
     EXPORTED_API virtual bool read(CtData* p_data) = 0;
 
-    EXPORTED_API bool acceptOutType(CtDataType p_type);
-
-protected:
     EXPORTED_API void setOutType(CtDataType p_type);
     /**
      * @brief Constructor for CtSource.
@@ -71,10 +82,9 @@ protected:
      */
     EXPORTED_API virtual ~CtSource();
 
-protected:
-    std::mutex m_mtx_control; ///< Internal mutex for synchronization.
-
 private:
+    std::mutex m_mtx_control; ///< Internal mutex for synchronization.
+    std::queue<CtData*> m_queue;
     CtDataType m_outType;
 };
 

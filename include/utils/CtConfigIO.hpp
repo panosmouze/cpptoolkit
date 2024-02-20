@@ -34,6 +34,8 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
+#include "io/sources/CtTextFileSource.hpp"
+
 #include <fstream>
 #include <string>
 #include <map>
@@ -44,6 +46,12 @@ SOFTWARE.
  */
 class CtConfigIO {
 public:
+    enum class CtConfigIOState {
+        IDLE,
+        READING,
+        WRITING
+    };
+
     /**
      * @brief Constructor for CtConfigIO.
      * @param configFile The path to the configuration file to be parsed.
@@ -164,6 +172,8 @@ public:
     static uint32_t maxNumberOfCharacters;
 
 private:
+    void wait();
+
     /**
      * @brief This method returns the value assosiated with the given key or 
      *          throw CtKeyNotFoundError if key is not found in the map.
@@ -182,7 +192,13 @@ private:
      */
     void parseLine(const std::string& line);
 
+    void setState(CtConfigIOState p_state);
+    CtConfigIOState getState();
+
 private:
+    std::mutex m_mtx_control; ///< Internal mutex for synchronization.
+    std::atomic<CtConfigIOState> m_state;
+    CtTextFileSource* s_source;
     std::string m_configFile; /**< The path to the configuration file. */
     std::map<std::string, std::string> m_configValues; /**< A map to store configuration key-value pairs. */
 };

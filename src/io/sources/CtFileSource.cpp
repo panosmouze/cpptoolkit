@@ -43,7 +43,8 @@ CtFileSource::CtFileSource(const std::string& p_fileName, CtBlockType p_type) : 
 }
 
 CtFileSource::~CtFileSource() {
-    if (m_file.is_open()) {            
+    stop();
+    if (m_file.is_open()) {
         m_file.close();
     }
     if (m_delim != nullptr) {
@@ -92,4 +93,20 @@ bool CtFileSource::read(CtData* p_data) {
     }
     
     return res;
+}
+
+void CtFileSource::loop() {
+    while (isRunning()) {
+        CtBinaryData* data = new CtBinaryData(1024);
+        if (read(data)) {
+            {
+                CtSource::set(data);
+            }
+            triggerEvent(static_cast<uint8_t>(CtSourceEvent::DATA_AVAIL));
+        } else {
+            delete data;
+            triggerEvent(static_cast<uint8_t>(CtSourceEvent::DATA_EOF));
+            setRunning(false);
+        }
+    }
 }

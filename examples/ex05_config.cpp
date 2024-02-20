@@ -30,6 +30,7 @@ SOFTWARE.
  */
 
 #include "CtIO.hpp"
+#include "CtUtils.hpp"
 
 CtLogger logger(CtLogger::Level::DEBUG, "CONFIG_EX05");
 

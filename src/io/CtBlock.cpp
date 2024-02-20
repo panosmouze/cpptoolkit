@@ -44,3 +44,11 @@ CtBlock::~CtBlock() {
 CtBlockType CtBlock::getBlockType() {
     return m_type;
 }
+
+void CtBlock::setState(CtBlockState p_state) {
+    m_state.store(p_state);
+}
+
+CtBlock::CtBlockState CtBlock::getState() {
+    return m_state.load();
+}

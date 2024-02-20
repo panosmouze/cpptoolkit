@@ -34,6 +34,7 @@ SOFTWARE.
 #include "CtNetworking.hpp"
 #include "CtThreading.hpp"
 #include "CtIO.hpp"
+#include "CtUtils.hpp"
 
 #define INTF    "lo"
 #define W1_PORT 5041

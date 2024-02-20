@@ -45,6 +45,10 @@ void CtObject::connectEvent(CtObject* p_obj, uint8_t p_eventCode, CtTask& p_task
     p_obj->connectEvent(p_eventCode, p_task);
 }
 
+void CtObject::waitPendingEvents() {
+    m_pool.join();
+}
+
 void CtObject::connectEvent(uint8_t p_eventCode, CtTask& p_task) {
     std::scoped_lock lock(m_mtx_control);
     if (!hasEvent(p_eventCode)) {

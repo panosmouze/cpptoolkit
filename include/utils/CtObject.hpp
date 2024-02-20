@@ -86,6 +86,12 @@ public:
      */
     EXPORTED_API void connectEvent(uint8_t p_eventCode, CtTask& p_task);
 
+    /**
+     * @brief This method is equivalent to join() function of CtThread.
+     * 
+     */
+    EXPORTED_API void waitPendingEvents();
+
 protected:
     /**
      * @brief The constructor of the CtObject class.

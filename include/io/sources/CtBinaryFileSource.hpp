@@ -41,7 +41,7 @@ public:
     EXPORTED_API CtBinaryFileSource(const std::string& p_fileName);
     EXPORTED_API ~CtBinaryFileSource();
 
-    EXPORTED_API bool read(CtData* data) override;
+    EXPORTED_API CtData* get() override;
 };
 
 #endif //INCLUDE_CTBINARYFILESOURCE_HPP_

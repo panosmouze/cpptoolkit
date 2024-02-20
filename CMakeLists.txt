@@ -43,8 +43,6 @@ include_directories(${INCLUDE_DIR})
 
 # Library Build
 add_library(${TARGET_LIBRARY} SHARED
-    ${SOURCE_DIR}/io/CtLogger.cpp
-    ${SOURCE_DIR}/io/CtConfigIO.cpp
     ${SOURCE_DIR}/io/CtIOTypes.cpp
     ${SOURCE_DIR}/io/CtBlock.cpp
     ${SOURCE_DIR}/io/sinks/CtFileSink.cpp
@@ -57,6 +55,8 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/time/CtTimer.cpp
     ${SOURCE_DIR}/utils/CtTask.cpp
     ${SOURCE_DIR}/utils/CtObject.cpp
+    ${SOURCE_DIR}/utils/CtLogger.cpp
+    ${SOURCE_DIR}/utils/CtConfigIO.cpp
     ${SOURCE_DIR}/threading/CtThread.cpp
     ${SOURCE_DIR}/threading/CtService.cpp
     ${SOURCE_DIR}/threading/CtServicePool.cpp

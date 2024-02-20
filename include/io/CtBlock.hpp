@@ -35,17 +35,28 @@ SOFTWARE.
 #include "definitions.hpp"
 
 #include "io/CtIOTypes.hpp"
+#include "threading/CtThread.hpp"
+#include "utils/CtObject.hpp"
 
-class CtBlock {
+class CtBlock : public CtThread, public CtObject {
 public:
+    enum class CtBlockState : uint8_t {
+        IDLE,
+        RUNNING
+    };
+
     EXPORTED_API CtBlockType getBlockType();
 
 protected:
     EXPORTED_API CtBlock(CtBlockType p_type);
     EXPORTED_API ~CtBlock();
 
+    EXPORTED_API CtBlockState getState();
+    EXPORTED_API void setState(CtBlockState p_state);
+
 protected:
     const CtBlockType m_type;
+    std::atomic<CtBlockState> m_state;
 };
 
 #endif //INCLUDE_CTBLOCK_HPP_

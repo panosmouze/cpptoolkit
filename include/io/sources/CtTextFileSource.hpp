@@ -43,7 +43,7 @@ public:
     EXPORTED_API CtTextFileSource(const std::string& p_fileName);
     EXPORTED_API ~CtTextFileSource();
 
-    EXPORTED_API bool read(CtData* data) override;
+    EXPORTED_API CtData* get() override;
 };
 
 #endif //INCLUDE_CTTEXTFILESOURCE_HPP_

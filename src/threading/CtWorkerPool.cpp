@@ -36,13 +36,10 @@ CtWorkerPool::CtWorkerPool(uint32_t nworkers) : m_nworkers(nworkers), m_active_t
     for (int idx = 0; idx < m_nworkers; idx++) {
         m_workers.push_back(std::make_unique<CtWorker>());
     }
-    m_taskAssigner.setTaskFunc([this](){
-        taskAssignerFunc();
-    });
 }
 
 CtWorkerPool::~CtWorkerPool() {
-    join();
+    CtThread::stop();
     free();
 }
 
@@ -51,17 +48,13 @@ void CtWorkerPool::addTask(CtTask& task) {
     m_tasks.push(task);
     m_queued_tasks++;
     try {
-        m_taskAssigner.runTask();
-    } catch (CtWorkerError& e) {
+        start();
+    } catch (const CtThreadError& e) {
     }
 }
 
 void CtWorkerPool::join() {
-    bool s_breakFlag;
-    do {
-        m_taskAssigner.joinTask();
-        s_breakFlag = (m_queued_tasks == 0) && (m_active_tasks == 0);
-    } while(!s_breakFlag);
+    CtThread::join();
 }
 
 void CtWorkerPool::assignTask(uint32_t idx) {
@@ -77,19 +70,22 @@ void CtWorkerPool::assignTask(uint32_t idx) {
     m_queued_tasks--;
 }
 
-void CtWorkerPool::taskAssignerFunc() {
-    while (m_queued_tasks.load() > 0) {
-        for (int idx = 0; idx < m_nworkers; idx++) {
-            if (!m_workers.at(idx).get()->isRunning() && m_queued_tasks.load() != 0) {
-                assignTask(idx);
-            }
-        }
-    }
-}
-
 void CtWorkerPool::free() {
     for (int idx = 0; idx < m_nworkers; idx++) {
         m_workers.back().get()->joinTask();
         m_workers.pop_back();
     }
+}
+
+void CtWorkerPool::loop() {
+    bool s_breakFlag = false;
+    while (!s_breakFlag) {
+        for (int idx = 0; idx < m_nworkers; idx++) {
+            if (!m_workers.at(idx).get()->isRunning() && m_queued_tasks.load() != 0) {
+                assignTask(idx);
+            }
+        }
+        s_breakFlag = (m_queued_tasks.load() == 0) && (m_active_tasks.load() == 0);
+    }
+    setRunning(false);
 }
