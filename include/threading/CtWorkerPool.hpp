@@ -46,7 +46,7 @@ SOFTWARE.
  * @class CtWorkerPool
  * @brief Manages a pool of worker threads for executing tasks concurrently.
  */
-class CtWorkerPool : CtThread {
+class CtWorkerPool : private CtThread {
 public:
     /**
      * @brief Constructor for CtWorkerPool.
