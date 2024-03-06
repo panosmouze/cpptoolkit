@@ -63,7 +63,7 @@ protected:
      * @param p_delim Source file delimiter.
      * @param p_delim_size Source file delimiter size.
      */
-    EXPORTED_API CtFileSource(const std::string& p_fileName, CtBlockType p_type);
+    EXPORTED_API CtFileSource(const std::string& p_fileName);
 
     /**
      * @brief Destructor for CtFileSource.

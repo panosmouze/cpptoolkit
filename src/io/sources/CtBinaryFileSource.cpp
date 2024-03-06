@@ -33,8 +33,9 @@ SOFTWARE.
 
 #include "exceptions/CtGenericExeptions.hpp"
 
-CtBinaryFileSource::CtBinaryFileSource(const std::string& p_fileName) : CtFileSource(p_fileName, CtBlockType::CtBinaryFileSource) {
+CtBinaryFileSource::CtBinaryFileSource(const std::string& p_fileName) : CtFileSource(p_fileName) {
     setOutType(CtDataType::CtBinaryData);
+    setBlockType(CtBlockType::CtBinaryFileSource);
 }
 
 CtBinaryFileSource::~CtBinaryFileSource() {

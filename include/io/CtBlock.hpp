@@ -48,14 +48,15 @@ public:
     EXPORTED_API CtBlockType getBlockType();
 
 protected:
-    EXPORTED_API CtBlock(CtBlockType p_type);
+    EXPORTED_API CtBlock();
     EXPORTED_API ~CtBlock();
 
     EXPORTED_API CtBlockState getState();
     EXPORTED_API void setState(CtBlockState p_state);
+    EXPORTED_API void setBlockType(CtBlockType p_blockType);
 
 protected:
-    const CtBlockType m_type;
+    CtBlockType m_type;
     std::atomic<CtBlockState> m_state;
 };
 

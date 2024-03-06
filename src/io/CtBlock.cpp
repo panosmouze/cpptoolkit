@@ -33,7 +33,7 @@ SOFTWARE.
 
 #include "io/CtBlock.hpp"
 
-CtBlock::CtBlock(CtBlockType p_type) : m_type(p_type) {
+CtBlock::CtBlock() {
 
 }
 
@@ -51,4 +51,8 @@ void CtBlock::setState(CtBlockState p_state) {
 
 CtBlock::CtBlockState CtBlock::getState() {
     return m_state.load();
+}
+
+void CtBlock::setBlockType(CtBlockType p_blockType) {
+    m_type = p_blockType;
 }

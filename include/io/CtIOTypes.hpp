@@ -34,7 +34,10 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
+#define CTDATA_BUFFER_SIZE 256
+
 enum class CtBlockType {
+    CtSource,
     CtTextFileSource,
     CtBinaryFileSource
 };

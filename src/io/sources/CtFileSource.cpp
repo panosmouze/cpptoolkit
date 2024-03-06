@@ -33,7 +33,7 @@ SOFTWARE.
 #include <mutex>
 #include <cstring>
 
-CtFileSource::CtFileSource(const std::string& p_fileName, CtBlockType p_type) : CtSource(p_type) {
+CtFileSource::CtFileSource(const std::string& p_fileName) {
     m_delim = nullptr;
     m_delim_size = 0;
     m_file.open(p_fileName, std::ofstream::in);
@@ -97,15 +97,13 @@ bool CtFileSource::read(CtData* p_data) {
 
 void CtFileSource::loop() {
     while (isRunning()) {
-        CtBinaryData* data = new CtBinaryData(1024);
+        CtBinaryData* data = new CtBinaryData(CTDATA_BUFFER_SIZE);
         if (read(data)) {
-            {
-                CtSource::set(data);
-            }
-            triggerEvent(static_cast<uint8_t>(CtSourceEvent::DATA_AVAIL));
+            CtSource::set(data);
+            triggerEvent(static_cast<uint8_t>(CtSourceEvent::Avail));
         } else {
             delete data;
-            triggerEvent(static_cast<uint8_t>(CtSourceEvent::DATA_EOF));
+            triggerEvent(static_cast<uint8_t>(CtSourceEvent::Eof));
             setRunning(false);
         }
     }

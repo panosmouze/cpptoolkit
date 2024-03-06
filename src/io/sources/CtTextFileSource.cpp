@@ -33,12 +33,9 @@ SOFTWARE.
 
 #include "exceptions/CtGenericExeptions.hpp"
 
-#include <iostream>
-
-uint32_t CtTextFileSource::bufferSize = 1024;
-
-CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName, CtBlockType::CtTextFileSource) {
+CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName) {
     setOutType(CtDataType::CtTextData);
+    setBlockType(CtBlockType::CtTextFileSource);
     setDelimiter("\n", 1);
 }
 

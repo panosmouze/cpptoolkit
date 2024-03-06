@@ -31,9 +31,9 @@ SOFTWARE.
 
 #include "io/sources/CtSource.hpp"
 
-CtSource::CtSource(CtBlockType p_type) : CtBlock(p_type) {
-    registerEvent((uint8_t)CtSourceEvent::DATA_AVAIL);
-    registerEvent((uint8_t)CtSourceEvent::DATA_EOF);
+CtSource::CtSource() {
+    registerEvent((uint8_t)CtSourceEvent::Avail);
+    registerEvent((uint8_t)CtSourceEvent::Eof);
 }
 
 CtSource::~CtSource() {
@@ -49,7 +49,8 @@ void CtSource::stop() {
 }
 
 void CtSource::join() {
-    CtBlock::waitPendingEvents();
+    CtThread::join();
+    CtObject::waitPendingEvents();
 }
 
 void CtSource::setOutType(CtDataType p_type) {

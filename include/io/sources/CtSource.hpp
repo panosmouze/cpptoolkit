@@ -47,8 +47,8 @@ SOFTWARE.
 class CtSource : public CtBlock {
 public:
     enum class CtSourceEvent : uint8_t {
-        DATA_AVAIL,
-        DATA_EOF
+        Avail,
+        Eof
     };
 
     EXPORTED_API virtual CtData* get();
@@ -73,7 +73,7 @@ protected:
      *
      * Initializes the CtSource object.
      */
-    EXPORTED_API CtSource(CtBlockType p_type);
+    EXPORTED_API CtSource();
 
     /**
      * @brief Virtual destructor for CtSource.

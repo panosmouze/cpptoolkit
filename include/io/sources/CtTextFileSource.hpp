@@ -38,8 +38,6 @@ SOFTWARE.
 
 class CtTextFileSource : public CtFileSource {
 public:
-    static uint32_t bufferSize;
-
     EXPORTED_API CtTextFileSource(const std::string& p_fileName);
     EXPORTED_API ~CtTextFileSource();
 

@@ -69,7 +69,7 @@ void CtConfigIO::read() {
     }
     s_source = new CtTextFileSource(m_configFile);
     setState(CtConfigIOState::READING);
-    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_AVAIL, [this]{
+    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::Avail, [this]{
         CtTextData* data = static_cast<CtTextData*>(s_source->get());
         try {
             parseLine(data->line);
@@ -80,7 +80,7 @@ void CtConfigIO::read() {
             throw e;
         }
     });
-    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_EOF, [this]{
+    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::Eof, [this]{
         setState(CtConfigIOState::IDLE);
     });
     s_source->start();
