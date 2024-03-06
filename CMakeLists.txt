@@ -43,20 +43,9 @@ include_directories(${INCLUDE_DIR})
 
 # Library Build
 add_library(${TARGET_LIBRARY} SHARED
-    ${SOURCE_DIR}/io/CtIOTypes.cpp
-    ${SOURCE_DIR}/io/CtBlock.cpp
-    ${SOURCE_DIR}/io/sinks/CtFileSink.cpp
-    ${SOURCE_DIR}/io/sinks/CtLogSink.cpp
-    ${SOURCE_DIR}/io/sinks/CtSink.cpp
-    ${SOURCE_DIR}/io/sources/CtSource.cpp
-    ${SOURCE_DIR}/io/sources/CtFileSource.cpp
-    ${SOURCE_DIR}/io/sources/CtTextFileSource.cpp
-    ${SOURCE_DIR}/io/sources/CtBinaryFileSource.cpp
     ${SOURCE_DIR}/time/CtTimer.cpp
     ${SOURCE_DIR}/utils/CtTask.cpp
     ${SOURCE_DIR}/utils/CtObject.cpp
-    ${SOURCE_DIR}/utils/CtLogger.cpp
-    ${SOURCE_DIR}/utils/CtConfigIO.cpp
     ${SOURCE_DIR}/threading/CtThread.cpp
     ${SOURCE_DIR}/threading/CtService.cpp
     ${SOURCE_DIR}/threading/CtServicePool.cpp
@@ -67,9 +56,6 @@ add_library(${TARGET_LIBRARY} SHARED
 )
 
 # Examples Build
-add_executable(ex00_logger ${EXAMPLES_DIR}/ex00_logger.cpp)
-target_link_libraries(ex00_logger ${TARGET_LIBRARY})
-
 add_executable(ex01_worker ${EXAMPLES_DIR}/ex01_worker.cpp)
 target_link_libraries(ex01_worker ${TARGET_LIBRARY})
 
@@ -82,14 +68,11 @@ target_link_libraries(ex03_service ${TARGET_LIBRARY})
 add_executable(ex04_service_pool ${EXAMPLES_DIR}/ex04_service_pool.cpp)
 target_link_libraries(ex04_service_pool ${TARGET_LIBRARY})
 
-add_executable(ex05_config ${EXAMPLES_DIR}/ex05_config.cpp)
-target_link_libraries(ex05_config ${TARGET_LIBRARY})
+add_executable(ex05_events ${EXAMPLES_DIR}/ex05_events.cpp)
+target_link_libraries(ex05_events ${TARGET_LIBRARY})
 
-add_executable(ex06_events ${EXAMPLES_DIR}/ex06_events.cpp)
-target_link_libraries(ex06_events ${TARGET_LIBRARY})
-
-add_executable(ex07_networking_udp ${EXAMPLES_DIR}/ex07_networking_udp.cpp)
-target_link_libraries(ex07_networking_udp ${TARGET_LIBRARY})
+add_executable(ex06_networking_udp ${EXAMPLES_DIR}/ex06_networking_udp.cpp)
+target_link_libraries(ex06_networking_udp ${TARGET_LIBRARY})
 
 # Testing
 if(CMAKE_ENABLE_TESTS)
@@ -103,10 +86,6 @@ if(CMAKE_ENABLE_TESTS)
     FetchContent_MakeAvailable(googletest)
 
     enable_testing()
-
-    add_executable(test_configio ${TESTS_DIR}/ctconfigio.cpp ${TESTS_DIR}/main_test.cpp)
-    target_link_libraries(test_configio ${TARGET_LIBRARY} gtest_main)
-    add_test(NAME CtConfigParserTests COMMAND test_configio)
 
     add_executable(test_ctservice ${TESTS_DIR}/ctservice.cpp ${TESTS_DIR}/main_test.cpp)
     target_link_libraries(test_ctservice ${TARGET_LIBRARY} gtest_main)

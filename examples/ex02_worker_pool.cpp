@@ -31,11 +31,9 @@ SOFTWARE.
 
 #include "CtThreading.hpp"
 #include "CtUtils.hpp"
-#include "CtIO.hpp"
 
+#include <iostream>
 #include <atomic>
-
-CtLogger logger(CtLogger::Level::DEBUG, "WORKER_POOL_EX02");
 
 /** Helper functions */
 void f1(std::atomic<uint8_t>* cnt) {
@@ -63,7 +61,7 @@ void case01() {
         });
     }
     pool.join();
-    logger.log_info(std::to_string(cnt));
+    std::cout << std::to_string(cnt) << std::endl;
 }
 
 /**
@@ -79,7 +77,7 @@ void case02() {
         pool.addTask(f1, &cnt);
     }
     pool.join();
-    logger.log_info(std::to_string(cnt));
+    std::cout << std::to_string(cnt) << std::endl;
 }
 
 /**
@@ -98,13 +96,11 @@ void case03() {
         pool.addTask(task);
     }
     pool.join();
-    logger.log_info(std::to_string(cnt));
+    std::cout << std::to_string(cnt) << std::endl;
 }
 
 /** Run all cases */
 int main() {
-    CtLogSink logSink;
-    logger.addSink(&logSink);
     case01();
     case02();
     case03();

@@ -29,11 +29,10 @@ SOFTWARE.
  * 
  */
 
-#include "CtIO.hpp"
 #include "CtUtils.hpp"
 #include "CtThreading.hpp"
 
-CtLogger logger(CtLogger::Level::DEBUG, "CTEVENTS_EX06");
+#include <iostream>
 
 // implement a CtObject class
 class CtMainPage : public CtObject {
@@ -72,16 +71,14 @@ public:
 };
 
 void callback(int idx) {
-    logger.log_info("EVENT1-3 executed with id: " + std::to_string(idx));;
+    std::cout << "EVENT1-3 executed with id: " + std::to_string(idx) << std::endl;
 }
 
 int main() {
-    CtLogSink logSink;
-    logger.addSink(&logSink);
     CtMainPage page;
     CtTask task1, task2;
-    task1.setTaskFunc([](){logger.log_info("EVENT1-1 executed");});
-    task2.setTaskFunc([](){logger.log_info("EVENT1-2 executed");});
+    task1.setTaskFunc([](){std::cout << "EVENT1-1 executed" << std::endl;});
+    task2.setTaskFunc([](){std::cout << "EVENT1-2 executed" << std::endl;});
 
     // use of connectEvent
     page.connectEvent(CtMainPage::EVENT1, task1);
@@ -90,7 +87,7 @@ int main() {
     CtObject::connectEvent(&page, CtMainPage::EVENT1, task2);
 
     // use of connectEvent given a lamda function
-    page.connectEvent(CtMainPage::EVENT2, []{logger.log_info("EVENT2-1 executed");});
+    page.connectEvent(CtMainPage::EVENT2, []{std::cout << "EVENT2-1 executed" << std::endl;});
 
     // use of connectEvent given a normal function
     page.connectEvent(CtMainPage::EVENT1, callback, 4);
