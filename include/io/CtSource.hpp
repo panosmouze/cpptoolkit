@@ -23,25 +23,32 @@ SOFTWARE.
 */
 
 /**
- * @file CtBinaryFileSource.hpp
+ * @file CtSource.hpp
  * @brief 
- * @date 11-02-2024
+ * @date 08-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTBINARYFILESOURCE_HPP_
-#define INCLUDE_CTBINARYFILESOURCE_HPP_
+#ifndef INCLUDE_CTSOURCE_HPP_
+#define INCLUDE_CTSOURCE_HPP_
 
-#include "definitions.hpp"
+#include "io/CtBlock.hpp"
 
-#include "io/sources/CtFileSource.hpp"
-
-class CtBinaryFileSource : public CtFileSource {
+class CtSource : public CtBlock, CtThread {
 public:
-    EXPORTED_API CtBinaryFileSource(const std::string& p_fileName);
-    EXPORTED_API ~CtBinaryFileSource();
+    EXPORTED_API void startSource();
+    EXPORTED_API void stopSource();
+    EXPORTED_API void joinSource();
+    EXPORTED_API bool hasData();
+    EXPORTED_API std::vector<CtBlockDataPtr> getData();
 
-    EXPORTED_API CtData* get() override;
+protected:
+    EXPORTED_API CtSource();
+    EXPORTED_API ~CtSource();
+    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) = 0;
+
+private:
+    void loop() override;
 };
 
-#endif //INCLUDE_CTBINARYFILESOURCE_HPP_
+#endif //INCLUDE_CTSOURCE_HPP_

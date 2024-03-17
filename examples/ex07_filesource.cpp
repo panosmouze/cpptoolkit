@@ -23,23 +23,25 @@ SOFTWARE.
 */
 
 /**
- * @file CtIO.hpp
+ * @file ex07_filesource.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 08-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTIO_HPP_
-#define INCLUDE_CTIO_HPP_
-
-#include "io/CtBlock.hpp"
-#include "io/CtIOTypes.hpp"
-#include "io/sinks/CtSink.hpp"
-#include "io/sinks/CtFileSink.hpp"
-#include "io/sinks/CtLogSink.hpp"
-#include "io/sources/CtSource.hpp"
 #include "io/sources/CtFileSource.hpp"
-#include "io/sources/CtTextFileSource.hpp"
-#include "io/sources/CtBinaryFileSource.hpp"
 
-#endif //INCLUDE_CTIO_HPP_
+#include <iostream>
+#include <string>
+
+int main() {
+    CtFileSource source("config.ini");
+    source.setDelimiter("\n", 1);
+    source.connectEvent(CTEVENT_DATA_READY, [&source]{
+        std::vector<CtBlockDataPtr> data = source.getData();
+        CtRawData* temp = (CtRawData*)data.at(0).get();
+        std::cout << std::string((char*)temp->get(), temp->size()) << std::endl;
+    });
+    source.startSource();
+    source.joinSource();
+}

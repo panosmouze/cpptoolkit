@@ -25,37 +25,56 @@ SOFTWARE.
 /**
  * @file CtFileSink.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 09-03-2024
  * 
  */
 
 #include "io/sinks/CtFileSink.hpp"
 
-CtFileSink::CtFileSink(const std::string& logFileName, WriteMode mode): CtSink()  {
-    switch (mode) {
+#include "exceptions/CtFileExceptions.hpp"
+
+#include <memory>
+
+CtFileSink::CtFileSink(const std::string& p_fileName, WriteMode p_mode) {
+    CtBlock::setInVectorTypes({CtBlockDataType::CtRawData});
+    switch (p_mode) {
         case WriteMode::Append:
-            m_logFile.open(logFileName, std::ios::out | std::ios::app);
+            m_file.open(p_fileName, std::ios::out | std::ios::app);
             break;
             default:
         case WriteMode::Truncate:
-            m_logFile.open(logFileName, std::ios::out | std::ios::trunc);
+            m_file.open(p_fileName, std::ios::out | std::ios::trunc);
             break;
     }
-    if (!m_logFile.is_open()) {
+    if (!m_file.is_open()) {
         throw CtFileWriteError("File cannot open.");
     }
 }
 
 CtFileSink::~CtFileSink() {
-    if (m_logFile.is_open()) {
-        m_logFile.close();
+    stopSink();
+    if (m_file.is_open()) {
+        m_file.close();
     }
 }
 
-void CtFileSink::write(const std::string& msg) {
-    lock();
-    if (m_logFile.is_open()) {
-        m_logFile << msg;
+void CtFileSink::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
+    if (p_delim_size > 0 && p_delim != nullptr) {
+        m_delim_size = p_delim_size;
+        m_delim.reset();
+        m_delim = std::make_unique<char[]>(m_delim_size);
+        memcpy(m_delim.get(), p_delim, m_delim_size);
     }
-    unlock();
+}
+
+CtUInt32 CtFileSink::write(CtBlockDataPtr& p_data) {
+    CtUInt32 eventCode = CTEVENT_DATA_WRITE_FAIL;
+    if (m_file.is_open()) {
+        CtRawData* s_data = (CtRawData*) p_data.get();
+        m_file.write((char*)s_data->get(), s_data->size());
+        m_file.write(m_delim.get(), m_delim_size);
+        eventCode = CTEVENT_DATA_WRITE;
+    }
+
+    return eventCode;
 }

@@ -23,27 +23,61 @@ SOFTWARE.
 */
 
 /**
- * @file CtIOTypes.cpp
+ * @file CtSource.cpp
  * @brief 
- * @date 08-02-2024
+ * @date 08-03-2024
  * 
  */
 
-#include "io/CtIOTypes.hpp"
+#include "io/CtSource.hpp"
 
-CtData::CtData(CtDataType p_type) : type(p_type) {
+#include <iostream>
 
+CtSource::CtSource() {
+    registerEvent(CTEVENT_DATA_READY);
+    registerEvent(CTEVENT_DATA_READ_FAIL);
+    registerEvent(CTEVENT_EOF);
 }
 
-CtBinaryData::CtBinaryData(uint32_t p_size) : size(p_size), CtData(CtDataType::CtBinaryData) {
-    rsize = 0;
-    data = new char[size];
+CtSource::~CtSource() {
+    stopSource();
 }
 
-CtBinaryData::~CtBinaryData() {
-    delete[] data;
+void CtSource::startSource() {
+    CtThread::start();
 }
 
-CtTextData::CtTextData() : CtData(CtDataType::CtTextData) {
+void CtSource::stopSource() {
+    CtThread::stop();
+    CtBlock::waitPendingEvents();
+}
 
+void CtSource::joinSource() {
+    CtThread::join();
+    CtBlock::waitPendingEvents();
+}
+
+bool CtSource::hasData() {
+    return CtBlock::hasOutData();
+}
+
+std::vector<CtBlockDataPtr> CtSource::getData() {
+    return CtBlock::getOutData();
+}
+
+void CtSource::loop() {
+    CtUInt32 eventCode = CTEVENT_NO_EVENT;
+    CtBlockDataPtr s_data = read(eventCode);
+
+    if (eventCode == CTEVENT_DATA_READY) {
+        CtBlock::setOutData({s_data});
+    }
+
+    if (eventCode != CTEVENT_NO_EVENT) {
+        triggerEvent(eventCode);
+    }
+
+    if (eventCode == CTEVENT_EOF) {
+        setRunning(false);
+    }
 }

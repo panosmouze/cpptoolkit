@@ -23,97 +23,74 @@ SOFTWARE.
 */
 
 /**
- * @file CtConfigIO.cpp
+ * @file CtConfig.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "utils/CtConfigIO.hpp"
-#include "exceptions/CtFileExceptions.hpp"
-#include "exceptions/CtGenericExeptions.hpp"
+#include "utils/CtConfig.hpp"
 
 #include "io/sources/CtTextFileSource.hpp"
-#include "io/sinks/CtFileSink.hpp"
+#include "io/sinks/CtTextFileSink.hpp"
+
+#include "exceptions/CtFileExceptions.hpp"
+#include "exceptions/CtTypeExceptions.hpp"
 
 #include <string>
 #include <map>
 #include <fstream>
 #include <stdexcept>
 
-uint32_t CtConfigIO::maxNumberOfCharacters = 512;
-
-CtConfigIO::CtConfigIO(const std::string& configFile) : m_configFile(configFile) {
-    s_source = nullptr;
+CtConfig::CtConfig(const std::string& configFile) : m_configFile(configFile) {
+    m_source = nullptr;
+    m_sink = nullptr;
 }
 
-CtConfigIO::~CtConfigIO() {
-    wait();
-    if (s_source != nullptr) {
-        delete s_source;
+CtConfig::~CtConfig() {
+    if (m_source != nullptr) {
+        delete m_source;
+    }
+    if (m_sink != nullptr) {
+        delete m_sink;
     }
 }
 
-void CtConfigIO::setState(CtConfigIOState p_state) {
-    m_state.store(p_state);
-}
-
-CtConfigIO::CtConfigIOState CtConfigIO::getState() {
-    return m_state.load();
-}
-
-void CtConfigIO::read() {
+void CtConfig::read() {
     std::scoped_lock lock(m_mtx_control);
-    if (getState() != CtConfigIOState::IDLE) {
-        throw CtFileWriteError("CtConfigIO is running already.");
+    m_source = new CtTextFileSource(m_configFile);
+    m_source->startSource();
+    m_source->joinSource();
+
+    while(m_source->hasData()) {
+        std::vector<CtBlockDataPtr> sourceData = m_source->getData();
+        CtTextData* line = (CtTextData*)sourceData.at(0).get();
+        parseLine(line->get());
     }
-    s_source = new CtTextFileSource(m_configFile);
-    setState(CtConfigIOState::READING);
-    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_AVAIL, [this]{
-        CtTextData* data = static_cast<CtTextData*>(s_source->get());
-        try {
-            parseLine(data->line);
-            delete data;
-        } catch (const CtFileParseError& e) {
-            throw e;
-        } catch (const CtFileReadError& e) {
-            throw e;
-        }
-    });
-    s_source->connectEvent((uint8_t)CtSource::CtSourceEvent::DATA_EOF, [this]{
-        setState(CtConfigIOState::IDLE);
-    });
-    s_source->start();
-    s_source->join();
-    this->wait();
+
+    delete m_source;
+    m_source = nullptr;
 }
 
-void CtConfigIO::write() {
+void CtConfig::write() {
     std::scoped_lock lock(m_mtx_control);
-    if (getState() != CtConfigIOState::IDLE) {
-        throw CtFileWriteError("CtConfigIO is running already.");
+    m_sink = new CtTextFileSink(m_configFile, CtFileSink::WriteMode::Truncate);
+    std::map<std::string, std::string>::iterator iter;
+    std::string line;
+    for (iter = m_configValues.begin(); iter != m_configValues.end(); iter++) {
+        line = iter->first + std::string(" = ") + iter->second;
+        CtTextData* data = new CtTextData(line);
+        CtBlockDataPtr sinkData(data);
+        m_sink->setData({sinkData});
     }
-    setState(CtConfigIOState::WRITING);
-    try {
-        CtFileSink s_sink(m_configFile, CtFileSink::WriteMode::Truncate);
-        std::map<std::string, std::string>::iterator iter;
-        std::string line;
-        for (iter = m_configValues.begin(); iter != m_configValues.end(); iter++) {
-            line = iter->first + std::string(" = ") + iter->second + std::string("\n");
-            s_sink.write(line);
-        }
-    } catch (const CtFileWriteError& e) {
-        throw e;
-    }
-    setState(CtConfigIOState::IDLE);
-    this->wait();
+
+    m_sink->joinSink();
+
+    delete m_sink;
+    m_sink = nullptr;
 }
 
-void CtConfigIO::wait() {
-    while(getState() != CtConfigIOState::IDLE){};
-}
-
-void CtConfigIO::parseLine(const std::string& line) {
+void CtConfig::parseLine(const std::string& line) {
     size_t separatorPos = line.find('=');
     size_t commentPos = line.find('#');
     size_t eol = line.size();
@@ -143,7 +120,7 @@ void CtConfigIO::parseLine(const std::string& line) {
     m_configValues[key] = value;
 }
 
-int32_t CtConfigIO::parseAsInt(const std::string& key) {
+int32_t CtConfig::parseAsInt(const std::string& key) {
     int32_t parsed_value;
     std::string str_value = getValue(key);
     try {
@@ -154,7 +131,7 @@ int32_t CtConfigIO::parseAsInt(const std::string& key) {
     return parsed_value;
 }
 
-uint32_t CtConfigIO::parseAsUInt(const std::string& key) {
+uint32_t CtConfig::parseAsUInt(const std::string& key) {
     uint32_t parsed_value;
     std::string str_value = getValue(key);
     try {
@@ -165,7 +142,7 @@ uint32_t CtConfigIO::parseAsUInt(const std::string& key) {
     return parsed_value;
 }
 
-float CtConfigIO::parseAsFloat(const std::string& key) {
+float CtConfig::parseAsFloat(const std::string& key) {
     float parsed_value;
     std::string str_value = getValue(key);
     try {
@@ -176,7 +153,7 @@ float CtConfigIO::parseAsFloat(const std::string& key) {
     return parsed_value;
 }
 
-double CtConfigIO::parseAsDouble(const std::string& key) {
+double CtConfig::parseAsDouble(const std::string& key) {
     double parsed_value;
     std::string str_value = getValue(key);
     try {
@@ -187,11 +164,11 @@ double CtConfigIO::parseAsDouble(const std::string& key) {
     return parsed_value;
 }
 
-std::string CtConfigIO::parseAsString(const std::string& key) {
+std::string CtConfig::parseAsString(const std::string& key) {
     return getValue(key);
 }
 
-std::string CtConfigIO::getValue(const std::string& key) {
+std::string CtConfig::getValue(const std::string& key) {
     if (m_configValues.find(key) != m_configValues.end()) {
         return m_configValues[key];
     } else {
@@ -199,22 +176,22 @@ std::string CtConfigIO::getValue(const std::string& key) {
     }
 }
 
-void CtConfigIO::writeInt(const std::string& p_key, const int32_t& p_value) {
+void CtConfig::writeInt(const std::string& p_key, const int32_t& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfigIO::writeUInt(const std::string& p_key, const uint32_t& p_value) {
+void CtConfig::writeUInt(const std::string& p_key, const uint32_t& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfigIO::writeFloat(const std::string& p_key, const float& p_value) {
+void CtConfig::writeFloat(const std::string& p_key, const float& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfigIO::writeDouble(const std::string& p_key, const double& p_value) {
+void CtConfig::writeDouble(const std::string& p_key, const double& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfigIO::writeString(const std::string& p_key, const std::string& p_value) {
+void CtConfig::writeString(const std::string& p_key, const std::string& p_value) {
     m_configValues[p_key] = p_value;
 }

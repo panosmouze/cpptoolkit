@@ -31,9 +31,8 @@ SOFTWARE.
 
 #include "CtThreading.hpp"
 #include "CtUtils.hpp"
-#include "CtIO.hpp"
 
-CtLogger logger(CtLogger::Level::DEBUG, "SERVICE_EX03");
+#include <iostream>
 
 /** Cases functions */
 
@@ -48,13 +47,11 @@ void case01() {
 
     CtThread::sleepFor(1900);
     service.stopService();
-    logger.log_info(std::to_string(cnt));
+    std::cout << std::to_string(cnt) << std::endl;
 }
 
 /** Run all cases */
 int main() {
-    CtLogSink logSink;
-    logger.addSink(&logSink);
     case01();
     return 0;
 }

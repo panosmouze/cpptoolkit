@@ -55,7 +55,7 @@ private:
     typedef struct _CtServicePack {
         CtTask task;
         std::string id;
-        uint32_t nslots;
+        CtUInt32 nslots;
     } CtServicePack;
 
 public:
@@ -64,7 +64,7 @@ public:
      * @param nworkers The number of worker threads in the service pool.
      * @param slot_time The time interval for each "slot" in milliseconds. Default is 10 milliseconds.
      */
-    EXPORTED_API CtServicePool(uint32_t nworkers);
+    EXPORTED_API CtServicePool(CtUInt32 nworkers);
 
     /**
      * @brief Destructor for CtServicePool.
@@ -77,7 +77,7 @@ public:
      * @param id An optional ID for the task.
      * @param task The task to be added.
      */
-    EXPORTED_API void addTask(uint32_t nslots, std::string id, CtTask& task);
+    EXPORTED_API void addTask(CtUInt32 nslots, std::string id, CtTask& task);
 
     /**
      * @brief Add a task to the service pool with a specified interval and an optional ID.
@@ -87,7 +87,7 @@ public:
      * @param fargs The task function's arguments to be added.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API void addTaskFunc(uint32_t nslots, std::string id, F&& func, FArgs&&... fargs);
+    EXPORTED_API void addTaskFunc(CtUInt32 nslots, std::string id, F&& func, FArgs&&... fargs);
 
     /**
      * @brief Remove a task from the service pool based on its ID.
@@ -108,12 +108,12 @@ public:
     /**
      * @brief Get slot time.
      */
-    EXPORTED_API uint32_t getSlotTime();
+    EXPORTED_API CtUInt32 getSlotTime();
 
     /**
      * @brief Set slot time.
      */
-    EXPORTED_API void setSlotTime(uint32_t nslots);
+    EXPORTED_API void setSlotTime(CtUInt32 nslots);
 
 private:
     /**
@@ -122,8 +122,8 @@ private:
     void loop() override;
 
 private:
-    uint32_t m_nworkers; ///< The number of worker threads in the service pool.
-    uint32_t m_slot_cnt; ///< Counter for the current slot.
+    CtUInt32 m_nworkers; ///< The number of worker threads in the service pool.
+    CtUInt32 m_slot_cnt; ///< Counter for the current slot.
     std::vector<CtServicePack> m_tasks; ///< Vector of tasks in the service pool.
     std::mutex m_mtx_control; ///< Mutex for controlling access to shared resources.
     CtWorkerPool m_worker_pool; ///< Worker pool for executing tasks.
@@ -132,7 +132,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-void CtServicePool::addTaskFunc(uint32_t nslots, std::string id, F&& func, FArgs&&... fargs) {
+void CtServicePool::addTaskFunc(CtUInt32 nslots, std::string id, F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     addTask(nslots, id, s_task);

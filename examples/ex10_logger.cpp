@@ -23,54 +23,28 @@ SOFTWARE.
 */
 
 /**
- * @file CtSource.cpp
+ * @file ex10_logger.cpp
  * @brief 
- * @date 31-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "io/sources/CtSource.hpp"
+#include "utils/CtLogger.hpp"
+#include "io/sinks/CtTextFileSink.hpp"
+#include "io/sinks/CtLogSink.hpp"
 
-CtSource::CtSource(CtBlockType p_type) : CtBlock(p_type) {
-    registerEvent((uint8_t)CtSourceEvent::DATA_AVAIL);
-    registerEvent((uint8_t)CtSourceEvent::DATA_EOF);
-}
+int main() {
+    CtLogger logger(CtLogger::Level::WARNING, "EX10");
+    CtTextFileSink sink1("log", CtFileSink::WriteMode::Append);
+    sink1.setDelimiter("\n", 1);
+    logger.addSink(&sink1);
 
-CtSource::~CtSource() {
+    CtLogSink sink2;
+    logger.addSink(&sink2);
 
-}
-
-void CtSource::start() {
-    CtThread::start();
-}
-
-void CtSource::stop() {
-    CtThread::stop();
-}
-
-void CtSource::join() {
-    CtBlock::waitPendingEvents();
-}
-
-void CtSource::setOutType(CtDataType p_type) {
-    m_outType = p_type;
-}
-
-bool CtSource::acceptOutType(CtDataType p_type) {
-    return (p_type == m_outType);
-}
-
-CtData* CtSource::get() {
-    std::scoped_lock lock(m_mtx_control);
-    CtData* data = nullptr;
-    if (m_queue.size() > 0) {
-        data = m_queue.front();
-        m_queue.pop();
-    }
-    return data;
-}
-
-void CtSource::set(CtData* data) {
-    std::scoped_lock lock(m_mtx_control);
-    m_queue.push(data);
+    logger.log_debug("log_debug log 1");
+    logger.log_info("log_info log 1");
+    logger.log_warning("log_warning log 1");
+    logger.log_error("log_error log 1");
+    logger.log_critical("log_critical log 1");
 }

@@ -25,7 +25,7 @@ SOFTWARE.
 /**
  * @file CtLogSink.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 17-03-2024
  * 
  */
 
@@ -33,14 +33,16 @@ SOFTWARE.
 
 #include <iostream>
 
-CtLogSink::CtLogSink() : CtSink() {
-
+CtLogSink::CtLogSink() {
+    CtBlock::setInVectorTypes({CtBlockDataType::CtTextData});
 }
 
 CtLogSink::~CtLogSink() {
-
+    stopSink();
 }
 
-void CtLogSink::write(const std::string& msg) {
-    std::cout << msg;
+CtUInt32 CtLogSink::write(CtBlockDataPtr& p_data) {
+    CtTextData* s_data = (CtTextData*) p_data.get();
+    std::cout << s_data->get() << std::endl;
+    return CTEVENT_DATA_WRITE;
 }

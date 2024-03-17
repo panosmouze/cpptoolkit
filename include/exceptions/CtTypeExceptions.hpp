@@ -23,52 +23,30 @@ SOFTWARE.
 */
 
 /**
- * @file CtFileSource.hpp
+ * @file CtTypeExceptions.hpp
  * @brief 
- * @date 08-03-2024
+ * @date 10-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTFILESOURCE_HPP_
-#define INCLUDE_CTFILESOURCE_HPP_
+#ifndef INCLUDE_CTTYPEEXCEPTIONS_HPP_
+#define INCLUDE_CTTYPEEXCEPTIONS_HPP_
 
-#include "io/CtSource.hpp"
+#include "exceptions/CtException.hpp"
 
-#include <fstream>
-#include <sstream>
-#include <cstring>
-
-class CtFileSource : public CtSource {
+class CtTypeParseError : public CtException {
 public:
-    /**
-     * @brief Constructs the CtFileSource object.
-     * 
-     * @param p_fileName Filename.
-     */
-    EXPORTED_API CtFileSource(const std::string& p_fileName);
-
-    /**
-     * @brief Destructor for CtFileSource.
-     *
-     * Performs any necessary cleanup.
-     */
-    EXPORTED_API ~CtFileSource();
-
-    /**
-     * @brief Set the the delimiter of read() method.
-     * 
-     * @param p_delim The delimiter.
-     * @param p_delim_size The delimiter size.
-     */
-    EXPORTED_API void setDelimiter(const char* p_delim, CtUInt8 p_delim_size);
-
-protected:
-    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) override;
-
-private:
-    std::ifstream m_file; ///< File stream.
-    char* m_delim; ///< Batch read delimiter.
-    CtUInt8 m_delim_size; ///< Delimeter size.
+    explicit CtTypeParseError(const std::string& msg): CtException(msg) {};
 };
 
-#endif //INCLUDE_CTFILESOURCE_HPP_
+class CtKeyNotFoundError : public CtException {
+public:
+    explicit CtKeyNotFoundError(const std::string& msg): CtException(msg) {};
+};
+
+class CtDataTypeInvalid : public CtException {
+public:
+    explicit CtDataTypeInvalid(const std::string& msg): CtException(msg) {};
+};
+
+#endif //INCLUDE_CTTYPEEXCEPTIONS_HPP_

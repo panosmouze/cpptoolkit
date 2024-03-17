@@ -23,25 +23,35 @@ SOFTWARE.
 */
 
 /**
- * @file CtGenericExeptions.hpp
+ * @file CtTextFileSink.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTGENERICEXEPTIONS_HPP_
-#define INCLUDE_CTGENERICEXEPTIONS_HPP_
+#ifndef INCLUDE_CTTEXTFILESINK_HPP_
+#define INCLUDE_CTTEXTFILESINK_HPP_
 
-#include "exceptions/CtException.hpp"
+#include "io/sinks/CtFileSink.hpp"
 
-class CtKeyNotFoundError : public CtException {
+class CtTextFileSink : public CtFileSink {
 public:
-    explicit CtKeyNotFoundError(const std::string& msg): CtException(msg) {};
+    /**
+     * @brief Constructs the CtFileSink object.
+     * 
+     * @param p_fileName Filename.
+     */
+    EXPORTED_API CtTextFileSink(const std::string& p_fileName, WriteMode p_mode = WriteMode::Append);
+
+    /**
+     * @brief Destructor for CtFileSink.
+     *
+     * Performs any necessary cleanup.
+     */
+    EXPORTED_API ~CtTextFileSink();
+
+protected:
+    EXPORTED_API virtual CtUInt32 write(CtBlockDataPtr& p_data) override;
 };
 
-class CtTypeParseError : public CtException {
-public:
-    explicit CtTypeParseError(const std::string& msg): CtException(msg) {};
-};
-
-#endif //INCLUDE_CTGENERICEXEPTIONS_HPP_
+#endif //INCLUDE_CTTEXTFILESINK_HPP_

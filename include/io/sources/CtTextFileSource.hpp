@@ -25,25 +25,33 @@ SOFTWARE.
 /**
  * @file CtTextFileSource.hpp
  * @brief 
- * @date 11-02-2024
+ * @date 10-03-2024
  * 
  */
 
 #ifndef INCLUDE_CTTEXTFILESOURCE_HPP_
 #define INCLUDE_CTTEXTFILESOURCE_HPP_
 
-#include "definitions.hpp"
-
 #include "io/sources/CtFileSource.hpp"
 
 class CtTextFileSource : public CtFileSource {
 public:
-    static uint32_t bufferSize;
-
+    /**
+     * @brief Constructs the CtFileSource object.
+     * 
+     * @param p_fileName Filename.
+     */
     EXPORTED_API CtTextFileSource(const std::string& p_fileName);
+
+    /**
+     * @brief Destructor for CtFileSource.
+     *
+     * Performs any necessary cleanup.
+     */
     EXPORTED_API ~CtTextFileSource();
 
-    EXPORTED_API CtData* get() override;
+protected:
+    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) override;
 };
 
 #endif //INCLUDE_CTTEXTFILESOURCE_HPP_

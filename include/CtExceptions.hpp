@@ -33,9 +33,8 @@ SOFTWARE.
 #define INCLUDE_CTEXCEPTIONS_HPP_
 
 #include "exceptions/CtException.hpp"
-#include "exceptions/CtGenericExeptions.hpp"
-#include "exceptions/CtFileExceptions.hpp"
 #include "exceptions/CtThreadExceptions.hpp"
 #include "exceptions/CtNetworkExceptions.hpp"
+#include "exceptions/CtEventExceptions.hpp"
 
 #endif //INCLUDE_CTEXCEPTIONS_HPP_

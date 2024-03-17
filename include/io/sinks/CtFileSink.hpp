@@ -25,26 +25,19 @@ SOFTWARE.
 /**
  * @file CtFileSink.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 09-03-2024
  * 
  */
 
 #ifndef INCLUDE_CTFILESINK_HPP_
 #define INCLUDE_CTFILESINK_HPP_
 
-#include "definitions.hpp"
-#include "io/sinks/CtSink.hpp"
-
-#include "exceptions/CtFileExceptions.hpp"
+#include "io/CtSink.hpp"
 
 #include <fstream>
 #include <sstream>
+#include <cstring>
 
-/**
- * @brief Represents a file-based sink for logging messages.
- *
- * This class extends CtSink and provides functionality to write log entries to a file.
- */
 class CtFileSink : public CtSink {
 public:
     /**
@@ -53,29 +46,35 @@ public:
     enum class WriteMode { Append, Truncate };
 
     /**
-     * @brief Constructs a CtFileSink object with the specified log file name.
-     *
-     * @param logFileName The name of the log file.
+     * @brief Constructs the CtFileSink object.
+     * 
+     * @param p_fileName Filename.
      */
-    EXPORTED_API CtFileSink(const std::string& logFileName, WriteMode mode = WriteMode::Append);
+    EXPORTED_API CtFileSink(const std::string& p_fileName, WriteMode p_mode = WriteMode::Append);
 
     /**
      * @brief Destructor for CtFileSink.
      *
-     * Closes the log file stream.
+     * Performs any necessary cleanup.
      */
     EXPORTED_API ~CtFileSink();
 
     /**
-     * @brief Writes a log entry to the file.
-     *
-     * @param msg The log entry to be written.
+     * @brief Set the the delimiter of write() method.
+     * 
+     * @param p_delim The delimiter.
+     * @param p_delim_size The delimiter size.
      */
-    EXPORTED_API void write(const std::string& msg) override;
+    EXPORTED_API void setDelimiter(const char* p_delim, CtUInt8 p_delim_size);
+
+protected:
+    EXPORTED_API virtual CtUInt32 write(CtBlockDataPtr& p_data) override;
 
 private:
-    std::ofstream m_logFile; ///< Log file stream.
-    CtFileSink::WriteMode m_mode; ///< Mode opening the stream.
+    std::ofstream m_file; ///< File stream.
+    std::unique_ptr<char[]> m_delim; ///< Batch write delimiter.
+    CtUInt8 m_delim_size; ///< Delimeter size.
 };
+
 
 #endif //INCLUDE_CTFILESINK_HPP_

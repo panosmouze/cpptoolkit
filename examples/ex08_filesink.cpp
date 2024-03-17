@@ -23,52 +23,30 @@ SOFTWARE.
 */
 
 /**
- * @file CtFileSource.hpp
+ * @file ex08_filesink.cpp
  * @brief 
- * @date 08-03-2024
+ * @date 09-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTFILESOURCE_HPP_
-#define INCLUDE_CTFILESOURCE_HPP_
+#include "io/sinks/CtFileSink.hpp"
 
-#include "io/CtSource.hpp"
+#include <iostream>
+#include <string>
 
-#include <fstream>
-#include <sstream>
-#include <cstring>
+int main() {
+    CtFileSink sink("config_sink.ini");
+    sink.setDelimiter("\n", 1);
 
-class CtFileSource : public CtSource {
-public:
-    /**
-     * @brief Constructs the CtFileSource object.
-     * 
-     * @param p_fileName Filename.
-     */
-    EXPORTED_API CtFileSource(const std::string& p_fileName);
+    CtRawData* data1 = new CtRawData(1024);
+    data1->clone((uint8_t*)"temp text 1", 11);
+    CtBlockDataPtr data1ptr(data1);
+    sink.setData({data1ptr});
 
-    /**
-     * @brief Destructor for CtFileSource.
-     *
-     * Performs any necessary cleanup.
-     */
-    EXPORTED_API ~CtFileSource();
+    CtRawData* data2 = new CtRawData(1024);
+    data2->clone((uint8_t*)"temp text 2", 11);
+    CtBlockDataPtr data2ptr(data2);
+    sink.setData({data2ptr});
 
-    /**
-     * @brief Set the the delimiter of read() method.
-     * 
-     * @param p_delim The delimiter.
-     * @param p_delim_size The delimiter size.
-     */
-    EXPORTED_API void setDelimiter(const char* p_delim, CtUInt8 p_delim_size);
-
-protected:
-    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) override;
-
-private:
-    std::ifstream m_file; ///< File stream.
-    char* m_delim; ///< Batch read delimiter.
-    CtUInt8 m_delim_size; ///< Delimeter size.
-};
-
-#endif //INCLUDE_CTFILESOURCE_HPP_
+    sink.joinSink();
+}

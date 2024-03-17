@@ -32,7 +32,7 @@ SOFTWARE.
 #include "threading/CtServicePool.hpp"
 #include "exceptions/CtThreadExceptions.hpp"
 
-CtServicePool::CtServicePool(uint32_t nworkers) : m_nworkers(nworkers), m_worker_pool(m_nworkers) {
+CtServicePool::CtServicePool(CtUInt32 nworkers) : m_nworkers(nworkers), m_worker_pool(m_nworkers) {
     start();
 }
 
@@ -41,7 +41,7 @@ CtServicePool::~CtServicePool() {
     m_worker_pool.join();
 }
 
-void CtServicePool::addTask(uint32_t nslots, std::string id, CtTask& task) {
+void CtServicePool::addTask(CtUInt32 nslots, std::string id, CtTask& task) {
     std::scoped_lock lock(m_mtx_control);
     if (nslots >= 0) {
         m_tasks.push_back({task, id, nslots});
@@ -75,11 +75,11 @@ void CtServicePool::shutdownServices() {
     m_worker_pool.join();
 }
 
-uint32_t CtServicePool::getSlotTime() {
+CtUInt32 CtServicePool::getSlotTime() {
     return CtService::m_slot_time;
 }
 
-void CtServicePool::setSlotTime(uint32_t slot_time) {
+void CtServicePool::setSlotTime(CtUInt32 slot_time) {
     CtService::m_slot_time = slot_time;
 }
 

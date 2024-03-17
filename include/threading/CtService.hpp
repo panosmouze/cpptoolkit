@@ -58,7 +58,7 @@ public:
      * @param fargs The task function's parameters.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API CtService(uint32_t nslots, F&& func, FArgs&&... fargs);
+    EXPORTED_API CtService(CtUInt32 nslots, F&& func, FArgs&&... fargs);
 
     /**
      * @brief Destructor for CtService.
@@ -76,7 +76,7 @@ public:
     EXPORTED_API void stopService();
 
 public:
-    static uint32_t m_slot_time; ///< The time interval for each "slot" in milliseconds.
+    static CtUInt32 m_slot_time; ///< The time interval for each "slot" in milliseconds.
 
 private:
     /**
@@ -90,7 +90,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-CtService::CtService(uint32_t nslots, F&& func, FArgs&&... fargs) : m_nslots(nslots){
+CtService::CtService(CtUInt32 nslots, F&& func, FArgs&&... fargs) : m_nslots(nslots){
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     m_worker.setTask(s_task);

@@ -25,27 +25,21 @@ SOFTWARE.
 /**
  * @file CtLogSink.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 17-03-2024
  * 
  */
 
 #ifndef INCLUDE_CTLOGSINK_HPP_
 #define INCLUDE_CTLOGSINK_HPP_
 
-#include "definitions.hpp"
-#include "io/sinks/CtSink.hpp"
+#include "io/CtSink.hpp"
 
-/**
- * @brief Represents a simple logging sink.
- *
- * This class extends CtSink and provides a basic implementation for writing log entries.
- */
 class CtLogSink : public CtSink {
 public:
+
     /**
-     * @brief Constructs a CtLogSink object.
-     *
-     * Initializes the CtLogSink object.
+     * @brief Constructs the CtLogSink object.
+     * 
      */
     EXPORTED_API CtLogSink();
 
@@ -56,12 +50,8 @@ public:
      */
     EXPORTED_API ~CtLogSink();
 
-    /**
-     * @brief Writes a message to the output stream.
-     *
-     * @param msg The message to be written.
-     */
-    EXPORTED_API void write(const std::string& msg) override;
+protected:
+    EXPORTED_API virtual CtUInt32 write(CtBlockDataPtr& p_data) override;
 };
 
 #endif //INCLUDE_CTLOGSINK_HPP_

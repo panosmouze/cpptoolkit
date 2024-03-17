@@ -30,20 +30,18 @@ SOFTWARE.
  */
 
 #include "CtThreading.hpp"
-#include "CtUtils.hpp"
-#include "CtIO.hpp"
 
-CtLogger logger(CtLogger::Level::DEBUG, "WORKER_EX01");
+#include <iostream>
 
 /** Helper functions */
 void f1() {
-    logger.log_info("Task start f1");
+    std::cout << "Task start f1" << std::endl;
     CtThread::sleepFor(1000);
-    logger.log_info("Task stop f1");
+    std::cout << "Task stop f1" << std::endl;
 }
 
 void callback() {
-    logger.log_info("Callback called");
+    std::cout << "Callback called" << std::endl;
 }
 
 /** Cases functions */
@@ -55,9 +53,9 @@ void callback() {
 void case01() {
     CtWorker worker;
     worker.setTaskFunc([](){
-        logger.log_info("Task start lambda 1");
+        std::cout << "Task start lambda 1" << std::endl;
         CtThread::sleepFor(1000);
-        logger.log_info("Task stop lambda 1");
+        std::cout << "Task stop lambda 1" << std::endl;
     });
     worker.runTask();
     worker.joinTask();
@@ -91,10 +89,8 @@ void case03() {
 
 /** Run all cases */
 int main() {
-    CtLogSink logSink;
-    logger.addSink(&logSink);
-    case01();
-    case02();
-    case03();
+    //case01();
+    //case02();
+    //case03();
     return 0;
 }

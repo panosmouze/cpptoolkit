@@ -23,26 +23,27 @@ SOFTWARE.
 */
 
 /**
- * @file CtSink.cpp
+ * @file CtTextFileSink.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "io/sinks/CtSink.hpp"
+#include "io/sinks/CtTextFileSink.hpp"
 
-CtSink::CtSink() {
+CtTextFileSink::CtTextFileSink(const std::string& p_fileName, WriteMode p_mode) : CtFileSink(p_fileName, p_mode) {
+    CtBlock::setInVectorTypes({CtBlockDataType::CtTextData});
+    CtFileSink::setDelimiter("\n", 1);
+}
+
+CtTextFileSink::~CtTextFileSink() {
 
 }
 
-CtSink::~CtSink() {
-
-}
-
-void CtSink::lock() {
-    m_mtx_control.lock();
-}
-
-void CtSink::unlock() {
-    m_mtx_control.unlock();
+CtUInt32 CtTextFileSink::write(CtBlockDataPtr& p_data) {
+    CtString s_text = ((CtTextData*)p_data.get())->get();
+    CtRawData* s_rawData = new CtRawData(s_text.size());
+    s_rawData->clone((CtUInt8*)s_text.c_str(), s_text.size());
+    CtBlockDataPtr s_data(s_rawData);
+    return CtFileSink::write(s_data);
 }

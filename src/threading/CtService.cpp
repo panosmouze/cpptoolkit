@@ -32,7 +32,7 @@ SOFTWARE.
 #include "threading/CtService.hpp"
 #include "exceptions/CtThreadExceptions.hpp"
 
-uint32_t CtService::m_slot_time = 10;
+CtUInt32 CtService::m_slot_time = 10;
 
 CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
     m_worker.setTask(task);

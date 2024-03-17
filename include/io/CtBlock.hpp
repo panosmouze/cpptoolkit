@@ -25,7 +25,7 @@ SOFTWARE.
 /**
  * @file CtBlock.hpp
  * @brief 
- * @date 11-02-2024
+ * @date 06-03-2024
  * 
  */
 
@@ -34,29 +34,44 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
-#include "io/CtIOTypes.hpp"
-#include "threading/CtThread.hpp"
+#include "io/CtBlockType.hpp"
+#include "io/CtBlockData.hpp"
+
 #include "utils/CtObject.hpp"
 
-class CtBlock : public CtThread, public CtObject {
-public:
-    enum class CtBlockState : uint8_t {
-        IDLE,
-        RUNNING
-    };
+#include <vector>
+#include <queue>
 
-    EXPORTED_API CtBlockType getBlockType();
+class CtBlock : public CtObject {
+public:
+    /* These methods does not supported by CtSources - no input vector */
+    EXPORTED_API CtUInt32 getInVectorSize();
+    EXPORTED_API std::vector<CtBlockDataType> getInVectorTypes();
+
+    /* These methods does not supported by CtSinks - no output vector */
+    EXPORTED_API CtUInt32 getOutVectorSize();
+    EXPORTED_API std::vector<CtBlockDataType> getOutVectorTypes();
 
 protected:
-    EXPORTED_API CtBlock(CtBlockType p_type);
+    EXPORTED_API CtBlock();
     EXPORTED_API ~CtBlock();
 
-    EXPORTED_API CtBlockState getState();
-    EXPORTED_API void setState(CtBlockState p_state);
+    EXPORTED_API void setInVectorTypes(std::vector<CtBlockDataType> p_inTypes);
+    EXPORTED_API void setOutVectorTypes(std::vector<CtBlockDataType> p_outTypes);
 
-protected:
-    const CtBlockType m_type;
-    std::atomic<CtBlockState> m_state;
+    EXPORTED_API void setInData(std::vector<CtBlockDataPtr> p_data);
+    EXPORTED_API void setOutData(std::vector<CtBlockDataPtr> p_data);
+    EXPORTED_API std::vector<CtBlockDataPtr> getInData();
+    EXPORTED_API std::vector<CtBlockDataPtr> getOutData();
+    EXPORTED_API bool hasInData();
+    EXPORTED_API bool hasOutData();
+    EXPORTED_API virtual void process();
+
+private:
+    std::vector<CtBlockDataType> m_inTypes;
+    std::vector<CtBlockDataType> m_outTypes;
+    std::queue<std::vector<CtBlockDataPtr>> m_inData;
+    std::queue<std::vector<CtBlockDataPtr>> m_outData;
 };
 
 #endif //INCLUDE_CTBLOCK_HPP_

@@ -32,7 +32,7 @@ SOFTWARE.
 #include "threading/CtWorkerPool.hpp"
 #include "exceptions/CtThreadExceptions.hpp"
 
-CtWorkerPool::CtWorkerPool(uint32_t nworkers) : m_nworkers(nworkers), m_active_tasks(0), m_queued_tasks(0) {
+CtWorkerPool::CtWorkerPool(CtUInt32 nworkers) : m_nworkers(nworkers), m_active_tasks(0), m_queued_tasks(0) {
     for (int idx = 0; idx < m_nworkers; idx++) {
         m_workers.push_back(std::make_unique<CtWorker>());
     }
@@ -57,7 +57,7 @@ void CtWorkerPool::join() {
     CtThread::join();
 }
 
-void CtWorkerPool::assignTask(uint32_t idx) {
+void CtWorkerPool::assignTask(CtUInt32 idx) {
     std::scoped_lock lock(m_mtx_control);
     try {
         m_workers.at(idx).get()->setTask(m_tasks.front(), [this](){m_active_tasks--;});

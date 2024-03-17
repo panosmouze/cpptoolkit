@@ -23,36 +23,21 @@ SOFTWARE.
 */
 
 /**
- * @file ex00_logger.cpp
+ * @file CtEvents.hpp
  * @brief 
- * @date 05-02-2024
+ * @date 07-03-2024
  * 
  */
 
-#include "CtUtils.hpp"
-#include "CtIO.hpp"
+#ifndef INCLUDE_CTEVENTS_HPP_
+#define INCLUDE_CTEVENTS_HPP_
 
-int main() {
-    // create logger object with log level set to ERROR and service name TestComp
-    CtLogger logger(CtLogger::Level::ERROR, "TestComp");
+#define CTEVENT_NO_EVENT                                0
+#define CTEVENT_DATA_WRITE                              9
+#define CTEVENT_DATA_READY                              10
 
-    // create sink object for terminal log
-    CtLogSink log;
+#define CTEVENT_EOF                                     101
+#define CTEVENT_DATA_WRITE_FAIL                         109
+#define CTEVENT_DATA_READ_FAIL                          110
 
-    // create sink object for file log
-    CtFileSink file("log.txt");
-
-    // add sinks to the logger object
-    logger.addSink(&log);
-    logger.addSink(&file);
-
-    // log messages
-    logger.log_warning("warning 1");
-    logger.log_debug("debug 1");
-    logger.log_error("error 1");
-    logger.log_warning("warning 2");
-    logger.log_info("info 1");
-    logger.log_info("info 2");
-    logger.log_critical("critical 1");
-    return 0;
-}
+#endif //INCLUDE_CTEVENTS_HPP_

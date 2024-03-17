@@ -25,34 +25,28 @@ SOFTWARE.
 /**
  * @file CtTextFileSource.cpp
  * @brief 
- * @date 11-02-2024
+ * @date 10-03-2024
  * 
  */
 
 #include "io/sources/CtTextFileSource.hpp"
 
-#include "exceptions/CtGenericExeptions.hpp"
-
-#include <iostream>
-
-uint32_t CtTextFileSource::bufferSize = 1024;
-
-CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName, CtBlockType::CtTextFileSource) {
-    setOutType(CtDataType::CtTextData);
-    setDelimiter("\n", 1);
+CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName) {
+    CtFileSource::setDelimiter("\n", 1);
+    CtBlock::setOutVectorTypes({CtBlockDataType::CtTextData});
 }
 
 CtTextFileSource::~CtTextFileSource() {
-    
+
 }
 
-CtData* CtTextFileSource::get() {
-    CtBinaryData* s_data = static_cast<CtBinaryData*>(CtFileSource::get());
-    CtTextData* res_data = nullptr;
-    if (s_data != nullptr) {
-        res_data = new CtTextData;
-        res_data->line = std::string(s_data->data, s_data->rsize);
-        delete s_data;
-    }
-    return res_data;
+CtBlockDataPtr CtTextFileSource::read(CtUInt32& eventCode) {
+    CtBlockDataPtr s_rawDataPtr = CtFileSource::read(eventCode);
+    CtRawData* s_rawData = (CtRawData*)s_rawDataPtr.get();
+
+    CtBlockDataPtr s_textDataPtr(new CtTextData());
+    CtTextData* s_textData = (CtTextData*)s_textDataPtr.get();
+    s_textData->set(std::string((char*)s_rawData->get(), s_rawData->size()));
+
+    return s_textDataPtr;
 }

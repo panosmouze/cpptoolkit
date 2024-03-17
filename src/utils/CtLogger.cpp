@@ -25,7 +25,7 @@ SOFTWARE.
 /**
  * @file CtLogger.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
@@ -65,8 +65,9 @@ void CtLogger::log(CtLogger::Level level, const std::string& message) {
     if (level >= m_level) {
         std::string logEntry = generateLoggerMsg(level, m_componentName, message);
 
-        for (CtSink* sink: m_sinks) {
-            sink->write(logEntry);
+        for (CtSink* s_sink: m_sinks) {
+            CtBlockDataPtr s_data(new CtTextData(logEntry));
+            s_sink->setData({s_data});
         }
     }
 }
@@ -77,7 +78,7 @@ const std::string CtLogger::generateLoggerMsg(CtLogger::Level level, const std::
     std::stringstream timestamp;
     timestamp << std::put_time(std::localtime(&now_c), "%Y-%m-%d %X");
 
-    return std::string("[" + timestamp.str() + "] [" + levelToString(level) + "] " + componentName + ": " + message + "\n");
+    return std::string("[" + timestamp.str() + "] [" + levelToString(level) + "] " + componentName + ": " + message);
 }
 
 const std::string CtLogger::levelToString(CtLogger::Level level) {

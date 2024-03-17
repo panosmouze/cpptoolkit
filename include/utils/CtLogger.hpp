@@ -25,7 +25,7 @@ SOFTWARE.
 /**
  * @file CtLogger.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
@@ -33,7 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTLOGGER_HPP_
 
 #include "definitions.hpp"
-#include "io/sinks/CtSink.hpp"
+#include "io/CtSink.hpp"
 
 #include <string>
 #include <iomanip>

@@ -93,7 +93,7 @@ public:
      * @param p_data Buffer containing the data to sent.
      * @param p_size Size of the buffer.
      */
-    EXPORTED_API void send(uint8_t* p_data, uint32_t p_size);
+    EXPORTED_API void send(uint8_t* p_data, CtUInt32 p_size);
 
     /**
      * @brief Send data over the socket.
@@ -108,7 +108,7 @@ public:
      * @param p_size Size of the buffer.
      * @param p_client Pointer to a CtNetAddress object to store the client's address (output parameter).
      */
-    EXPORTED_API void receive(uint8_t* p_data, uint32_t p_size, CtNetAddress* p_client = nullptr);
+    EXPORTED_API void receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_client = nullptr);
 
     /**
      * @brief Receive data from the socket.

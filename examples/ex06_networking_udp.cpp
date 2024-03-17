@@ -33,8 +33,9 @@ SOFTWARE.
 
 #include "CtNetworking.hpp"
 #include "CtThreading.hpp"
-#include "CtIO.hpp"
 #include "CtUtils.hpp"
+
+#include <iostream>
 
 #define INTF    "lo"
 #define W1_PORT 5041
@@ -69,11 +70,6 @@ int main() {
 }
 
 void worker1Func() {
-    /* Setup logger */
-    CtLogger logger(CtLogger::Level::INFO, "Worker 1");
-    CtLogSink logSink;
-    logger.addSink(&logSink);
-
     /* Create socket */
     CtSocketUdp socket1;
     socket1.setSub(INTF, W1_PORT);
@@ -85,7 +81,7 @@ void worker1Func() {
             CtNetMessage msg;
             socket1.receive(&msg);
             DummyData* data = (DummyData*)msg.data;
-            logger.log_info("receive data from id: " + std::to_string(data->id) + ", name: " + data->name);
+            std::cout << ("receive data from id: " + std::to_string(data->id) + ", name: " + data->name) << std::endl;
 
 
             /* Send response msg */
@@ -102,11 +98,6 @@ void worker1Func() {
 }
 
 void worker2Func() {
-    /* Setup logger */
-    CtLogger logger(CtLogger::Level::INFO, "Worker 2");
-    CtLogSink logSink;
-    logger.addSink(&logSink);
-
     /* Create socket */
     CtSocketUdp socket2;
     socket2.setSub(INTF, W2_PORT);
@@ -124,7 +115,7 @@ void worker2Func() {
                     CtNetMessage msg;
                     socket2.receive(&msg);
                     DummyData* data = (DummyData*)msg.data;
-                    logger.log_info("receive data from id: " + std::to_string(data->id) + ", name: " + data->name);
+                    std::cout << ("receive data from id: " + std::to_string(data->id) + ", name: " + data->name) << std::endl;
                     break;
                 }
             }

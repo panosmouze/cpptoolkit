@@ -23,8 +23,17 @@ SOFTWARE.
 */
 
 /**
- * @file ctconfigio.cpp
+ * @file CtBlockType.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 07-03-2024
  * 
  */
+
+#ifndef INCLUDE_CTBLOCKTYPE_HPP_
+#define INCLUDE_CTBLOCKTYPE_HPP_
+
+enum class CtBlockType {
+    CtBlock
+};
+
+#endif //INCLUDE_CTBLOCKTYPE_HPP_

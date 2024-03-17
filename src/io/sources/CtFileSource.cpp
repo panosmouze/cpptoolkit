@@ -25,15 +25,16 @@ SOFTWARE.
 /**
  * @file CtFileSource.cpp
  * @brief 
- * @date 31-01-2024
+ * @date 08-03-2024
  * 
  */
 
 #include "io/sources/CtFileSource.hpp"
-#include <mutex>
-#include <cstring>
 
-CtFileSource::CtFileSource(const std::string& p_fileName, CtBlockType p_type) : CtSource(p_type) {
+#include "exceptions/CtFileExceptions.hpp"
+
+CtFileSource::CtFileSource(const std::string& p_fileName) {
+    CtBlock::setOutVectorTypes({CtBlockDataType::CtRawData});
     m_delim = nullptr;
     m_delim_size = 0;
     m_file.open(p_fileName, std::ofstream::in);
@@ -43,7 +44,7 @@ CtFileSource::CtFileSource(const std::string& p_fileName, CtBlockType p_type) : 
 }
 
 CtFileSource::~CtFileSource() {
-    stop();
+    stopSource();
     if (m_file.is_open()) {
         m_file.close();
     }
@@ -52,7 +53,7 @@ CtFileSource::~CtFileSource() {
     }
 }
 
-void CtFileSource::setDelimiter(const char* p_delim, uint8_t p_delim_size) {
+void CtFileSource::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
     if (p_delim_size > 0 && p_delim != nullptr) {
         m_delim_size = p_delim_size;
         m_delim = new char[m_delim_size];
@@ -60,53 +61,44 @@ void CtFileSource::setDelimiter(const char* p_delim, uint8_t p_delim_size) {
     }
 }
 
-bool CtFileSource::read(CtData* p_data) {
-    bool res = false;
-    CtBinaryData* s_data = static_cast<CtBinaryData*>(p_data);
+CtBlockDataPtr CtFileSource::read(CtUInt32& eventCode) {
+    CtBlockDataPtr p_data(new CtRawData(256));
 
-    if (m_file.is_open() && s_data->data != nullptr && s_data->size > 0) {
-        char next_char;
-        char* delim_ptr = nullptr;
-        uint32_t i = 0;
-        uint32_t delim_ptr_idx = 0;
+    eventCode = CTEVENT_NO_EVENT;
 
-        while (m_file.get(next_char)) {
-            s_data->data[i++] = next_char;
-            
-            if (m_delim != nullptr && i >= m_delim_size) {
-                delim_ptr_idx = i - m_delim_size;
-                delim_ptr = &s_data->data[delim_ptr_idx];
+    if (m_file.is_open()) {
+        if (m_file.eof()) {
+            eventCode = CTEVENT_EOF;
+        } else {
 
-                if (memcmp(delim_ptr, m_delim, m_delim_size) == 0) {
-                    i = delim_ptr_idx;
+            CtRawData* s_data = (CtRawData*)p_data.get();
+            char next_char;
+            CtUInt8* delim_ptr = nullptr;
+
+            while (m_file.get(next_char)) {
+                s_data->nextByte(next_char);
+                
+                if (m_delim != nullptr && s_data->size() >= m_delim_size) {
+                    delim_ptr = s_data->getNLastBytes(m_delim_size);
+
+                    if (memcmp(delim_ptr, m_delim, m_delim_size) == 0) {
+                        s_data->removeNLastBytes(m_delim_size);
+                        break;
+                    }
+                }
+
+                if (s_data->size() == s_data->maxSize()) {
                     break;
                 }
             }
 
-            if (i >= s_data->size) {
-                break;
+            if (s_data->size() > 0) {
+                eventCode = CTEVENT_DATA_READY;
             }
         }
-        
-        s_data->rsize = i;
-        res = (i > 0);
+    } else {
+        eventCode = CTEVENT_DATA_READ_FAIL;
     }
-    
-    return res;
-}
 
-void CtFileSource::loop() {
-    while (isRunning()) {
-        CtBinaryData* data = new CtBinaryData(1024);
-        if (read(data)) {
-            {
-                CtSource::set(data);
-            }
-            triggerEvent(static_cast<uint8_t>(CtSourceEvent::DATA_AVAIL));
-        } else {
-            delete data;
-            triggerEvent(static_cast<uint8_t>(CtSourceEvent::DATA_EOF));
-            setRunning(false);
-        }
-    }
+    return p_data;
 }

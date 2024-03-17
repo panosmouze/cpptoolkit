@@ -25,7 +25,7 @@ SOFTWARE.
 /**
  * @file CtFileExceptions.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
@@ -34,19 +34,14 @@ SOFTWARE.
 
 #include "exceptions/CtException.hpp"
 
-class CtFileError : public CtException {
+class CtFileReadError : public CtException {
 public:
-    explicit CtFileError(const std::string& msg): CtException(msg) {};
+    explicit CtFileReadError(const std::string& msg): CtException(msg) {};
 };
 
 class CtFileWriteError : public CtException {
 public:
     explicit CtFileWriteError(const std::string& msg): CtException(msg) {};
-};
-
-class CtFileReadError : public CtException {
-public:
-    explicit CtFileReadError(const std::string& msg): CtException(msg) {};
 };
 
 class CtFileParseError : public CtException {

@@ -31,9 +31,8 @@ SOFTWARE.
 
 #include "CtThreading.hpp"
 #include "CtUtils.hpp"
-#include "CtIO.hpp"
 
-CtLogger logger(CtLogger::Level::DEBUG, "SERVICE_POOL_EX04");
+#include <iostream>
 
 /** Helper functions */
 
@@ -67,7 +66,7 @@ void case01() {
     CtThread::sleepFor(3000);
     pool.shutdownServices();
     for (int i = 0; i < 50; i++) {
-        logger.log_info("idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]));
+        std::cout << "idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]) << std::endl;
     }
 }
 
@@ -93,7 +92,7 @@ void case02() {
     CtThread::sleepFor(3000);
     pool.shutdownServices();
     for (int i = 0; i < 50; i++) {
-        logger.log_info("idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]));
+        std::cout << "idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]) << std::endl;
     }
 }
 
@@ -121,14 +120,12 @@ void case03() {
     CtThread::sleepFor(3000);
     pool.shutdownServices();
     for (int i = 0; i < 50; i++) {
-        logger.log_info("idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]));
+        std::cout << "idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]) << std::endl;
     }
 }
 
 /** Run all cases */
 int main() {
-    CtLogSink logSink;
-    logger.addSink(&logSink);
     case01();
     case02();
     case03();

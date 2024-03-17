@@ -23,24 +23,25 @@ SOFTWARE.
 */
 
 /**
- * @file CtBinaryFileSource.cpp
+ * @file ex09_config.cpp
  * @brief 
- * @date 11-02-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "io/sources/CtBinaryFileSource.hpp"
+#include "utils/CtConfig.hpp"
 
-#include "exceptions/CtGenericExeptions.hpp"
+#include <iostream>
 
-CtBinaryFileSource::CtBinaryFileSource(const std::string& p_fileName) : CtFileSource(p_fileName, CtBlockType::CtBinaryFileSource) {
-    setOutType(CtDataType::CtBinaryData);
-}
+int main() {
+    CtConfig config("config.ini");
 
-CtBinaryFileSource::~CtBinaryFileSource() {
-    
-}
-
-CtData* CtBinaryFileSource::get() {
-    return CtFileSource::get();
+    config.read();
+    std::cout << config.parseAsUInt("alpha") << std::endl;
+    std::cout << config.parseAsInt("beta") << std::endl;
+    std::cout << config.parseAsDouble("gamma") << std::endl;
+    std::cout << config.parseAsString("name") << std::endl;
+    std::cout << config.parseAsString("email") << std::endl;
+    config.writeFloat("double_ex1", 0.91);
+    config.write();
 }

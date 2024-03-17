@@ -23,58 +23,31 @@ SOFTWARE.
 */
 
 /**
- * @file CtIOTypes.hpp
+ * @file CtSink.hpp
  * @brief 
- * @date 08-02-2024
+ * @date 09-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTIOTYPES_HPP_
-#define INCLUDE_CTIOTYPES_HPP_
+#ifndef INCLUDE_CTSINK_HPP_
+#define INCLUDE_CTSINK_HPP_
 
-#include "definitions.hpp"
+#include "io/CtBlock.hpp"
 
-enum class CtBlockType {
-    CtTextFileSource,
-    CtBinaryFileSource
+class CtSink : public CtBlock, CtThread {
+public:
+    EXPORTED_API void startSink();
+    EXPORTED_API void stopSink();
+    EXPORTED_API void joinSink();
+    EXPORTED_API void setData(std::vector<CtBlockDataPtr> p_data);
+
+protected:
+    EXPORTED_API CtSink();
+    EXPORTED_API ~CtSink();
+    EXPORTED_API virtual CtUInt32 write(CtBlockDataPtr& p_data) = 0;
+
+private:
+    void loop() override;
 };
 
-enum class CtDataType {
-    CtBinaryData,
-    CtTextData
-};
-
-/**
- * @brief Abstract struct used as base struct for data IO in sources and sinks.
- * 
- */
-struct CtData {
-    const CtDataType type;
-
-    EXPORTED_API CtData(CtDataType p_type);
-};
-
-/**
- * @brief Struct used for raw data in IO operations.
- * 
- */
-struct CtBinaryData : CtData {
-    char* data; ///< Raw data buffer.
-    const uint32_t size; ///< Total number of characters the buffer can hold.
-    uint32_t rsize; ///< Real number of characters the buffer holds.
-
-    EXPORTED_API CtBinaryData(uint32_t p_size);
-    EXPORTED_API ~CtBinaryData();
-};
-
-/**
- * @brief Struct used for text data in IO operations.
- * 
- */
-struct CtTextData : CtData {
-    std::string line; ///< String data buffer.
-
-    EXPORTED_API CtTextData();
-};
-
-#endif //INCLUDE_CTIOTYPES_HPP_
+#endif //INCLUDE_CTSINK_HPP_

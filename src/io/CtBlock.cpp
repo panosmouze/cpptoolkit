@@ -25,30 +25,70 @@ SOFTWARE.
 /**
  * @file CtBlock.cpp
  * @brief 
- * @date 11-02-2024
+ * @date 06-03-2024
  * 
  */
 
-#include "definitions.hpp"
-
 #include "io/CtBlock.hpp"
 
-CtBlock::CtBlock(CtBlockType p_type) : m_type(p_type) {
-
+CtBlock::CtBlock() {
 }
 
 CtBlock::~CtBlock() {
-
 }
 
-CtBlockType CtBlock::getBlockType() {
-    return m_type;
+void CtBlock::setInVectorTypes(std::vector<CtBlockDataType> p_inTypes) {
+    m_inTypes = p_inTypes;
 }
 
-void CtBlock::setState(CtBlockState p_state) {
-    m_state.store(p_state);
+void CtBlock::setOutVectorTypes(std::vector<CtBlockDataType> p_outTypes) {
+    m_outTypes = p_outTypes;
 }
 
-CtBlock::CtBlockState CtBlock::getState() {
-    return m_state.load();
+CtUInt32 CtBlock::getInVectorSize() {
+    return m_inTypes.size();
+}
+
+CtUInt32 CtBlock::getOutVectorSize() {
+    return m_outTypes.size();
+}
+
+std::vector<CtBlockDataType> CtBlock::getInVectorTypes() {
+    return m_inTypes;
+}
+
+std::vector<CtBlockDataType> CtBlock::getOutVectorTypes() {
+    return m_outTypes;
+}
+
+std::vector<CtBlockDataPtr> CtBlock::getInData() {
+    std::vector<CtBlockDataPtr> s_data = m_inData.front();
+    m_inData.pop();
+    return s_data;
+}
+
+std::vector<CtBlockDataPtr> CtBlock::getOutData() {
+    std::vector<CtBlockDataPtr> s_data = m_outData.front();
+    m_outData.pop();
+    return s_data;
+}
+
+void CtBlock::setInData(std::vector<CtBlockDataPtr> p_data) {
+    m_inData.push(p_data);
+}
+
+void CtBlock::setOutData(std::vector<CtBlockDataPtr> p_data) {
+    m_outData.push(p_data);
+}
+
+bool CtBlock::hasOutData() {
+    return m_outData.size() > 0;
+}
+
+bool CtBlock::hasInData() {
+    return m_inData.size() > 0;
+}
+
+void CtBlock::process() {
+    
 }
