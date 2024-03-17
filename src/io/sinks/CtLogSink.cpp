@@ -23,44 +23,26 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtLogSink.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 17-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "io/sinks/CtLogSink.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
+#include <iostream>
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
+CtLogSink::CtLogSink() {
+    CtBlock::setInVectorTypes({CtBlockDataType::CtTextData});
 }
 
-CtService::~CtService() {
-    stopService();
+CtLogSink::~CtLogSink() {
+    stopSink();
 }
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
-
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+CtUInt32 CtLogSink::write(CtBlockDataPtr& p_data) {
+    CtTextData* s_data = (CtTextData*) p_data.get();
+    std::cout << s_data->get() << std::endl;
+    return CTEVENT_DATA_WRITE;
 }

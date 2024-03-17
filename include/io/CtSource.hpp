@@ -23,44 +23,32 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtSource.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 08-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#ifndef INCLUDE_CTSOURCE_HPP_
+#define INCLUDE_CTSOURCE_HPP_
 
-CtUInt32 CtService::m_slot_time = 10;
+#include "io/CtBlock.hpp"
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+class CtSource : public CtBlock, CtThread {
+public:
+    EXPORTED_API void startSource();
+    EXPORTED_API void stopSource();
+    EXPORTED_API void joinSource();
+    EXPORTED_API bool hasData();
+    EXPORTED_API std::vector<CtBlockDataPtr> getData();
 
-CtService::~CtService() {
-    stopService();
-}
+protected:
+    EXPORTED_API CtSource();
+    EXPORTED_API ~CtSource();
+    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) = 0;
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
+private:
+    void loop() override;
+};
 
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
-}
+#endif //INCLUDE_CTSOURCE_HPP_

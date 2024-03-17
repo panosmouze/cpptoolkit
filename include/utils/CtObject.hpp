@@ -34,6 +34,8 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
+#include "utils/CtEvents.hpp"
+
 #include "utils/CtTask.hpp"
 #include "threading/CtWorkerPool.hpp"
 
@@ -57,7 +59,7 @@ public:
      * @param fargs The parameters of the function that will be executed.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API static void connectEvent(CtObject* p_obj, uint8_t p_eventCode, F&& func, FArgs&&... fargs);
+    EXPORTED_API static void connectEvent(CtObject* p_obj, CtUInt32 p_eventCode, F&& func, FArgs&&... fargs);
 
     /**
      * @brief This method connects an event code with a function that should be triggered.
@@ -66,7 +68,7 @@ public:
      * @param p_eventCode The event code.
      * @param p_task The task to be executed.
      */
-    EXPORTED_API static void connectEvent(CtObject* p_obj, uint8_t p_eventCode, CtTask& p_task);
+    EXPORTED_API static void connectEvent(CtObject* p_obj, CtUInt32 p_eventCode, CtTask& p_task);
 
     /**
      * @brief This method connects an event code with a function that should be triggered.
@@ -76,7 +78,7 @@ public:
      * @param fargs The parameters of the function that will be executed.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API void connectEvent(uint8_t p_eventCode, F&& func, FArgs&&... fargs);
+    EXPORTED_API void connectEvent(CtUInt32 p_eventCode, F&& func, FArgs&&... fargs);
 
     /**
      * @brief This method connects an event code with a function that should be triggered.
@@ -84,7 +86,7 @@ public:
      * @param p_eventCode The event code.
      * @param p_task The task to be executed.
      */
-    EXPORTED_API void connectEvent(uint8_t p_eventCode, CtTask& p_task);
+    EXPORTED_API void connectEvent(CtUInt32 p_eventCode, CtTask& p_task);
 
     /**
      * @brief This method is equivalent to join() function of CtThread.
@@ -110,14 +112,14 @@ protected:
      * 
      * @param p_eventCode The event code to be triggered.
      */
-    EXPORTED_API void triggerEvent(uint8_t p_eventCode);
+    EXPORTED_API void triggerEvent(CtUInt32 p_eventCode);
 
     /**
      * @brief This event registers a specific event code.
      * 
      * @param p_eventCode The event code to be registered.
      */
-    EXPORTED_API void registerEvent(uint8_t p_eventCode);
+    EXPORTED_API void registerEvent(CtUInt32 p_eventCode);
 
 private:
     /**
@@ -125,7 +127,7 @@ private:
      * 
      * @param p_eventCode The event code to be checked.
      */
-    EXPORTED_API bool hasEvent(uint8_t p_eventCode);
+    EXPORTED_API bool hasEvent(CtUInt32 p_eventCode);
 
 private:
     std::mutex m_mtx_control; ///< Mutex for controlling access to shared resources.
@@ -135,14 +137,14 @@ private:
 };
 
 template <typename F, typename... FArgs>
-void CtObject::connectEvent(CtObject* p_obj, uint8_t p_eventCode, F&& func, FArgs&&... fargs) {
+void CtObject::connectEvent(CtObject* p_obj, CtUInt32 p_eventCode, F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     p_obj->connectEvent(p_eventCode, s_task);
 };
 
 template <typename F, typename... FArgs>
-void CtObject::connectEvent(uint8_t p_eventCode, F&& func, FArgs&&... fargs) {
+void CtObject::connectEvent(CtUInt32 p_eventCode, F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     connectEvent(p_eventCode, s_task);

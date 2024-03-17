@@ -52,7 +52,7 @@ public:
      * @brief Constructor for CtWorkerPool.
      * @param nworkers The number of worker threads in the pool.
      */
-    EXPORTED_API CtWorkerPool(uint32_t nworkers);
+    EXPORTED_API CtWorkerPool(CtUInt32 nworkers);
 
     /**
      * @brief Destructor for CtWorkerPool.
@@ -86,7 +86,7 @@ private:
      * @param idx The index of the worker to which the task is assigned.
      * @return True if a task was successfully assigned, false otherwise.
      */
-    void assignTask(uint32_t idx);
+    void assignTask(CtUInt32 idx);
 
     /**
      * @brief Free resources and clear the worker pool.
@@ -96,13 +96,13 @@ private:
     void loop() override;
 
 private:
-    uint32_t m_nworkers; ///< Number of worker threads in the pool.
+    CtUInt32 m_nworkers; ///< Number of worker threads in the pool.
     std::vector<std::unique_ptr<CtWorker>> m_workers; ///< Worker thread instances.
     std::queue<CtTask> m_tasks; ///< Queue of tasks to be executed.
-    std::queue<uint32_t> m_available_workers_idxs; ///< Queue of available worker indices.
+    std::queue<CtUInt32> m_available_workers_idxs; ///< Queue of available worker indices.
     std::mutex m_mtx_control; ///< Mutex for controlling access to shared resources.
-    std::atomic<uint32_t> m_active_tasks; ///< Number of active tasks that are currently running.
-    std::atomic<uint32_t> m_queued_tasks; ///< Number of queued tasks.
+    std::atomic<CtUInt32> m_active_tasks; ///< Number of active tasks that are currently running.
+    std::atomic<CtUInt32> m_queued_tasks; ///< Number of queued tasks.
     CtWorker m_taskAssigner; ///< This worker is a task assigner, assigns active tasks to available workers.
 };
 

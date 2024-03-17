@@ -23,44 +23,28 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file ex10_logger.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "utils/CtLogger.hpp"
+#include "io/sinks/CtTextFileSink.hpp"
+#include "io/sinks/CtLogSink.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
+int main() {
+    CtLogger logger(CtLogger::Level::WARNING, "EX10");
+    CtTextFileSink sink1("log", CtFileSink::WriteMode::Append);
+    sink1.setDelimiter("\n", 1);
+    logger.addSink(&sink1);
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+    CtLogSink sink2;
+    logger.addSink(&sink2);
 
-CtService::~CtService() {
-    stopService();
-}
-
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
-
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+    logger.log_debug("log_debug log 1");
+    logger.log_info("log_info log 1");
+    logger.log_warning("log_warning log 1");
+    logger.log_error("log_error log 1");
+    logger.log_critical("log_critical log 1");
 }

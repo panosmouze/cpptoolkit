@@ -35,6 +35,18 @@ SOFTWARE.
 #include <stdint.h>
 #include <string>
 
+#define CtUInt8 uint8_t
+#define CtUInt16 uint16_t
+#define CtUInt32 uint32_t
+#define CtUInt64 uint64_t
+
+#define CtInt8 int8_t
+#define CtInt16 int16_t
+#define CtInt32 int32_t
+#define CtInt64 int64_t
+
+#define CtString std::string
+
 #define CTNET_BUFFER_SIZE 2048
 
 /**
@@ -42,8 +54,8 @@ SOFTWARE.
  * 
  */
 typedef struct _CtNetAddress {
-    std::string addr;
-    uint16_t port;
+    CtString addr;
+    CtUInt16 port;
 } CtNetAddress;
 
 /**
@@ -51,8 +63,8 @@ typedef struct _CtNetAddress {
  * 
  */
 typedef struct _CtNetMessage {
-    uint8_t data[CTNET_BUFFER_SIZE];
-    uint32_t size = CTNET_BUFFER_SIZE;
+    CtUInt8 data[CTNET_BUFFER_SIZE];
+    CtUInt32 size = CTNET_BUFFER_SIZE;
 } CtNetMessage;
 
 #endif //INCLUDE_CTTYPES_HPP_

@@ -23,44 +23,21 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtEvents.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 07-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#ifndef INCLUDE_CTEVENTS_HPP_
+#define INCLUDE_CTEVENTS_HPP_
 
-CtUInt32 CtService::m_slot_time = 10;
+#define CTEVENT_NO_EVENT                                0
+#define CTEVENT_DATA_WRITE                              9
+#define CTEVENT_DATA_READY                              10
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+#define CTEVENT_EOF                                     101
+#define CTEVENT_DATA_WRITE_FAIL                         109
+#define CTEVENT_DATA_READ_FAIL                          110
 
-CtService::~CtService() {
-    stopService();
-}
-
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
-
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
-}
+#endif //INCLUDE_CTEVENTS_HPP_

@@ -30,7 +30,6 @@ SOFTWARE.
  */
 
 #include "CtThreading.hpp"
-#include "CtUtils.hpp"
 
 #include <iostream>
 
@@ -90,8 +89,8 @@ void case03() {
 
 /** Run all cases */
 int main() {
-    case01();
-    case02();
-    case03();
+    //case01();
+    //case02();
+    //case03();
     return 0;
 }

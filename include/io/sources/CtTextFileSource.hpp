@@ -23,44 +23,35 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtTextFileSource.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#ifndef INCLUDE_CTTEXTFILESOURCE_HPP_
+#define INCLUDE_CTTEXTFILESOURCE_HPP_
 
-CtUInt32 CtService::m_slot_time = 10;
+#include "io/sources/CtFileSource.hpp"
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+class CtTextFileSource : public CtFileSource {
+public:
+    /**
+     * @brief Constructs the CtFileSource object.
+     * 
+     * @param p_fileName Filename.
+     */
+    EXPORTED_API CtTextFileSource(const std::string& p_fileName);
 
-CtService::~CtService() {
-    stopService();
-}
+    /**
+     * @brief Destructor for CtFileSource.
+     *
+     * Performs any necessary cleanup.
+     */
+    EXPORTED_API ~CtTextFileSource();
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
+protected:
+    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) override;
+};
 
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
-}
+#endif //INCLUDE_CTTEXTFILESOURCE_HPP_

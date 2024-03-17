@@ -23,44 +23,27 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtTextFileSink.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "io/sinks/CtTextFileSink.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
-
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
+CtTextFileSink::CtTextFileSink(const std::string& p_fileName, WriteMode p_mode) : CtFileSink(p_fileName, p_mode) {
+    CtBlock::setInVectorTypes({CtBlockDataType::CtTextData});
+    CtFileSink::setDelimiter("\n", 1);
 }
 
-CtService::~CtService() {
-    stopService();
+CtTextFileSink::~CtTextFileSink() {
+
 }
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
-
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+CtUInt32 CtTextFileSink::write(CtBlockDataPtr& p_data) {
+    CtString s_text = ((CtTextData*)p_data.get())->get();
+    CtRawData* s_rawData = new CtRawData(s_text.size());
+    s_rawData->clone((CtUInt8*)s_text.c_str(), s_text.size());
+    CtBlockDataPtr s_data(s_rawData);
+    return CtFileSink::write(s_data);
 }

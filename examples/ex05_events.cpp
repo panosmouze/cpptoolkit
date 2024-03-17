@@ -30,7 +30,6 @@ SOFTWARE.
  */
 
 #include "CtUtils.hpp"
-#include "CtThreading.hpp"
 
 #include <iostream>
 
@@ -38,7 +37,7 @@ SOFTWARE.
 class CtMainPage : public CtObject {
 public: 
     // Create a list of custom events
-    enum MyEvents : uint8_t {
+    enum MyEvents : uint32_t {
         EVENT1 = 1,
         EVENT2 = 2,
         EVENT3 = 3

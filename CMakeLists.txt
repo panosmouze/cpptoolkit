@@ -43,9 +43,19 @@ include_directories(${INCLUDE_DIR})
 
 # Library Build
 add_library(${TARGET_LIBRARY} SHARED
+    ${SOURCE_DIR}/io/CtBlock.cpp
+    ${SOURCE_DIR}/io/CtSource.cpp
+    ${SOURCE_DIR}/io/sources/CtFileSource.cpp
+    ${SOURCE_DIR}/io/sources/CtTextFileSource.cpp
+    ${SOURCE_DIR}/io/CtSink.cpp
+    ${SOURCE_DIR}/io/sinks/CtLogSink.cpp
+    ${SOURCE_DIR}/io/sinks/CtFileSink.cpp
+    ${SOURCE_DIR}/io/sinks/CtTextFileSink.cpp
     ${SOURCE_DIR}/time/CtTimer.cpp
     ${SOURCE_DIR}/utils/CtTask.cpp
     ${SOURCE_DIR}/utils/CtObject.cpp
+    ${SOURCE_DIR}/utils/CtConfig.cpp
+    ${SOURCE_DIR}/utils/CtLogger.cpp
     ${SOURCE_DIR}/threading/CtThread.cpp
     ${SOURCE_DIR}/threading/CtService.cpp
     ${SOURCE_DIR}/threading/CtServicePool.cpp
@@ -73,6 +83,18 @@ target_link_libraries(ex05_events ${TARGET_LIBRARY})
 
 add_executable(ex06_networking_udp ${EXAMPLES_DIR}/ex06_networking_udp.cpp)
 target_link_libraries(ex06_networking_udp ${TARGET_LIBRARY})
+
+add_executable(ex07_filesource ${EXAMPLES_DIR}/ex07_filesource.cpp)
+target_link_libraries(ex07_filesource ${TARGET_LIBRARY})
+
+add_executable(ex08_filesink ${EXAMPLES_DIR}/ex08_filesink.cpp)
+target_link_libraries(ex08_filesink ${TARGET_LIBRARY})
+
+add_executable(ex09_config ${EXAMPLES_DIR}/ex09_config.cpp)
+target_link_libraries(ex09_config ${TARGET_LIBRARY})
+
+add_executable(ex10_logger ${EXAMPLES_DIR}/ex10_logger.cpp)
+target_link_libraries(ex10_logger ${TARGET_LIBRARY})
 
 # Testing
 if(CMAKE_ENABLE_TESTS)

@@ -23,44 +23,30 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtTextFileSource.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "io/sources/CtTextFileSource.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
-
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
+CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName) {
+    CtFileSource::setDelimiter("\n", 1);
+    CtBlock::setOutVectorTypes({CtBlockDataType::CtTextData});
 }
 
-CtService::~CtService() {
-    stopService();
+CtTextFileSource::~CtTextFileSource() {
+
 }
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
+CtBlockDataPtr CtTextFileSource::read(CtUInt32& eventCode) {
+    CtBlockDataPtr s_rawDataPtr = CtFileSource::read(eventCode);
+    CtRawData* s_rawData = (CtRawData*)s_rawDataPtr.get();
 
-    }
-}
+    CtBlockDataPtr s_textDataPtr(new CtTextData());
+    CtTextData* s_textData = (CtTextData*)s_textDataPtr.get();
+    s_textData->set(std::string((char*)s_rawData->get(), s_rawData->size()));
 
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+    return s_textDataPtr;
 }

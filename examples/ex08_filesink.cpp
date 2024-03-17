@@ -23,44 +23,30 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file ex08_filesink.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 09-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "io/sinks/CtFileSink.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
+#include <iostream>
+#include <string>
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+int main() {
+    CtFileSink sink("config_sink.ini");
+    sink.setDelimiter("\n", 1);
 
-CtService::~CtService() {
-    stopService();
-}
+    CtRawData* data1 = new CtRawData(1024);
+    data1->clone((uint8_t*)"temp text 1", 11);
+    CtBlockDataPtr data1ptr(data1);
+    sink.setData({data1ptr});
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
+    CtRawData* data2 = new CtRawData(1024);
+    data2->clone((uint8_t*)"temp text 2", 11);
+    CtBlockDataPtr data2ptr(data2);
+    sink.setData({data2ptr});
 
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+    sink.joinSink();
 }

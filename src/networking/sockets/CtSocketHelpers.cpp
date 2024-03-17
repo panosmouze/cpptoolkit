@@ -88,8 +88,8 @@ std::string CtSocketHelpers::interfaceToAddress(const std::string& p_ifName) {
     throw CtSocketError("Not valid interface found.");
 }
 
-uint32_t CtSocketHelpers::getAddressAsUInt(const std::string& p_addr) {
-    uint32_t result = inet_addr(p_addr.c_str());
+CtUInt32 CtSocketHelpers::getAddressAsUInt(const std::string& p_addr) {
+    CtUInt32 result = inet_addr(p_addr.c_str());
 
     if (result == INADDR_NONE) {
         throw CtSocketError("Invalid address given.");
@@ -98,7 +98,7 @@ uint32_t CtSocketHelpers::getAddressAsUInt(const std::string& p_addr) {
     return result;
 };
 
-std::string CtSocketHelpers::getAddressAsString(uint32_t p_addr) {
+std::string CtSocketHelpers::getAddressAsString(CtUInt32 p_addr) {
     char result[INET_ADDRSTRLEN];
 
     if (inet_ntop(AF_INET, &p_addr, result, INET_ADDRSTRLEN) == nullptr) {
@@ -108,7 +108,7 @@ std::string CtSocketHelpers::getAddressAsString(uint32_t p_addr) {
     return std::string(result);
 };
 
-void CtSocketHelpers::setConnectionTimeout(timeval& timeout, uint32_t timeout_ms) {
+void CtSocketHelpers::setConnectionTimeout(timeval& timeout, CtUInt32 timeout_ms) {
     timeout.tv_sec = timeout_ms/1000;
     timeout.tv_usec = 1000*(timeout_ms%1000);
 };

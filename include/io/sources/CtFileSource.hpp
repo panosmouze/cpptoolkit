@@ -23,44 +23,52 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtFileSource.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 08-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#ifndef INCLUDE_CTFILESOURCE_HPP_
+#define INCLUDE_CTFILESOURCE_HPP_
 
-CtUInt32 CtService::m_slot_time = 10;
+#include "io/CtSource.hpp"
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+#include <fstream>
+#include <sstream>
+#include <cstring>
 
-CtService::~CtService() {
-    stopService();
-}
+class CtFileSource : public CtSource {
+public:
+    /**
+     * @brief Constructs the CtFileSource object.
+     * 
+     * @param p_fileName Filename.
+     */
+    EXPORTED_API CtFileSource(const std::string& p_fileName);
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
+    /**
+     * @brief Destructor for CtFileSource.
+     *
+     * Performs any necessary cleanup.
+     */
+    EXPORTED_API ~CtFileSource();
 
-    }
-}
+    /**
+     * @brief Set the the delimiter of read() method.
+     * 
+     * @param p_delim The delimiter.
+     * @param p_delim_size The delimiter size.
+     */
+    EXPORTED_API void setDelimiter(const char* p_delim, CtUInt8 p_delim_size);
 
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
+protected:
+    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) override;
 
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
+private:
+    std::ifstream m_file; ///< File stream.
+    char* m_delim; ///< Batch read delimiter.
+    CtUInt8 m_delim_size; ///< Delimeter size.
+};
 
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
-}
+#endif //INCLUDE_CTFILESOURCE_HPP_

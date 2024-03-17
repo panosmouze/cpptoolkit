@@ -23,44 +23,61 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtSource.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 08-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "io/CtSource.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
+#include <iostream>
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
+CtSource::CtSource() {
+    registerEvent(CTEVENT_DATA_READY);
+    registerEvent(CTEVENT_DATA_READ_FAIL);
+    registerEvent(CTEVENT_EOF);
 }
 
-CtService::~CtService() {
-    stopService();
+CtSource::~CtSource() {
+    stopSource();
 }
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
+void CtSource::startSource() {
+    CtThread::start();
+}
 
+void CtSource::stopSource() {
+    CtThread::stop();
+    CtBlock::waitPendingEvents();
+}
+
+void CtSource::joinSource() {
+    CtThread::join();
+    CtBlock::waitPendingEvents();
+}
+
+bool CtSource::hasData() {
+    return CtBlock::hasOutData();
+}
+
+std::vector<CtBlockDataPtr> CtSource::getData() {
+    return CtBlock::getOutData();
+}
+
+void CtSource::loop() {
+    CtUInt32 eventCode = CTEVENT_NO_EVENT;
+    CtBlockDataPtr s_data = read(eventCode);
+
+    if (eventCode == CTEVENT_DATA_READY) {
+        CtBlock::setOutData({s_data});
     }
-}
 
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
+    if (eventCode != CTEVENT_NO_EVENT) {
+        triggerEvent(eventCode);
     }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+
+    if (eventCode == CTEVENT_EOF) {
+        setRunning(false);
+    }
 }

@@ -23,44 +23,25 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file ex09_config.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "utils/CtConfig.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
+#include <iostream>
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+int main() {
+    CtConfig config("config.ini");
 
-CtService::~CtService() {
-    stopService();
-}
-
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
-
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+    config.read();
+    std::cout << config.parseAsUInt("alpha") << std::endl;
+    std::cout << config.parseAsInt("beta") << std::endl;
+    std::cout << config.parseAsDouble("gamma") << std::endl;
+    std::cout << config.parseAsString("name") << std::endl;
+    std::cout << config.parseAsString("email") << std::endl;
+    config.writeFloat("double_ex1", 0.91);
+    config.write();
 }

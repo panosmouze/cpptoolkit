@@ -71,14 +71,14 @@ public:
      * 
      * @param p_addr The address in form of std::string
      */
-    EXPORTED_API static uint32_t getAddressAsUInt(const std::string& p_addr);
+    EXPORTED_API static CtUInt32 getAddressAsUInt(const std::string& p_addr);
 
     /**
      * @brief Convert address to std::string
      * 
-     * @param p_addr The address in form of uint32_t
+     * @param p_addr The address in form of CtUInt32
      */
-    EXPORTED_API static std::string getAddressAsString(uint32_t p_addr);
+    EXPORTED_API static std::string getAddressAsString(CtUInt32 p_addr);
 
 private:
     static int32_t socketTimeout; /**< The timeout value for socket poll operations. */
@@ -89,7 +89,7 @@ private:
      * @param timeout 
      * @param timeout_ms 
      */
-    static void setConnectionTimeout(timeval& timeout, uint32_t timeout_ms);
+    static void setConnectionTimeout(timeval& timeout, CtUInt32 timeout_ms);
 
 friend class CtSocketUdp;
 };

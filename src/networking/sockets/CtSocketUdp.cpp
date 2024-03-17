@@ -97,7 +97,7 @@ bool CtSocketUdp::pollWrite() {
     }
 }
 
-void CtSocketUdp::send(uint8_t* p_data, uint32_t p_size) {
+void CtSocketUdp::send(uint8_t* p_data, CtUInt32 p_size) {
     if (sendto(m_socket, p_data, p_size, MSG_DONTWAIT, (struct sockaddr*)&m_pubAddress, sizeof(m_pubAddress)) == -1) {
         throw CtSocketWriteError("Sending data via socket failed.");
     }
@@ -107,7 +107,7 @@ void CtSocketUdp::send(CtNetMessage& p_message) {
     send(p_message.data, p_message.size);
 }
 
-void CtSocketUdp::receive(uint8_t* p_data, uint32_t p_size, CtNetAddress* p_client) {
+void CtSocketUdp::receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_client) {
     sockaddr_in s_clientAddress_in;
     socklen_t s_clientAddressLength = sizeof(s_clientAddress_in);
     int bytesRead = recvfrom(m_socket, p_data, p_size, MSG_DONTWAIT, (struct sockaddr*)&s_clientAddress_in, &s_clientAddressLength);
@@ -117,7 +117,7 @@ void CtSocketUdp::receive(uint8_t* p_data, uint32_t p_size, CtNetAddress* p_clie
     }
 
     if (p_client != nullptr) {
-        p_client->addr = CtSocketHelpers::getAddressAsString(*(uint32_t*)(&s_clientAddress_in.sin_addr));
+        p_client->addr = CtSocketHelpers::getAddressAsString(*(CtUInt32*)(&s_clientAddress_in.sin_addr));
         p_client->port = s_clientAddress_in.sin_port;
     }
 

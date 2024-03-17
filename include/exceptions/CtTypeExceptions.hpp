@@ -23,44 +23,30 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file CtTypeExceptions.hpp
  * @brief 
- * @date 18-01-2024
+ * @date 10-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#ifndef INCLUDE_CTTYPEEXCEPTIONS_HPP_
+#define INCLUDE_CTTYPEEXCEPTIONS_HPP_
 
-CtUInt32 CtService::m_slot_time = 10;
+#include "exceptions/CtException.hpp"
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
+class CtTypeParseError : public CtException {
+public:
+    explicit CtTypeParseError(const std::string& msg): CtException(msg) {};
+};
 
-CtService::~CtService() {
-    stopService();
-}
+class CtKeyNotFoundError : public CtException {
+public:
+    explicit CtKeyNotFoundError(const std::string& msg): CtException(msg) {};
+};
 
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
+class CtDataTypeInvalid : public CtException {
+public:
+    explicit CtDataTypeInvalid(const std::string& msg): CtException(msg) {};
+};
 
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
-}
+#endif //INCLUDE_CTTYPEEXCEPTIONS_HPP_

@@ -23,44 +23,25 @@ SOFTWARE.
 */
 
 /**
- * @file CtService.cpp
+ * @file ex07_filesource.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 08-03-2024
  * 
  */
 
-#include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
+#include "io/sources/CtFileSource.hpp"
 
-CtUInt32 CtService::m_slot_time = 10;
+#include <iostream>
+#include <string>
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
-    m_worker.setTask(task);
-    runService();
-}
-
-CtService::~CtService() {
-    stopService();
-}
-
-void CtService::runService() {
-    try {
-        start();
-    } catch(CtThreadError& e) {
-
-    }
-}
-
-void CtService::stopService() {
-    stop();
-    m_worker.joinTask();
-}
-
-void CtService::loop() {
-    try {
-        m_worker.runTask();
-    } catch(CtWorkerError& e) {
-
-    }
-    CtThread::sleepFor(m_nslots*m_slot_time);
+int main() {
+    CtFileSource source("config.ini");
+    source.setDelimiter("\n", 1);
+    source.connectEvent(CTEVENT_DATA_READY, [&source]{
+        std::vector<CtBlockDataPtr> data = source.getData();
+        CtRawData* temp = (CtRawData*)data.at(0).get();
+        std::cout << std::string((char*)temp->get(), temp->size()) << std::endl;
+    });
+    source.startSource();
+    source.joinSource();
 }

@@ -33,6 +33,8 @@ SOFTWARE.
 
 #include "exceptions/CtEventExceptions.hpp"
 
+#include <iostream>
+
 CtObject::CtObject() : m_pool(1) {
 
 }
@@ -41,7 +43,7 @@ CtObject::~CtObject() {
     m_pool.join();
 }
 
-void CtObject::connectEvent(CtObject* p_obj, uint8_t p_eventCode, CtTask& p_task) {
+void CtObject::connectEvent(CtObject* p_obj, CtUInt32 p_eventCode, CtTask& p_task) {
     p_obj->connectEvent(p_eventCode, p_task);
 }
 
@@ -49,18 +51,18 @@ void CtObject::waitPendingEvents() {
     m_pool.join();
 }
 
-void CtObject::connectEvent(uint8_t p_eventCode, CtTask& p_task) {
+void CtObject::connectEvent(CtUInt32 p_eventCode, CtTask& p_task) {
     std::scoped_lock lock(m_mtx_control);
     if (!hasEvent(p_eventCode)) {
-        throw CtEventNotExistsError("Event is not registed.");
+        throw CtEventNotExistsError("Event is not registed. " + std::to_string(p_eventCode));
     }
     m_triggers.insert({p_eventCode, p_task});
 }
 
-void CtObject::triggerEvent(uint8_t p_eventCode) {
+void CtObject::triggerEvent(CtUInt32 p_eventCode) {
     std::scoped_lock lock(m_mtx_control);
     if (!hasEvent(p_eventCode)) {
-        throw CtEventNotExistsError("Event is not registed.");
+        throw CtEventNotExistsError("Event is not registed. " + std::to_string(p_eventCode));
     }
     std::pair<std::multimap<uint8_t, CtTask>::iterator, std::multimap<uint8_t, CtTask>::iterator> s_iterRange;
     s_iterRange = m_triggers.equal_range(p_eventCode);
@@ -71,7 +73,7 @@ void CtObject::triggerEvent(uint8_t p_eventCode) {
     }
 }
 
-void CtObject::registerEvent(uint8_t p_eventCode) {
+void CtObject::registerEvent(CtUInt32 p_eventCode) {
     std::scoped_lock lock(m_mtx_control);
     if (hasEvent(p_eventCode)) {
         throw CtEventAlreadyExistsError("Event is already registed.");
@@ -79,7 +81,7 @@ void CtObject::registerEvent(uint8_t p_eventCode) {
     m_events.push_back(p_eventCode);
 }
 
-bool CtObject::hasEvent(uint8_t p_eventCode) {
+bool CtObject::hasEvent(CtUInt32 p_eventCode) {
     for (uint8_t s_event: m_events) {
         if (s_event == p_eventCode) {
             return true;
