@@ -44,30 +44,31 @@ SOFTWARE.
 
 class CtBlock : public CtObject {
 public:
-    /* These methods does not supported by CtSources - no input vector */
     EXPORTED_API CtUInt32 getInVectorSize();
     EXPORTED_API std::vector<CtBlockDataType> getInVectorTypes();
 
-    /* These methods does not supported by CtSinks - no output vector */
     EXPORTED_API CtUInt32 getOutVectorSize();
     EXPORTED_API std::vector<CtBlockDataType> getOutVectorTypes();
+
+    EXPORTED_API virtual void process();
 
 protected:
     EXPORTED_API CtBlock();
     EXPORTED_API ~CtBlock();
 
     EXPORTED_API void setInVectorTypes(std::vector<CtBlockDataType> p_inTypes);
-    EXPORTED_API void setOutVectorTypes(std::vector<CtBlockDataType> p_outTypes);
-
-    EXPORTED_API void setInData(std::vector<CtBlockDataPtr> p_data);
-    EXPORTED_API void setOutData(std::vector<CtBlockDataPtr> p_data);
-    EXPORTED_API std::vector<CtBlockDataPtr> getInData();
-    EXPORTED_API std::vector<CtBlockDataPtr> getOutData();
     EXPORTED_API bool hasInData();
+    EXPORTED_API void setInData(std::vector<CtBlockDataPtr> p_data);
+    EXPORTED_API std::vector<CtBlockDataPtr> getInData();
+
+    EXPORTED_API void setOutVectorTypes(std::vector<CtBlockDataType> p_outTypes);
     EXPORTED_API bool hasOutData();
-    EXPORTED_API virtual void process();
+    EXPORTED_API void setOutData(std::vector<CtBlockDataPtr> p_data);
+    EXPORTED_API std::vector<CtBlockDataPtr> getOutData();
 
 private:
+    std::mutex m_mtx_out; ///< Mutex for controlling access to output resources.
+    std::mutex m_mtx_in; ///< Mutex for controlling access to input resources.
     std::vector<CtBlockDataType> m_inTypes;
     std::vector<CtBlockDataType> m_outTypes;
     std::queue<std::vector<CtBlockDataPtr>> m_inData;

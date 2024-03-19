@@ -32,6 +32,8 @@ SOFTWARE.
 #include "io/CtBlock.hpp"
 
 CtBlock::CtBlock() {
+    m_inTypes = std::vector<CtBlockDataType>();
+    m_outTypes = std::vector<CtBlockDataType>();
 }
 
 CtBlock::~CtBlock() {
@@ -62,31 +64,37 @@ std::vector<CtBlockDataType> CtBlock::getOutVectorTypes() {
 }
 
 std::vector<CtBlockDataPtr> CtBlock::getInData() {
+    std::unique_lock<std::mutex> lock(m_mtx_in);
     std::vector<CtBlockDataPtr> s_data = m_inData.front();
     m_inData.pop();
     return s_data;
 }
 
+void CtBlock::setInData(std::vector<CtBlockDataPtr> p_data) {
+    std::unique_lock<std::mutex> lock(m_mtx_in);
+    m_inData.push(p_data);
+}
+
+bool CtBlock::hasInData() {
+    std::unique_lock<std::mutex> lock(m_mtx_in);
+    return m_inData.size() > 0;
+}
+
 std::vector<CtBlockDataPtr> CtBlock::getOutData() {
+    std::unique_lock<std::mutex> lock(m_mtx_out);
     std::vector<CtBlockDataPtr> s_data = m_outData.front();
     m_outData.pop();
     return s_data;
 }
 
-void CtBlock::setInData(std::vector<CtBlockDataPtr> p_data) {
-    m_inData.push(p_data);
-}
-
 void CtBlock::setOutData(std::vector<CtBlockDataPtr> p_data) {
+    std::unique_lock<std::mutex> lock(m_mtx_out);
     m_outData.push(p_data);
 }
 
 bool CtBlock::hasOutData() {
+    std::unique_lock<std::mutex> lock(m_mtx_out);
     return m_outData.size() > 0;
-}
-
-bool CtBlock::hasInData() {
-    return m_inData.size() > 0;
 }
 
 void CtBlock::process() {
