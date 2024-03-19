@@ -66,8 +66,8 @@ std::vector<CtBlockDataPtr> CtSource::getData() {
 }
 
 void CtSource::loop() {
-    CtUInt32 eventCode = CTEVENT_NO_EVENT;
-    CtBlockDataPtr s_data = read(eventCode);
+    CtBlockDataPtr s_data = newResource();
+    CtUInt32 eventCode = read(s_data);
 
     if (eventCode == CTEVENT_DATA_READY) {
         CtBlock::setOutData({s_data});

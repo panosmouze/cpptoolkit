@@ -40,13 +40,18 @@ CtTextFileSource::~CtTextFileSource() {
 
 }
 
-CtBlockDataPtr CtTextFileSource::read(CtUInt32& eventCode) {
-    CtBlockDataPtr s_rawDataPtr = CtFileSource::read(eventCode);
-    CtRawData* s_rawData = (CtRawData*)s_rawDataPtr.get();
-
+CtBlockDataPtr CtTextFileSource::newResource() {
     CtBlockDataPtr s_textDataPtr(new CtTextData());
-    CtTextData* s_textData = (CtTextData*)s_textDataPtr.get();
+    return s_textDataPtr;
+}
+
+CtUInt32 CtTextFileSource::read(CtBlockDataPtr& p_data) {
+    CtBlockDataPtr s_rawDataPtr = CtFileSource::newResource();
+    CtUInt8 eventCode = CtFileSource::read(s_rawDataPtr);
+
+    CtTextData* s_textData = (CtTextData*)p_data.get();
+    CtRawData* s_rawData = (CtRawData*)s_rawDataPtr.get();
     s_textData->set(std::string((char*)s_rawData->get(), s_rawData->size()));
 
-    return s_textDataPtr;
+    return eventCode;
 }

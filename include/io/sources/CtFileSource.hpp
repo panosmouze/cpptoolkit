@@ -63,7 +63,8 @@ public:
     EXPORTED_API void setDelimiter(const char* p_delim, CtUInt8 p_delim_size);
 
 protected:
-    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) override;
+    EXPORTED_API virtual CtUInt32 read(CtBlockDataPtr& p_data) override;
+    EXPORTED_API virtual CtBlockDataPtr newResource() override;
 
 private:
     std::ifstream m_file; ///< File stream.

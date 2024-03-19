@@ -43,9 +43,10 @@ public:
     EXPORTED_API std::vector<CtBlockDataPtr> getData();
 
 protected:
+    EXPORTED_API virtual CtBlockDataPtr newResource() = 0;
     EXPORTED_API CtSource();
     EXPORTED_API ~CtSource();
-    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) = 0;
+    EXPORTED_API virtual CtUInt32 read(CtBlockDataPtr& p_data) = 0;
 
 private:
     void loop() override;

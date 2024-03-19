@@ -51,7 +51,8 @@ public:
     EXPORTED_API ~CtTextFileSource();
 
 protected:
-    EXPORTED_API virtual CtBlockDataPtr read(CtUInt32& eventCode) override;
+    EXPORTED_API virtual CtUInt32 read(CtBlockDataPtr& p_data) override;
+    EXPORTED_API virtual CtBlockDataPtr newResource() override;
 };
 
 #endif //INCLUDE_CTTEXTFILESOURCE_HPP_
