@@ -61,16 +61,18 @@ void CtFileSource::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
     }
 }
 
-CtBlockDataPtr CtFileSource::read(CtUInt32& eventCode) {
-    CtBlockDataPtr p_data(new CtRawData(256));
+CtBlockDataPtr CtFileSource::newResource() {
+    CtBlockDataPtr s_rawDataPtr(new CtRawData(1024));
+    return s_rawDataPtr;
+}
 
-    eventCode = CTEVENT_NO_EVENT;
+CtUInt32 CtFileSource::read(CtBlockDataPtr& p_data) {
+    CtUInt8 eventCode = CTEVENT_NO_EVENT;
 
     if (m_file.is_open()) {
         if (m_file.eof()) {
             eventCode = CTEVENT_EOF;
         } else {
-
             CtRawData* s_data = (CtRawData*)p_data.get();
             char next_char;
             CtUInt8* delim_ptr = nullptr;
@@ -100,5 +102,5 @@ CtBlockDataPtr CtFileSource::read(CtUInt32& eventCode) {
         eventCode = CTEVENT_DATA_READ_FAIL;
     }
 
-    return p_data;
+    return eventCode;
 }
