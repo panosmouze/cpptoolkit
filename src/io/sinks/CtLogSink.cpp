@@ -44,5 +44,5 @@ CtLogSink::~CtLogSink() {
 CtUInt32 CtLogSink::write(CtBlockDataPtr& p_data) {
     CtTextData* s_data = (CtTextData*) p_data.get();
     std::cout << s_data->get() << std::endl;
-    return CTEVENT_DATA_WRITE;
+    return CTEVENT_DATA_OUT;
 }

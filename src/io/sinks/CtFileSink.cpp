@@ -68,12 +68,12 @@ void CtFileSink::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
 }
 
 CtUInt32 CtFileSink::write(CtBlockDataPtr& p_data) {
-    CtUInt32 eventCode = CTEVENT_DATA_WRITE_FAIL;
+    CtUInt32 eventCode = CTEVENT_DATA_OUT_FAIL;
     if (m_file.is_open()) {
         CtRawData* s_data = (CtRawData*) p_data.get();
         m_file.write((char*)s_data->get(), s_data->size());
         m_file.write(m_delim.get(), m_delim_size);
-        eventCode = CTEVENT_DATA_WRITE;
+        eventCode = CTEVENT_DATA_OUT;
     }
 
     return eventCode;

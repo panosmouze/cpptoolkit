@@ -40,6 +40,8 @@ SOFTWARE.
 
 class CtFileSource : public CtSource {
 public:
+    EXPORTED_API static CtUInt32 bufferSize;
+
     /**
      * @brief Constructs the CtFileSource object.
      * 

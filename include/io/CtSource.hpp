@@ -41,6 +41,7 @@ public:
     EXPORTED_API void joinSource();
     EXPORTED_API bool hasData();
     EXPORTED_API std::vector<CtBlockDataPtr> getData();
+    EXPORTED_API void stopSourceRequest();
 
 protected:
     EXPORTED_API virtual CtBlockDataPtr newResource() = 0;

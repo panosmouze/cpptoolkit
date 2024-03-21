@@ -23,38 +23,24 @@ SOFTWARE.
 */
 
 /**
- * @file CtTextFileSource.cpp
+ * @file CtIO.hpp
  * @brief 
- * @date 10-03-2024
+ * @date 19-03-2024
  * 
  */
 
+#ifndef INCLUDE_CTIO_HPP_
+#define INCLUDE_CTIO_HPP_
+
+#include "io/CtBlock.hpp"
+#include "io/CtSource.hpp"
+#include "io/CtSink.hpp"
+
+#include "io/sinks/CtFileSink.hpp"
+#include "io/sinks/CtLogSink.hpp"
+#include "io/sinks/CtTextFileSink.hpp"
+
+#include "io/sources/CtFileSource.hpp"
 #include "io/sources/CtTextFileSource.hpp"
 
-CtTextFileSource::CtTextFileSource(const std::string& p_fileName) : CtFileSource(p_fileName) {
-    CtFileSource::setDelimiter("\n", 1);
-    CtBlock::setOutVectorTypes({CtBlockDataType::CtTextData});
-}
-
-CtTextFileSource::~CtTextFileSource() {
-
-}
-
-CtBlockDataPtr CtTextFileSource::newResource() {
-    CtBlockDataPtr s_textDataPtr(new CtTextData());
-    return s_textDataPtr;
-}
-
-CtUInt32 CtTextFileSource::read(CtBlockDataPtr& p_data) {
-    CtBlockDataPtr s_rawDataPtr = CtFileSource::newResource();
-    CtUInt8 eventCode = CtFileSource::read(s_rawDataPtr);
-
-    if (eventCode == CTEVENT_DATA_READY) {
-        CtRawData* s_rawData = (CtRawData*)s_rawDataPtr.get();
-
-        CtTextData* s_textData = (CtTextData*)p_data.get();
-        s_textData->set(std::string((char*)s_rawData->get(), s_rawData->size()));
-    }
-
-    return eventCode;
-}
+#endif //INCLUDE_CTIO_HPP_

@@ -34,8 +34,6 @@ SOFTWARE.
 #include <iostream>
 
 CtSource::CtSource() {
-    registerEvent(CTEVENT_DATA_READY);
-    registerEvent(CTEVENT_DATA_READ_FAIL);
     registerEvent(CTEVENT_EOF);
 }
 
@@ -45,6 +43,10 @@ CtSource::~CtSource() {
 
 void CtSource::startSource() {
     CtThread::start();
+}
+
+void CtSource::stopSourceRequest() {
+    CtThread::setRunning(false);
 }
 
 void CtSource::stopSource() {
@@ -71,13 +73,7 @@ void CtSource::loop() {
 
     if (eventCode == CTEVENT_DATA_READY) {
         CtBlock::setOutData({s_data});
-    }
-
-    if (eventCode != CTEVENT_NO_EVENT) {
+    } else if (eventCode != CTEVENT_NO_EVENT) {
         triggerEvent(eventCode);
-    }
-
-    if (eventCode == CTEVENT_EOF) {
-        setRunning(false);
     }
 }
