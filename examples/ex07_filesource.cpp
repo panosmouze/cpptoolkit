@@ -42,6 +42,9 @@ int main() {
         CtRawData* temp = (CtRawData*)data.at(0).get();
         std::cout << std::string((char*)temp->get(), temp->size()) << std::endl;
     });
+    source.connectEvent(CTEVENT_EOF, [&source]{
+        source.stopSourceRequest();
+    });
     source.startSource();
     source.joinSource();
 }

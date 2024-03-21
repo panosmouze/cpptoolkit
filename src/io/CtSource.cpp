@@ -45,6 +45,10 @@ void CtSource::startSource() {
     CtThread::start();
 }
 
+void CtSource::stopSourceRequest() {
+    CtThread::setRunning(false);
+}
+
 void CtSource::stopSource() {
     CtThread::stop();
     CtBlock::waitPendingEvents();
@@ -69,13 +73,7 @@ void CtSource::loop() {
 
     if (eventCode == CTEVENT_DATA_READY) {
         CtBlock::setOutData({s_data});
-    }
-
-    if (eventCode != CTEVENT_NO_EVENT) {
+    } else if (eventCode != CTEVENT_NO_EVENT) {
         triggerEvent(eventCode);
-    }
-
-    if (eventCode == CTEVENT_EOF) {
-        setRunning(false);
     }
 }

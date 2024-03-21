@@ -59,6 +59,9 @@ CtConfig::~CtConfig() {
 void CtConfig::read() {
     std::scoped_lock lock(m_mtx_control);
     m_source = new CtTextFileSource(m_configFile);
+    m_source->connectEvent(CTEVENT_EOF, [this]{
+        m_source->stopSourceRequest();
+    });
     m_source->startSource();
     m_source->joinSource();
 
