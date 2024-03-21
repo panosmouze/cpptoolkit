@@ -49,9 +49,12 @@ CtUInt32 CtTextFileSource::read(CtBlockDataPtr& p_data) {
     CtBlockDataPtr s_rawDataPtr = CtFileSource::newResource();
     CtUInt8 eventCode = CtFileSource::read(s_rawDataPtr);
 
-    CtTextData* s_textData = (CtTextData*)p_data.get();
-    CtRawData* s_rawData = (CtRawData*)s_rawDataPtr.get();
-    s_textData->set(std::string((char*)s_rawData->get(), s_rawData->size()));
+    if (eventCode == CTEVENT_DATA_READY) {
+        CtRawData* s_rawData = (CtRawData*)s_rawDataPtr.get();
+
+        CtTextData* s_textData = (CtTextData*)p_data.get();
+        s_textData->set(std::string((char*)s_rawData->get(), s_rawData->size()));
+    }
 
     return eventCode;
 }

@@ -34,8 +34,6 @@ SOFTWARE.
 #include <iostream>
 
 CtSource::CtSource() {
-    registerEvent(CTEVENT_DATA_READY);
-    registerEvent(CTEVENT_DATA_READ_FAIL);
     registerEvent(CTEVENT_EOF);
 }
 

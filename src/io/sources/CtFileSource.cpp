@@ -33,6 +33,8 @@ SOFTWARE.
 
 #include "exceptions/CtFileExceptions.hpp"
 
+CtUInt32 CtFileSource::bufferSize = 256;
+
 CtFileSource::CtFileSource(const std::string& p_fileName) {
     CtBlock::setOutVectorTypes({CtBlockDataType::CtRawData});
     m_delim = nullptr;
@@ -62,7 +64,7 @@ void CtFileSource::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
 }
 
 CtBlockDataPtr CtFileSource::newResource() {
-    CtBlockDataPtr s_rawDataPtr(new CtRawData(1024));
+    CtBlockDataPtr s_rawDataPtr(new CtRawData(bufferSize));
     return s_rawDataPtr;
 }
 
@@ -70,36 +72,34 @@ CtUInt32 CtFileSource::read(CtBlockDataPtr& p_data) {
     CtUInt8 eventCode = CTEVENT_NO_EVENT;
 
     if (m_file.is_open()) {
-        if (m_file.eof()) {
-            eventCode = CTEVENT_EOF;
-        } else {
-            CtRawData* s_data = (CtRawData*)p_data.get();
-            char next_char;
-            CtUInt8* delim_ptr = nullptr;
+        CtRawData* s_data = (CtRawData*)p_data.get();
+        char next_char;
+        CtUInt8* delim_ptr = nullptr;
 
-            while (m_file.get(next_char)) {
-                s_data->nextByte(next_char);
-                
-                if (m_delim != nullptr && s_data->size() >= m_delim_size) {
-                    delim_ptr = s_data->getNLastBytes(m_delim_size);
+        while (m_file.get(next_char)) {
+            s_data->nextByte(next_char);
+            
+            if (m_delim != nullptr && s_data->size() >= m_delim_size) {
+                delim_ptr = s_data->getNLastBytes(m_delim_size);
 
-                    if (memcmp(delim_ptr, m_delim, m_delim_size) == 0) {
-                        s_data->removeNLastBytes(m_delim_size);
-                        break;
-                    }
-                }
-
-                if (s_data->size() == s_data->maxSize()) {
+                if (memcmp(delim_ptr, m_delim, m_delim_size) == 0) {
+                    s_data->removeNLastBytes(m_delim_size);
                     break;
                 }
             }
 
-            if (s_data->size() > 0) {
-                eventCode = CTEVENT_DATA_READY;
+            if (s_data->size() == s_data->maxSize()) {
+                break;
             }
         }
+
+        if (s_data->size() > 0) {
+            eventCode = CTEVENT_DATA_READY;
+        } else if (m_file.eof()) {
+            eventCode = CTEVENT_EOF;
+        }
     } else {
-        eventCode = CTEVENT_DATA_READ_FAIL;
+        eventCode = CTEVENT_DATA_IN_FAIL;
     }
 
     return eventCode;

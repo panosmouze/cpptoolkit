@@ -33,11 +33,13 @@ SOFTWARE.
 #define INCLUDE_CTEVENTS_HPP_
 
 #define CTEVENT_NO_EVENT                                0
-#define CTEVENT_DATA_WRITE                              9
-#define CTEVENT_DATA_READY                              10
+#define CTEVENT_EOF                                     1
+#define CTEVENT_DATA_IN                                 2
+#define CTEVENT_DATA_OUT                                3
+#define CTEVENT_DATA_READY                              4
 
-#define CTEVENT_EOF                                     101
-#define CTEVENT_DATA_WRITE_FAIL                         109
-#define CTEVENT_DATA_READ_FAIL                          110
+#define CTEVENT_DATA_IN_FAIL                            111
+#define CTEVENT_DATA_OUT_FAIL                           112
+#define CTEVENT_DATA_DROP                               113
 
 #endif //INCLUDE_CTEVENTS_HPP_

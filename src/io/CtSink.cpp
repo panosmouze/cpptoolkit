@@ -34,8 +34,6 @@ SOFTWARE.
 #include "exceptions/CtTypeExceptions.hpp"
 
 CtSink::CtSink() {
-    registerEvent(CTEVENT_DATA_WRITE);
-    registerEvent(CTEVENT_DATA_WRITE_FAIL);
 }
 
 CtSink::~CtSink() {
@@ -60,7 +58,9 @@ void CtSink::loop() {
     if (CtBlock::hasOutData()) {
         std::vector<CtBlockDataPtr> data = CtBlock::getOutData();
         CtUInt32 eventCode = write(data.at(0));
-        triggerEvent(eventCode);
+        if (eventCode != CTEVENT_DATA_OUT) {
+            triggerEvent(eventCode);
+        }
     } else {
         setRunning(false);
     }

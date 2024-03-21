@@ -32,6 +32,12 @@ SOFTWARE.
 #include "io/CtBlock.hpp"
 
 CtBlock::CtBlock() {
+    registerEvent(CTEVENT_DATA_IN);
+    registerEvent(CTEVENT_DATA_OUT);
+    registerEvent(CTEVENT_DATA_DROP);
+    registerEvent(CTEVENT_DATA_READY);
+    registerEvent(CTEVENT_DATA_IN_FAIL);
+    registerEvent(CTEVENT_DATA_OUT_FAIL);
     m_inTypes = std::vector<CtBlockDataType>();
     m_outTypes = std::vector<CtBlockDataType>();
 }
@@ -65,6 +71,7 @@ std::vector<CtBlockDataType> CtBlock::getOutVectorTypes() {
 
 std::vector<CtBlockDataPtr> CtBlock::getInData() {
     std::unique_lock<std::mutex> lock(m_mtx_in);
+    //TODO: throw exception if no in data
     std::vector<CtBlockDataPtr> s_data = m_inData.front();
     m_inData.pop();
     return s_data;
@@ -73,6 +80,7 @@ std::vector<CtBlockDataPtr> CtBlock::getInData() {
 void CtBlock::setInData(std::vector<CtBlockDataPtr> p_data) {
     std::unique_lock<std::mutex> lock(m_mtx_in);
     m_inData.push(p_data);
+    triggerEvent(CTEVENT_DATA_IN);
 }
 
 bool CtBlock::hasInData() {
@@ -82,14 +90,17 @@ bool CtBlock::hasInData() {
 
 std::vector<CtBlockDataPtr> CtBlock::getOutData() {
     std::unique_lock<std::mutex> lock(m_mtx_out);
+    //TODO: throw exception if no out data
     std::vector<CtBlockDataPtr> s_data = m_outData.front();
     m_outData.pop();
+    triggerEvent(CTEVENT_DATA_OUT);
     return s_data;
 }
 
 void CtBlock::setOutData(std::vector<CtBlockDataPtr> p_data) {
     std::unique_lock<std::mutex> lock(m_mtx_out);
     m_outData.push(p_data);
+    triggerEvent(CTEVENT_DATA_READY);
 }
 
 bool CtBlock::hasOutData() {
