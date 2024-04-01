@@ -31,8 +31,6 @@ SOFTWARE.
 
 #include "io/CtSource.hpp"
 
-#include <iostream>
-
 CtSource::CtSource() {
     registerEvent(CTEVENT_EOF);
 }
