@@ -36,17 +36,62 @@ SOFTWARE.
 
 class CtSink : public CtBlock, CtThread {
 public:
+    /**
+     * @brief This method is used to start a sink.
+     * 
+     * @return void
+     */
     EXPORTED_API void startSink();
+
+    /**
+     * @brief This method is used to stop a sink. It is blocking.
+     * 
+     * @return void
+     */
     EXPORTED_API void stopSink();
+
+    /**
+     * @brief Thi smethod is used to wait a sink to stop.
+     * 
+     * @return void 
+     */
     EXPORTED_API void joinSink();
+
+    /**
+     * @brief This method push data to the sink queue.
+     * 
+     * @param p_data push data to the sink.
+     * @return void
+     */
     EXPORTED_API void setData(std::vector<CtBlockDataPtr> p_data);
 
 protected:
+    /**
+     * @brief Contructor.
+     * 
+     */
     EXPORTED_API CtSink();
+
+    /**
+     * @brief Destructor.
+     * 
+     */
     EXPORTED_API ~CtSink();
+
+    /**
+     * @brief This virtual method writes data to the sink.
+     * 
+     * @param p_data The data to be added to the queue.
+     * @return CtUInt32 event code. 
+     */
     EXPORTED_API virtual CtUInt32 write(CtBlockDataPtr& p_data) = 0;
 
 private:
+
+    /**
+     * @brief This method is the main loop executed by each sink.
+     * 
+     */
     void loop() override;
 };
 
