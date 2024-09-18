@@ -34,8 +34,6 @@ SOFTWARE.
 
 #include "definitions.hpp"
 
-#include "utils/CtEvents.hpp"
-
 #include "utils/CtTask.hpp"
 #include "threading/CtWorkerPool.hpp"
 

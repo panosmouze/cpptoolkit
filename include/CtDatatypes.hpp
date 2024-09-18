@@ -37,61 +37,19 @@ SOFTWARE.
 #include <cstring>
 #include <memory>
 
-enum class CtBlockDataType {
-    CtBlockData,
-    CtRawData,
-    CtTextData
-};
-
-class CtBlockData;
-
-class CtBlockDataPtr {
+class CtRawData {
 public:
-    EXPORTED_API CtBlockData* get() {
-        return m_ptr.get();
-    }
-
-    EXPORTED_API CtBlockDataPtr(CtBlockData* p_data) : m_ptr(p_data) {
-    }
-
-    EXPORTED_API ~CtBlockDataPtr() {
-    }
-
-private:
-    std::shared_ptr<CtBlockData> m_ptr;
-};
-
-class CtBlockData {
-public:
-    EXPORTED_API CtBlockDataType type() {
-        return m_dataType;
-    }
-
-    EXPORTED_API virtual ~CtBlockData() {
-
-    }
-
-protected:
-    EXPORTED_API CtBlockData(CtBlockDataType p_dataType) : m_dataType(p_dataType) {
-    }
-
-private:
-    const CtBlockDataType m_dataType;
-};
-
-class CtRawData : public CtBlockData {
-public:
-    EXPORTED_API CtRawData(CtUInt32 p_size) : m_maxSize(p_size), CtBlockData(CtBlockDataType::CtRawData) {
+    EXPORTED_API CtRawData(CtUInt32 p_size) : m_maxSize(p_size) {
         m_data = new CtUInt8[m_maxSize];
         m_size = 0;
     };
 
-    EXPORTED_API CtRawData(CtRawData& p_data) : m_maxSize(p_data.maxSize()), CtBlockData(CtBlockDataType::CtRawData) {
+    EXPORTED_API CtRawData(CtRawData& p_data) : m_maxSize(p_data.maxSize()) {
         m_data = new CtUInt8[m_maxSize];
         clone(p_data);
     };
 
-    EXPORTED_API virtual ~CtRawData() override {
+    EXPORTED_API virtual ~CtRawData() {
         delete[] m_data;
     }
 
@@ -137,34 +95,14 @@ public:
         memcpy(m_data, p_data.get(), p_data.size());
     }
 
+    EXPORTED_API void reset() {
+        m_size = 0;
+    }
+
 private:
     CtUInt8* m_data;
     CtUInt32 m_size;
     const CtUInt32 m_maxSize;
-};
-
-class CtTextData : public CtBlockData {
-public:
-    EXPORTED_API CtTextData(CtString& p_text) : CtBlockData(CtBlockDataType::CtTextData) {
-        set(p_text);
-    };
-
-    EXPORTED_API CtTextData() : CtBlockData(CtBlockDataType::CtTextData) {
-    };
-
-    EXPORTED_API ~CtTextData() {
-    };
-
-    EXPORTED_API CtString get() {
-        return m_text;
-    }
-
-    EXPORTED_API void set(CtString s_text) {
-        m_text.assign(s_text);
-    }
-
-private:
-    CtString m_text;
 };
 
 #endif //INCLUDE_CTBLOCKDATA_HPP_

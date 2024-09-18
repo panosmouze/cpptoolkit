@@ -23,36 +23,58 @@ SOFTWARE.
 */
 
 /**
- * @file CtTextFileSource.hpp
+ * @file CtFileInput.hpp
  * @brief 
- * @date 10-03-2024
+ * @date 08-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTTEXTFILESOURCE_HPP_
-#define INCLUDE_CTTEXTFILESOURCE_HPP_
+#ifndef INCLUDE_CTFILEINPUT_HPP_
+#define INCLUDE_CTFILEINPUT_HPP_
 
-#include "io/sources/CtFileSource.hpp"
+#include "definitions.hpp"
+#include "CtDatatypes.hpp"
 
-class CtTextFileSource : public CtFileSource {
+#include <fstream>
+#include <sstream>
+#include <cstring>
+
+class CtFileInput {
 public:
     /**
-     * @brief Constructs the CtFileSource object.
+     * @brief Constructs the CtFileInput object.
      * 
      * @param p_fileName Filename.
      */
-    EXPORTED_API CtTextFileSource(const std::string& p_fileName);
+    EXPORTED_API CtFileInput(const std::string& p_fileName);
 
     /**
-     * @brief Destructor for CtFileSource.
+     * @brief Destructor for CtFileInput.
      *
      * Performs any necessary cleanup.
      */
-    EXPORTED_API ~CtTextFileSource();
+    EXPORTED_API ~CtFileInput();
 
-protected:
-    EXPORTED_API virtual CtUInt32 read(CtBlockDataPtr& p_data) override;
-    EXPORTED_API virtual CtBlockDataPtr newResource() override;
+    /**
+     * @brief Set the the delimiter of read() method.
+     * 
+     * @param p_delim The delimiter.
+     * @param p_delim_size The delimiter size.
+     */
+    EXPORTED_API void setDelimiter(const char* p_delim, CtUInt8 p_delim_size);
+
+    /**
+     * @brief This method read data from the file.
+     * 
+     * @param p_data Where to store the data read
+     * @return bool Returns True on success or False on EOF.
+     */
+    EXPORTED_API bool read(CtRawData* p_data);
+
+private:
+    std::ifstream m_file; ///< File stream.
+    char* m_delim; ///< Batch read delimiter.
+    CtUInt8 m_delim_size; ///< Delimeter size.
 };
 
-#endif //INCLUDE_CTTEXTFILESOURCE_HPP_
+#endif //INCLUDE_CTFILEINPUT_HPP_

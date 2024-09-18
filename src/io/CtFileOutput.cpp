@@ -23,20 +23,19 @@ SOFTWARE.
 */
 
 /**
- * @file CtFileSink.cpp
+ * @file CtFileOutput.cpp
  * @brief 
  * @date 09-03-2024
  * 
  */
 
-#include "io/sinks/CtFileSink.hpp"
+#include "io/CtFileOutput.hpp"
 
 #include "exceptions/CtFileExceptions.hpp"
 
 #include <memory>
 
-CtFileSink::CtFileSink(const std::string& p_fileName, WriteMode p_mode) {
-    CtBlock::setInVectorTypes({CtBlockDataType::CtRawData});
+CtFileOutput::CtFileOutput(const std::string& p_fileName, WriteMode p_mode) {
     switch (p_mode) {
         case WriteMode::Append:
             m_file.open(p_fileName, std::ios::out | std::ios::app);
@@ -51,14 +50,13 @@ CtFileSink::CtFileSink(const std::string& p_fileName, WriteMode p_mode) {
     }
 }
 
-CtFileSink::~CtFileSink() {
-    stopSink();
+CtFileOutput::~CtFileOutput() {
     if (m_file.is_open()) {
         m_file.close();
     }
 }
 
-void CtFileSink::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
+void CtFileOutput::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
     if (p_delim_size > 0 && p_delim != nullptr) {
         m_delim_size = p_delim_size;
         m_delim.reset();
@@ -67,14 +65,11 @@ void CtFileSink::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
     }
 }
 
-CtUInt32 CtFileSink::write(CtBlockDataPtr& p_data) {
-    CtUInt32 eventCode = CTEVENT_DATA_OUT_FAIL;
+void CtFileOutput::write(CtRawData* p_data) {
     if (m_file.is_open()) {
-        CtRawData* s_data = (CtRawData*) p_data.get();
-        m_file.write((char*)s_data->get(), s_data->size());
+        m_file.write((char*)p_data->get(), p_data->size());
         m_file.write(m_delim.get(), m_delim_size);
-        eventCode = CTEVENT_DATA_OUT;
+    } else {
+        throw CtFileWriteError("File is not open.");
     }
-
-    return eventCode;
 }

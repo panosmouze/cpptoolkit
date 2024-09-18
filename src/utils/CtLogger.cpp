@@ -37,10 +37,6 @@ CtLogger::CtLogger(CtLogger::Level level, const std::string& componentName) : m_
 CtLogger::~CtLogger() {
 }
 
-void CtLogger::addSink(CtSink* sink) {
-    m_sinks.push_back(sink);
-}
-
 void CtLogger::log_debug(const std::string& message) {
     log(CtLogger::Level::DEBUG, message);
 }
@@ -64,11 +60,7 @@ void CtLogger::log_critical(const std::string& message) {
 void CtLogger::log(CtLogger::Level level, const std::string& message) {
     if (level >= m_level) {
         std::string logEntry = generateLoggerMsg(level, m_componentName, message);
-
-        for (CtSink* s_sink: m_sinks) {
-            CtBlockDataPtr s_data(new CtTextData(logEntry));
-            s_sink->setData({s_data});
-        }
+        std::cout << logEntry << std::endl;
     }
 }
 

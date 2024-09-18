@@ -34,13 +34,15 @@ SOFTWARE.
 
 
 #include "definitions.hpp"
+#include "CtDatatypes.hpp"
 
-#include "io/sources/CtTextFileSource.hpp"
-#include "io/sinks/CtTextFileSink.hpp"
+#include "io/CtFileOutput.hpp"
+#include "io/CtFileInput.hpp"
 
 #include <fstream>
 #include <string>
 #include <map>
+#include <mutex>
 
 /**
  * @class CtConfig
@@ -181,8 +183,8 @@ private:
 
 private:
     std::mutex m_mtx_control; ///< Internal mutex for synchronization.
-    CtTextFileSource* m_source;
-    CtTextFileSink* m_sink;
+    CtFileInput* m_source;
+    CtFileOutput* m_sink;
     std::string m_configFile; /**< The path to the configuration file. */
     std::map<std::string, std::string> m_configValues; /**< A map to store configuration key-value pairs. */
 };

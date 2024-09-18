@@ -23,17 +23,19 @@ SOFTWARE.
 */
 
 /**
- * @file CtBlockType.hpp
+ * @file ex10_logger.cpp
  * @brief 
- * @date 07-03-2024
+ * @date 10-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTBLOCKTYPE_HPP_
-#define INCLUDE_CTBLOCKTYPE_HPP_
+#include "utils/CtLogger.hpp"
 
-enum class CtBlockType {
-    CtBlock
-};
-
-#endif //INCLUDE_CTBLOCKTYPE_HPP_
+int main() {
+    CtLogger logger(CtLogger::Level::WARNING, "EX10");
+    logger.log_debug("log_debug log 1");
+    logger.log_info("log_info log 1");
+    logger.log_warning("log_warning log 1");
+    logger.log_error("log_error log 1");
+    logger.log_critical("log_critical log 1");
+}

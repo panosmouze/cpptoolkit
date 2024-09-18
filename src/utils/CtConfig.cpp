@@ -31,8 +31,8 @@ SOFTWARE.
 
 #include "utils/CtConfig.hpp"
 
-#include "io/sources/CtTextFileSource.hpp"
-#include "io/sinks/CtTextFileSink.hpp"
+#include "io/CtFileInput.hpp"
+#include "io/CtFileOutput.hpp"
 
 #include "exceptions/CtFileExceptions.hpp"
 #include "exceptions/CtTypeExceptions.hpp"
@@ -58,17 +58,13 @@ CtConfig::~CtConfig() {
 
 void CtConfig::read() {
     std::scoped_lock lock(m_mtx_control);
-    m_source = new CtTextFileSource(m_configFile);
-    m_source->connectEvent(CTEVENT_EOF, [this]{
-        m_source->stopSourceRequest();
-    });
-    m_source->startSource();
-    m_source->joinSource();
+    m_source = new CtFileInput(m_configFile);
 
-    while(m_source->hasData()) {
-        std::vector<CtBlockDataPtr> sourceData = m_source->getData();
-        CtTextData* line = (CtTextData*)sourceData.at(0).get();
-        parseLine(line->get());
+    CtRawData data(512);
+
+    while(m_source->read(&data)) {
+        parseLine(std::string((char*)data.get(), data.size()));
+        data.reset();
     }
 
     delete m_source;
@@ -77,17 +73,17 @@ void CtConfig::read() {
 
 void CtConfig::write() {
     std::scoped_lock lock(m_mtx_control);
-    m_sink = new CtTextFileSink(m_configFile, CtFileSink::WriteMode::Truncate);
+    m_sink = new CtFileOutput(m_configFile, CtFileOutput::WriteMode::Truncate);
     std::map<std::string, std::string>::iterator iter;
     std::string line;
+
+    CtRawData data(512);
     for (iter = m_configValues.begin(); iter != m_configValues.end(); iter++) {
         line = iter->first + std::string(" = ") + iter->second;
-        CtTextData* data = new CtTextData(line);
-        CtBlockDataPtr sinkData(data);
-        m_sink->setData({sinkData});
+        data.clone((CtUInt8*)line.c_str(), line.size());
+        m_sink->write(&data);
+        data.reset();
     }
-
-    m_sink->joinSink();
 
     delete m_sink;
     m_sink = nullptr;

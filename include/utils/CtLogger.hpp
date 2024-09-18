@@ -33,12 +33,13 @@ SOFTWARE.
 #define INCLUDE_CTLOGGER_HPP_
 
 #include "definitions.hpp"
-#include "io/CtSink.hpp"
+#include "io/CtFileOutput.hpp"
 
 #include <string>
 #include <iomanip>
 #include <chrono>
 #include <vector>
+#include <iostream>
 
 /**
  * @brief A simple logger with log levels and timestamp.
@@ -62,13 +63,6 @@ public:
      * @brief Destructor.
      */
     EXPORTED_API ~CtLogger();
-
-    /**
-     * @brief This method adds a new sink to the logger.
-     * 
-     * @param sink The sink to vbe added.
-     */
-    EXPORTED_API void addSink(CtSink* sink);
 
     /**
      * @brief Log a message with debug log level.
@@ -143,7 +137,7 @@ private:
 private:
     CtLogger::Level m_level; ///< Level of message logging.
     std::string m_componentName; ///< Component name.
-    std::vector<CtSink*> m_sinks; ///< Vector containing sinks.
+    bool m_verbose; ///< Print to terminal or not.
 };
 
 #endif //INCLUDE_CTLOGGER_HPP_
