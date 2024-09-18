@@ -59,6 +59,7 @@ CtConfig::~CtConfig() {
 void CtConfig::read() {
     std::scoped_lock lock(m_mtx_control);
     m_source = new CtFileInput(m_configFile);
+    m_source->setDelimiter("\n", 1);
 
     CtRawData data(512);
 
@@ -74,6 +75,7 @@ void CtConfig::read() {
 void CtConfig::write() {
     std::scoped_lock lock(m_mtx_control);
     m_sink = new CtFileOutput(m_configFile, CtFileOutput::WriteMode::Truncate);
+    m_sink->setDelimiter("\n", 1);
     std::map<std::string, std::string>::iterator iter;
     std::string line;
 
