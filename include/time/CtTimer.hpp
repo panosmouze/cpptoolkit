@@ -33,6 +33,8 @@ SOFTWARE.
 #define INCLUDE_CTTIMER_HPP_
 
 #include "definitions.hpp"
+#include "CtTypes.hpp"
+
 #include <chrono>
 
 /**

@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTSOCKETUDP_HPP_
 
 #include "definitions.hpp"
+#include "CtTypes.hpp"
 #include "networking/sockets/CtSocketHelpers.hpp"
 
 #include <cstring>

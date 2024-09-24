@@ -34,5 +34,7 @@ SOFTWARE.
 
 #include "utils/CtTask.hpp"
 #include "utils/CtObject.hpp"
+#include "utils/CtLogger.hpp"
+#include "utils/CtConfig.hpp"
 
 #endif //INCLUDE_CTUTILS_HPP_

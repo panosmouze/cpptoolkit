@@ -33,7 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTFILEINPUT_HPP_
 
 #include "definitions.hpp"
-#include "CtDatatypes.hpp"
+#include "CtTypes.hpp"
 
 #include <fstream>
 #include <sstream>

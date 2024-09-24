@@ -34,7 +34,7 @@ SOFTWARE.
 
 
 #include "definitions.hpp"
-#include "CtDatatypes.hpp"
+#include "CtTypes.hpp"
 
 #include "io/CtFileOutput.hpp"
 #include "io/CtFileInput.hpp"

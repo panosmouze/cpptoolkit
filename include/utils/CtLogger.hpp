@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTLOGGER_HPP_
 
 #include "definitions.hpp"
+#include "CtTypes.hpp"
 #include "io/CtFileOutput.hpp"
 
 #include <string>

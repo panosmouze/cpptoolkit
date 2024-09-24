@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTOBJECT_HPP_
 
 #include "definitions.hpp"
+#include "CtTypes.hpp"
 
 #include "utils/CtTask.hpp"
 #include "threading/CtWorkerPool.hpp"

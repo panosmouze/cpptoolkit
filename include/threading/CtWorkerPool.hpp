@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTWORKERPOOL_HPP_
 
 #include "definitions.hpp"
+#include "CtTypes.hpp"
 #include "threading/CtWorker.hpp"
 #include "threading/CtThread.hpp"
 #include "utils/CtTask.hpp"

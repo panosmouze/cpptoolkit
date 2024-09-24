@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTSOCKETHELPERS_HPP_
 
 #include "definitions.hpp"
+#include "CtTypes.hpp"
 
 #include "exceptions/CtNetworkExceptions.hpp"
 

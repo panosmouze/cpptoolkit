@@ -32,8 +32,12 @@ SOFTWARE.
 #ifndef INCLUDE_CTTYPES_HPP_
 #define INCLUDE_CTTYPES_HPP_
 
+#include "definitions.hpp"
+
 #include <stdint.h>
 #include <string>
+#include <cstring>
+#include <memory>
 
 #define CtUInt8 uint8_t
 #define CtUInt16 uint16_t
@@ -66,5 +70,77 @@ typedef struct _CtNetMessage {
     CtUInt8 data[CTNET_BUFFER_SIZE];
     CtUInt32 size = CTNET_BUFFER_SIZE;
 } CtNetMessage;
+
+/**
+ * @brief Struct describing raw data.
+ * 
+ */
+class CtRawData {
+public:
+    EXPORTED_API CtRawData(CtUInt32 p_size) : m_maxSize(p_size) {
+        m_data = new CtUInt8[m_maxSize];
+        m_size = 0;
+    };
+
+    EXPORTED_API CtRawData(CtRawData& p_data) : m_maxSize(p_data.maxSize()) {
+        m_data = new CtUInt8[m_maxSize];
+        clone(p_data);
+    };
+
+    EXPORTED_API virtual ~CtRawData() {
+        delete[] m_data;
+    }
+
+    EXPORTED_API void nextByte(char byte) {
+        if (m_size < m_maxSize) {
+            m_data[m_size++] = byte;
+        }
+    }
+
+    EXPORTED_API CtUInt8* getNLastBytes(CtUInt32 p_num) {
+        return &m_data[m_size - p_num];
+    }
+
+    EXPORTED_API void removeNLastBytes(CtUInt32 p_num) {
+        m_size -= p_num;
+    }
+
+    EXPORTED_API CtUInt32 size() {
+        return m_size;
+    }
+
+    EXPORTED_API CtUInt32 maxSize() {
+        return m_maxSize;
+    }
+
+    EXPORTED_API CtUInt8* get() {
+        return m_data;
+    }
+
+    EXPORTED_API void clone(CtUInt8* p_data, CtUInt32 p_size) {
+        if (p_size > m_maxSize) {
+            //throw
+        }
+        m_size = p_size;
+        memcpy(m_data, p_data, p_size);
+    }
+
+    EXPORTED_API void clone(CtRawData& p_data) {
+        if (p_data.size() > m_maxSize) {
+            //throw
+        }
+        m_size = p_data.size();
+        memcpy(m_data, p_data.get(), p_data.size());
+    }
+
+    EXPORTED_API void reset() {
+        m_size = 0;
+    }
+
+private:
+    CtUInt8* m_data;
+    CtUInt32 m_size;
+    const CtUInt32 m_maxSize;
+};
 
 #endif //INCLUDE_CTTYPES_HPP_
