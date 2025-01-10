@@ -38,6 +38,8 @@ SOFTWARE.
 #include <string>
 #include <cstring>
 #include <memory>
+#include <string>
+#include <vector>
 
 #define CtUInt8 uint8_t
 #define CtUInt16 uint16_t
@@ -49,9 +51,36 @@ SOFTWARE.
 #define CtInt32 int32_t
 #define CtInt64 int64_t
 
-#define CtString std::string
+#define CtChar char
 
 #define CTNET_BUFFER_SIZE 2048
+
+class CtString : public std::string {
+public:
+    using std::string::string;
+
+    explicit CtString(const std::string& str) : std::string(str) {}
+
+    void split(char delimiter, std::vector<CtString> *result) const {
+        std::string::size_type start = 0;
+        auto end = find(delimiter);
+
+        while (end != std::string::npos) {
+            result->push_back((CtString)trim(substr(start, end - start)));
+            start = end + 1;
+            end = find(delimiter, start);
+        }
+        
+        result->push_back((CtString)trim(substr(start)));
+    }
+
+    CtString trim(const std::string& s) const {
+        auto start = s.find_first_not_of(" \t\n");
+        auto end = s.find_last_not_of(" \t\n");
+        return (CtString)((start == std::string::npos) ? "" : s.substr(start, end - start + 1));
+    }
+};
+
 
 /**
  * @brief Struct describing a network address.

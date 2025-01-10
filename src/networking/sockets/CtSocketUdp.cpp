@@ -117,7 +117,7 @@ void CtSocketUdp::receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_clie
     }
 
     if (p_client != nullptr) {
-        p_client->addr = CtSocketHelpers::getAddressAsString(*(CtUInt32*)(&s_clientAddress_in.sin_addr));
+        p_client->addr = (CtString)CtSocketHelpers::getAddressAsString(*(CtUInt32*)(&s_clientAddress_in.sin_addr));
         p_client->port = s_clientAddress_in.sin_port;
     }
 
