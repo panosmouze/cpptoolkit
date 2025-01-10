@@ -29,7 +29,7 @@ SOFTWARE.
  * 
  */
 
-#include "utils/CtConfig.hpp"
+#include "cpptoolkit.hpp"
 
 #include <iostream>
 

@@ -23,19 +23,24 @@ SOFTWARE.
 */
 
 /**
- * @file ex10_logger.cpp
+ * @file cpptoolkit.hpp
  * @brief 
- * @date 10-03-2024
+ * @date 10-01-2025
  * 
  */
 
-#include "cpptoolkit.hpp"
+#ifndef INCLUDE_CPPTOOLKIT_HPP_
+#define INCLUDE_CPPTOOLKIT_HPP_
 
-int main() {
-    CtLogger logger(CtLogger::Level::WARNING, "EX10");
-    logger.log_debug("log_debug log 1");
-    logger.log_info("log_info log 1");
-    logger.log_warning("log_warning log 1");
-    logger.log_error("log_error log 1");
-    logger.log_critical("log_critical log 1");
-}
+#include "version.hpp"
+#include "definitions.hpp"
+#include "CtTypes.hpp"
+
+#include "exceptions/CtExceptions.hpp"
+#include "io/CtIO.hpp"
+#include "networking/CtNetworking.hpp"
+#include "threading/CtThreading.hpp"
+#include "time/CtTime.hpp"
+#include "utils/CtUtils.hpp"
+
+#endif // INCLUDE_CPPTOOLKIT_HPP_

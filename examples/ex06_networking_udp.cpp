@@ -31,9 +31,7 @@ SOFTWARE.
  * 
  */
 
-#include "CtNetworking.hpp"
-#include "CtThreading.hpp"
-#include "CtUtils.hpp"
+#include "cpptoolkit.hpp"
 
 #include <iostream>
 
