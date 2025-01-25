@@ -30,7 +30,7 @@ SOFTWARE.
  */
 
 #include <gtest/gtest.h>
-#include "CtThreading.hpp"
+#include "cpptoolkit.hpp"
 
 void f1(bool* flag) {
     *flag = true;

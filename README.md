@@ -18,7 +18,6 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
 ## Todo
 - [ ] Implement unit tests using gtest.
 - [ ] Design and develop TCP socket communication.
-- [ ] Check Windows compatibility.
 
 ## Installation
 
