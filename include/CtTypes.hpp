@@ -33,6 +33,7 @@ SOFTWARE.
 #define INCLUDE_CTTYPES_HPP_
 
 #include "definitions.hpp"
+#include "exceptions/CtTypeExceptions.hpp"
 
 #include <stdint.h>
 #include <string>
@@ -148,7 +149,7 @@ public:
 
     EXPORTED_API void clone(CtUInt8* p_data, CtUInt32 p_size) {
         if (p_size > m_maxSize) {
-            //throw
+            throw CtOutOfRangeError("Data size is out of range.");
         }
         m_size = p_size;
         memcpy(m_data, p_data, p_size);
@@ -156,7 +157,7 @@ public:
 
     EXPORTED_API void clone(CtRawData& p_data) {
         if (p_data.size() > m_maxSize) {
-            //throw
+            throw CtOutOfRangeError("Data size is out of range.");
         }
         m_size = p_data.size();
         memcpy(m_data, p_data.get(), p_data.size());
