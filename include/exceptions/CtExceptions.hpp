@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtExceptions.hpp
- * @brief 
+ * @brief Master header file for the exceptions in the cpptoolkit library.
  * @date 18-01-2024
  * 
  */

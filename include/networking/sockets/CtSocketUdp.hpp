@@ -100,7 +100,7 @@ public:
      * @brief Send data over the socket.
      * @param p_message Struct containing the message to sent.
      */
-    EXPORTED_API void send(CtNetMessage& p_message);
+    EXPORTED_API void send(CtRawData& p_message);
 
     /**
      * @brief Receive data from the socket.
@@ -116,7 +116,7 @@ public:
      * @param p_message Struct to store the message received.
      * @param p_clientAddress Pointer to a CtNetAddress object to store the client's address (output parameter).
      */
-    EXPORTED_API void receive(CtNetMessage* p_message, CtNetAddress* p_clientAddress = nullptr);
+    EXPORTED_API void receive(CtRawData* p_message, CtNetAddress* p_clientAddress = nullptr);
 
 private:
     int m_addrType;                         /**< The socket domain (IPv4 or IPv6). */

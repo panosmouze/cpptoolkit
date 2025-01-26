@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtNetworkExceptions.hpp
- * @brief 
+ * @brief CtNetworkExceptions header file.
  * @date 18-01-2024
  * 
  */
@@ -34,26 +34,46 @@ SOFTWARE.
 
 #include "exceptions/CtException.hpp"
 
+/**
+ * @brief This exception is thrown when a socket error occurs.
+ * 
+ */
 class CtSocketError : public CtException {
 public:
     explicit CtSocketError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a socket bind error occurs.
+ * 
+ */
 class CtSocketBindError : public CtException {
 public:
     explicit CtSocketBindError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a socket listen error occurs.
+ * 
+ */
 class CtSocketPollError : public CtException {
 public:
     explicit CtSocketPollError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a socket accept error occurs.
+ * 
+ */
 class CtSocketReadError : public CtException {
 public:
     explicit CtSocketReadError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a socket connect error occurs.
+ * 
+ */
 class CtSocketWriteError : public CtException {
 public:
     explicit CtSocketWriteError(const std::string& msg): CtException(msg) {};

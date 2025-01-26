@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtTask.hpp
- * @brief 
+ * @brief CtTask class header file.
  * @date 18-01-2024
  * 
  */
@@ -34,24 +34,31 @@ SOFTWARE.
 
 #include "definitions.hpp"
 #include "CtTypes.hpp"
+
 #include <functional>
 
 /**
- * @class CtTask
  * @brief Represents a task class that encapsulates a callable function (task) and a callback function.
+ *    The task function is the main function that will be executed. The callback function is the function 
+ *    that will be executed after the task function. The task and callback functions can have arguments.
+ *    This method can be used to organise a specific functionality and post process of it in a single object.
+ *    
  */
 class CtTask {
 public:
     /**
      * @brief Default constructor for CtTask.
      * Initializes task and callback with empty lambda functions.
+     * 
      */
     EXPORTED_API CtTask();
 
     /**
      * @brief Copy constructor for CtTask.
      * Copies the task and callback from another CtTask object.
+     * 
      * @param other The CtTask object to copy.
+     * 
      */
     EXPORTED_API CtTask(const CtTask& other);
 
@@ -61,33 +68,43 @@ public:
     EXPORTED_API ~CtTask();
 
     /**
-     * @brief Set the main task function.
+     * @brief Set the main task function. The task function can also have arguments.
+     * 
      * @tparam F Type of the callable function.
      * @tparam FArgs Types of the arguments for the callable function.
+     * 
      * @param func The callable function.
      * @param fargs The arguments for the callable function.
+     * 
+     * @return void
      */
     template <typename F, typename... FArgs>
     EXPORTED_API void setTaskFunc(F&& func, FArgs&&... fargs);
 
     /**
-     * @brief Set the callback function.
+     * @brief Set the callback function. The callback function can also have arguments.
+     * 
      * @tparam C Type of the callable function.
      * @tparam CArgs Types of the arguments for the callable function.
+     * 
      * @param callback The callable function.
      * @param cargs The arguments for the callable function.
+     * 
+     * @return void
      */
     template <typename C, typename... CArgs>
     EXPORTED_API void setCallbackFunc(C&& callback, CArgs&&... cargs);
 
     /**
      * @brief Get the main task function.
+     * 
      * @return The main task function.
      */
     EXPORTED_API std::function<void()> getTaskFunc();
 
     /**
      * @brief Get the callback function.
+     * 
      * @return The callback function.
      */
     EXPORTED_API std::function<void()> getCallbackFunc();
@@ -95,14 +112,16 @@ public:
     /**
      * @brief Assignment operator for CtTask.
      * Copies the task and callback from another CtTask object.
+     * 
      * @param other The CtTask object to copy.
-     * @return Reference to the current CtTask object.
+     * 
+     * @return CtTask& Reference to the current CtTask object.
      */
     EXPORTED_API CtTask& operator=(const CtTask& other);
 
 private:
-    std::function<void()> m_task; /**< The main task function. */
-    std::function<void()> m_callback; /**< The callback function. */
+    std::function<void()> m_task;           // The main task function
+    std::function<void()> m_callback;       // The callback function
 };
 
 template <typename F, typename... FArgs>

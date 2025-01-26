@@ -76,9 +76,9 @@ void worker1Func() {
     /* Wait for incoming msg */
     while(true) {
         if (socket1.pollRead()) {
-            CtNetMessage msg;
+            CtRawData msg;
             socket1.receive(&msg);
-            DummyData* data = (DummyData*)msg.data;
+            DummyData* data = (DummyData*)msg.get();
             std::cout << ("receive data from id: " + std::to_string(data->id) + ", name: " + data->name) << std::endl;
 
 
@@ -110,9 +110,9 @@ void worker2Func() {
             /* Wait response msg */
             while(true) {
                 if (socket2.pollRead()) {
-                    CtNetMessage msg;
+                    CtRawData msg;
                     socket2.receive(&msg);
-                    DummyData* data = (DummyData*)msg.data;
+                    DummyData* data = (DummyData*)msg.get();
                     std::cout << ("receive data from id: " + std::to_string(data->id) + ", name: " + data->name) << std::endl;
                     break;
                 }
