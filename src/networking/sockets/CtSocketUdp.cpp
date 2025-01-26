@@ -103,8 +103,8 @@ void CtSocketUdp::send(uint8_t* p_data, CtUInt32 p_size) {
     }
 }
 
-void CtSocketUdp::send(CtNetMessage& p_message) {
-    send(p_message.data, p_message.size);
+void CtSocketUdp::send(CtRawData& p_message) {
+    send(p_message.get(), p_message.size());
 }
 
 void CtSocketUdp::receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_client) {
@@ -124,6 +124,9 @@ void CtSocketUdp::receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_clie
     p_data[bytesRead] = '\0';
 }
 
-void CtSocketUdp::receive(CtNetMessage* p_message, CtNetAddress* p_client) {
-    receive(p_message->data, p_message->size, p_client);
+void CtSocketUdp::receive(CtRawData* p_message, CtNetAddress* p_client) {
+    uint8_t* s_buffer = new uint8_t[p_message->maxSize()];
+    receive(s_buffer, p_message->maxSize(), p_client);
+    p_message->clone(s_buffer, p_message->maxSize());
+    delete[] s_buffer;
 }

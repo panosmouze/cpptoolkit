@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtThreadExceptions.hpp
- * @brief 
+ * @brief CtThreadExceptions header file.
  * @date 18-01-2024
  * 
  */
@@ -34,16 +34,28 @@ SOFTWARE.
 
 #include "exceptions/CtException.hpp"
 
+/**
+ * @brief This exception is thrown when a thread error occurs.
+ * 
+ */
 class CtThreadError : public CtException {
 public:
     explicit CtThreadError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a service pool error occurs.
+ * 
+ */
 class CtServiceError : public CtException {
 public:
     explicit CtServiceError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a worker error occurs.
+ * 
+ */
 class CtWorkerError : public CtException {
 public:
     explicit CtWorkerError(const std::string& msg): CtException(msg) {};

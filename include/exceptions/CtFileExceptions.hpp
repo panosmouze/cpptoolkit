@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtFileExceptions.hpp
- * @brief 
+ * @brief CtFileExceptions header file.
  * @date 10-03-2024
  * 
  */
@@ -34,16 +34,28 @@ SOFTWARE.
 
 #include "exceptions/CtException.hpp"
 
+/**
+ * @brief This exception is thrown when a file cannot be read.
+ * 
+ */
 class CtFileReadError : public CtException {
 public:
     explicit CtFileReadError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a file cannot be written.
+ * 
+ */
 class CtFileWriteError : public CtException {
 public:
     explicit CtFileWriteError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a file cannot be parsed.
+ * 
+ */
 class CtFileParseError : public CtException {
 public:
     explicit CtFileParseError(const std::string& msg): CtException(msg) {};

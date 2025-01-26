@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtTypeExceptions.hpp
- * @brief 
+ * @brief CtTypeExceptions header file.
  * @date 10-03-2024
  * 
  */
@@ -34,19 +34,31 @@ SOFTWARE.
 
 #include "exceptions/CtException.hpp"
 
+/**
+ * @brief This exception is thrown when a type cannot be parsed.
+ * 
+ */
 class CtTypeParseError : public CtException {
 public:
     explicit CtTypeParseError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when a key is not found in a container.
+ * 
+ */
 class CtKeyNotFoundError : public CtException {
 public:
     explicit CtKeyNotFoundError(const std::string& msg): CtException(msg) {};
 };
 
-class CtDataTypeInvalid : public CtException {
+/**
+ * @brief This exception is thrown when an index is out of bounds.
+ * 
+ */
+class CtOutOfRangeError : public CtException {
 public:
-    explicit CtDataTypeInvalid(const std::string& msg): CtException(msg) {};
+    explicit CtOutOfRangeError(const std::string& msg): CtException(msg) {};
 };
 
 class CtOutOfRangeError : public CtException {

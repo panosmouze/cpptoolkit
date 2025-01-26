@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtEventExceptions.hpp
- * @brief 
+ * @brief CtEventExceptions header file.
  * @date 02-02-2024
  * 
  */
@@ -34,11 +34,19 @@ SOFTWARE.
 
 #include "exceptions/CtException.hpp"
 
+/**
+ * @brief This exception is thrown when an event does not exist in the event manager.
+ * 
+ */
 class CtEventNotExistsError : public CtException {
 public:
     explicit CtEventNotExistsError(const std::string& msg): CtException(msg) {};
 };
 
+/**
+ * @brief This exception is thrown when an event already exists in the event manager.
+ * 
+ */
 class CtEventAlreadyExistsError : public CtException {
 public:
     explicit CtEventAlreadyExistsError(const std::string& msg): CtException(msg) {};

@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtException.hpp
- * @brief 
+ * @brief CtException header file.
  * @date 18-01-2024
  * 
  */
@@ -34,17 +34,32 @@ SOFTWARE.
 
 #include <stdexcept>
 
+/**
+ * @brief An exception class for the cpptoolkit library. This is an abstract class derived from std::exception
+ *      and is used as a base class for all the exceptions in the library.
+ * 
+ */
 class CtException : public std::exception {
 protected:
+    /**
+     * @brief Construct a new Ct Exception object
+     * 
+     * @param msg Message to be stored in the exception.
+     */
     explicit CtException(const std::string& msg) : m_msg(msg) {};
 
 public:
+    /**
+     * @brief This method returns the message stored in the exception.
+     * 
+     * @return const char* the message stored in the exception.
+     */
     const char* what() const noexcept override {
         return m_msg.c_str();
     };
 
 private:
-    std::string m_msg;
+    std::string m_msg;                      // The message stored in the exception.
 };
 
 #endif //INCLUDE_CTEXCEPTION_HPP_
