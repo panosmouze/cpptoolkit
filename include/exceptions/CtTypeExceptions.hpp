@@ -61,9 +61,4 @@ public:
     explicit CtOutOfRangeError(const std::string& msg): CtException(msg) {};
 };
 
-class CtOutOfRangeError : public CtException {
-public:
-    explicit CtOutOfRangeError(const std::string& msg): CtException(msg) {};
-};
-
 #endif //INCLUDE_CTTYPEEXCEPTIONS_HPP_
