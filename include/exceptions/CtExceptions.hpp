@@ -37,5 +37,6 @@ SOFTWARE.
 #include "exceptions/CtNetworkExceptions.hpp"
 #include "exceptions/CtEventExceptions.hpp"
 #include "exceptions/CtFileExceptions.hpp"
+#include "exceptions/CtTypeExceptions.hpp"
 
 #endif //INCLUDE_CTEXCEPTIONS_HPP_
