@@ -49,7 +49,7 @@ public:
     /**
      * @brief Constructor for CtWorker.
      */
-    EXPORTED_API CtWorker();
+    EXPORTED_API explicit CtWorker();
 
     /**
      * @brief Destructor for CtWorker.
@@ -79,7 +79,7 @@ public:
      * @param callback The callback function to be executed after the task is completed.
      *                 Default is an empty lambda function.
      */
-    EXPORTED_API void setTask(CtTask& task, std::function<void()> callback = []{});
+    EXPORTED_API void setTask(const CtTask& task, std::function<void()> callback = []{});
 
     /**
      * @brief Set a task function for the worker to execute.
@@ -88,7 +88,7 @@ public:
      * @param fargs The arguments of the executed task function.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API void setTaskFunc(F&& func, FArgs&&... fargs);
+    EXPORTED_API void setTaskFunc(const F&& func, FArgs&&... fargs);
 
 private:
     /**
@@ -109,7 +109,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-void CtWorker::setTaskFunc(F&& func, FArgs&&... fargs) {
+void CtWorker::setTaskFunc(const F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     setTask(s_task);

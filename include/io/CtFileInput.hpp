@@ -46,7 +46,7 @@ public:
      * 
      * @param p_fileName Filename.
      */
-    EXPORTED_API CtFileInput(const std::string& p_fileName);
+    EXPORTED_API explicit CtFileInput(const std::string& p_fileName);
 
     /**
      * @brief Destructor for CtFileInput.

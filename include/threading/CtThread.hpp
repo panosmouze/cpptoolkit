@@ -81,7 +81,7 @@ protected:
     /**
      * @brief Join the thread, waiting for it to finish.
      */
-    EXPORTED_API void join();
+    EXPORTED_API virtual void join();
 
     /**
      * @brief Virtual function to be overridden by derived classes.

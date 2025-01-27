@@ -43,7 +43,7 @@ CtWorkerPool::~CtWorkerPool() {
     free();
 }
 
-void CtWorkerPool::addTask(CtTask& task) {
+void CtWorkerPool::addTask(const CtTask& task) {
     std::scoped_lock lock(m_mtx_control);
     m_tasks.push(task);
     m_queued_tasks++;
@@ -62,7 +62,7 @@ void CtWorkerPool::assignTask(CtUInt32 idx) {
     try {
         m_workers.at(idx).get()->setTask(m_tasks.front(), [this](){m_active_tasks--;});
         m_workers.at(idx).get()->runTask();
-    } catch (CtWorkerError& e) {
+    } catch (const CtWorkerError& e) {
         return;
     }
     m_active_tasks++;

@@ -54,7 +54,7 @@ public:
      * @brief Constructor for CtConfig.
      * @param configFile The path to the configuration file to be parsed.
      */
-    EXPORTED_API CtConfig(const std::string& p_configFile);
+    EXPORTED_API explicit CtConfig(const std::string& p_configFile);
 
     /**
      * @brief Destructor for cleaning up resources.

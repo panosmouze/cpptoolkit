@@ -31,14 +31,10 @@ SOFTWARE.
 
 #include "utils/CtTask.hpp"
 
-CtTask::CtTask() {
-    m_task = []{};
-    m_callback = []{};
+CtTask::CtTask() : m_task([]{}), m_callback([]{}) {
 }
 
-CtTask::CtTask(const CtTask& other) {
-    m_task = other.m_task;
-    m_callback = other.m_callback;
+CtTask::CtTask(const CtTask& other) : m_task(other.m_task), m_callback(other.m_callback) {
 }
 
 CtTask::~CtTask() {

@@ -34,7 +34,7 @@ SOFTWARE.
 
 CtUInt32 CtService::m_slot_time = 10;
 
-CtService::CtService(uint64_t nslots, CtTask& task) : m_nslots(nslots){
+CtService::CtService(CtUInt64 nslots, const CtTask& task) : m_nslots(nslots){
     m_worker.setTask(task);
     runService();
 }
@@ -46,7 +46,7 @@ CtService::~CtService() {
 void CtService::runService() {
     try {
         start();
-    } catch(CtThreadError& e) {
+    } catch(const CtThreadError& e) {
 
     }
 }
@@ -59,7 +59,7 @@ void CtService::stopService() {
 void CtService::loop() {
     try {
         m_worker.runTask();
-    } catch(CtWorkerError& e) {
+    } catch(const CtWorkerError& e) {
 
     }
     CtThread::sleepFor(m_nslots*m_slot_time);

@@ -65,7 +65,7 @@ public:
      * @param nworkers The number of worker threads in the service pool.
      * @param slot_time The time interval for each "slot" in milliseconds. Default is 10 milliseconds.
      */
-    EXPORTED_API CtServicePool(CtUInt32 nworkers);
+    EXPORTED_API explicit CtServicePool(CtUInt32 nworkers);
 
     /**
      * @brief Destructor for CtServicePool.
@@ -78,7 +78,7 @@ public:
      * @param id An optional ID for the task.
      * @param task The task to be added.
      */
-    EXPORTED_API void addTask(CtUInt32 nslots, std::string id, CtTask& task);
+    EXPORTED_API void addTask(CtUInt32 nslots, const std::string& id, CtTask& task);
 
     /**
      * @brief Add a task to the service pool with a specified interval and an optional ID.
@@ -88,13 +88,13 @@ public:
      * @param fargs The task function's arguments to be added.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API void addTaskFunc(CtUInt32 nslots, std::string id, F&& func, FArgs&&... fargs);
+    EXPORTED_API void addTaskFunc(CtUInt32 nslots, const std::string& id, F&& func, FArgs&&... fargs);
 
     /**
      * @brief Remove a task from the service pool based on its ID.
      * @param id The ID of the task to be removed.
      */
-    EXPORTED_API void removeTask(std::string id);
+    EXPORTED_API void removeTask(const std::string& id);
 
     /**
      * @brief Start the services provided by the service pool.
@@ -133,7 +133,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-void CtServicePool::addTaskFunc(CtUInt32 nslots, std::string id, F&& func, FArgs&&... fargs) {
+void CtServicePool::addTaskFunc(CtUInt32 nslots, const std::string& id, F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     addTask(nslots, id, s_task);

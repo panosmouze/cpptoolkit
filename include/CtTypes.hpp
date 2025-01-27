@@ -136,7 +136,7 @@ public:
      * 
      * @param p_size The size of the buffer. The default size is defined as CT_BUFFER_SIZE bytes. 
      */
-    EXPORTED_API CtRawData(CtUInt32 p_size = CT_BUFFER_SIZE) : m_maxSize(p_size) {
+    EXPORTED_API explicit CtRawData(CtUInt32 p_size = CT_BUFFER_SIZE) : m_maxSize(p_size) {
         m_data = new CtUInt8[m_maxSize];
         m_size = 0;
     };
@@ -236,7 +236,7 @@ public:
      * @param p_size The size of the gven buffer.
      * @return void
      */
-    EXPORTED_API void clone(CtUInt8* p_data, CtUInt32 p_size) {
+    EXPORTED_API void clone(const CtUInt8* p_data, CtUInt32 p_size) {
         if (p_size > m_maxSize) {
             throw CtOutOfRangeError("Data size is out of range.");
         }
@@ -269,6 +269,21 @@ public:
      */
     EXPORTED_API void reset() {
         m_size = 0;
+    }
+
+    /**
+     * @brief Assignment operator for CtRawData.
+     * Copies the data from a CtRawData to another CtRawData object.
+     * 
+     * @param other The CtRawData object to copy.
+     * 
+     * @return CtRawData& Reference to the current CtRawData object.
+     */
+    EXPORTED_API CtRawData& operator=(CtRawData& other) {
+        if (this != &other) {
+            clone(other);
+        }
+        return *this;
     }
 
 private:

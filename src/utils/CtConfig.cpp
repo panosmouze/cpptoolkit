@@ -77,11 +77,10 @@ void CtConfig::write() {
     m_sink = new CtFileOutput(m_configFile, CtFileOutput::WriteMode::Truncate);
     m_sink->setDelimiter("\n", 1);
     std::map<std::string, std::string>::iterator iter;
-    std::string line;
 
     CtRawData data(512);
-    for (iter = m_configValues.begin(); iter != m_configValues.end(); iter++) {
-        line = iter->first + std::string(" = ") + iter->second;
+    for (iter = m_configValues.begin(); iter != m_configValues.end(); ++iter) {
+        std::string line = iter->first + std::string(" = ") + iter->second;
         data.clone((CtUInt8*)line.c_str(), line.size());
         m_sink->write(&data);
         data.reset();

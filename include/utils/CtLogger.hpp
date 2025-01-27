@@ -138,7 +138,6 @@ private:
 private:
     CtLogger::Level m_level; ///< Level of message logging.
     std::string m_componentName; ///< Component name.
-    bool m_verbose; ///< Print to terminal or not.
 };
 
 #endif //INCLUDE_CTLOGGER_HPP_
