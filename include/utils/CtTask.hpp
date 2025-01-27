@@ -51,7 +51,7 @@ public:
      * Initializes task and callback with empty lambda functions.
      * 
      */
-    EXPORTED_API CtTask();
+    EXPORTED_API explicit CtTask();
 
     /**
      * @brief Copy constructor for CtTask.
@@ -79,7 +79,7 @@ public:
      * @return void
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API void setTaskFunc(F&& func, FArgs&&... fargs);
+    EXPORTED_API void setTaskFunc(const F&& func, FArgs&&... fargs);
 
     /**
      * @brief Set the callback function. The callback function can also have arguments.
@@ -93,7 +93,7 @@ public:
      * @return void
      */
     template <typename C, typename... CArgs>
-    EXPORTED_API void setCallbackFunc(C&& callback, CArgs&&... cargs);
+    EXPORTED_API void setCallbackFunc(const C&& callback, CArgs&&... cargs);
 
     /**
      * @brief Get the main task function.
@@ -125,12 +125,12 @@ private:
 };
 
 template <typename F, typename... FArgs>
-void CtTask::setTaskFunc(F&& func, FArgs&&... fargs) {
+void CtTask::setTaskFunc(const F&& func, FArgs&&... fargs) {
     m_task = std::bind(func, std::forward<FArgs>(fargs)...);
 };
 
 template <typename C, typename... CArgs>
-void CtTask::setCallbackFunc(C&& callback, CArgs&&... cargs) {
+void CtTask::setCallbackFunc(const C&& callback, CArgs&&... cargs) {
     m_callback = std::bind(callback, std::forward<CArgs>(cargs)...);
 };
 

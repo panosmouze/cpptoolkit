@@ -47,7 +47,7 @@ void CtWorker::setRunning(bool running) {
     return m_running.store(running);
 }
 
-void CtWorker::setTask(CtTask& task, std::function<void()> callback) {
+void CtWorker::setTask(const CtTask& task, std::function<void()> callback) {
     alreadyRunningCheck();
     m_task = task;
     m_callback = callback;

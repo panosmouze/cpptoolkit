@@ -61,7 +61,7 @@ void CtThread::start() {
 
 void CtThread::stop() {
     setRunning(false);
-    join();
+    CtThread::join();
 }
 
 void CtThread::join() {

@@ -33,6 +33,8 @@ SOFTWARE.
 #include "exceptions/CtThreadExceptions.hpp"
 
 CtServicePool::CtServicePool(CtUInt32 nworkers) : m_nworkers(nworkers), m_worker_pool(m_nworkers) {
+    m_slot_cnt = 0;
+    m_exec_time = 0;
     start();
 }
 
@@ -41,20 +43,16 @@ CtServicePool::~CtServicePool() {
     m_worker_pool.join();
 }
 
-void CtServicePool::addTask(CtUInt32 nslots, std::string id, CtTask& task) {
+void CtServicePool::addTask(CtUInt32 nslots, const std::string& id, CtTask& task) {
     std::scoped_lock lock(m_mtx_control);
-    if (nslots >= 0) {
-        m_tasks.push_back({task, id, nslots});
-        try {
-            start();
-        } catch(CtThreadError& e) {
-        }
-    } else {
-        throw CtServiceError("Invalid slot number (should be >0).");
+    m_tasks.push_back({task, id, nslots});
+    try {
+        start();
+    } catch(const CtThreadError& e) {
     }
 }
 
-void CtServicePool::removeTask(std::string id) {
+void CtServicePool::removeTask(const std::string& id) {
     std::scoped_lock lock(m_mtx_control);
     m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), 
                                     [id](CtServicePack pack) {
@@ -66,7 +64,7 @@ void CtServicePool::removeTask(std::string id) {
 void CtServicePool::startServices() {
     try {
         start();
-    } catch(CtThreadError& e) {
+    } catch(const CtThreadError& e) {
     }
 }
 
@@ -90,7 +88,7 @@ void CtServicePool::loop() {
         if (m_tasks.size() == 0) {
             return;
         } else {
-            for (CtServicePack& pack : m_tasks) {
+            for (const CtServicePack& pack : m_tasks) {
                 if (m_slot_cnt % pack.nslots == 0) {
                     m_worker_pool.addTask(pack.task);
                 }

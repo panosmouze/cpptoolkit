@@ -50,7 +50,7 @@ public:
      * @param nslots The time slots between task executions in milliseconds. Default is 0 (run immediately).
      * @param task The task to be executed by the service.
      */
-    EXPORTED_API CtService(uint64_t nslots, CtTask& task);
+    EXPORTED_API CtService(CtUInt64 nslots, const CtTask& task);
 
     /**
      * @brief Constructor for CtService.
@@ -59,7 +59,7 @@ public:
      * @param fargs The task function's parameters.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API CtService(CtUInt32 nslots, F&& func, FArgs&&... fargs);
+    EXPORTED_API CtService(CtUInt64 nslots, const F&& func, FArgs&&... fargs);
 
     /**
      * @brief Destructor for CtService.
@@ -91,7 +91,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-CtService::CtService(CtUInt32 nslots, F&& func, FArgs&&... fargs) : m_nslots(nslots){
+CtService::CtService(CtUInt64 nslots, const F&& func, FArgs&&... fargs) : m_nslots(nslots){
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     m_worker.setTask(s_task);

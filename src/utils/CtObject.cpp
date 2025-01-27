@@ -64,11 +64,11 @@ void CtObject::triggerEvent(CtUInt32 p_eventCode) {
     if (!hasEvent(p_eventCode)) {
         throw CtEventNotExistsError("Event is not registed. " + std::to_string(p_eventCode));
     }
-    std::pair<std::multimap<uint8_t, CtTask>::iterator, std::multimap<uint8_t, CtTask>::iterator> s_iterRange;
+    std::pair<std::multimap<CtUInt32, CtTask>::iterator, std::multimap<CtUInt32, CtTask>::iterator> s_iterRange;
     s_iterRange = m_triggers.equal_range(p_eventCode);
 
-    std::multimap<uint8_t, CtTask>::iterator s_iter;
-    for (s_iter = s_iterRange.first; s_iter != s_iterRange.second; s_iter++) {
+    std::multimap<CtUInt32, CtTask>::iterator s_iter;
+    for (s_iter = s_iterRange.first; s_iter != s_iterRange.second; ++s_iter) {
         m_pool.addTask(s_iter->second);
     }
 }
@@ -82,10 +82,7 @@ void CtObject::registerEvent(CtUInt32 p_eventCode) {
 }
 
 bool CtObject::hasEvent(CtUInt32 p_eventCode) {
-    for (uint8_t s_event: m_events) {
-        if (s_event == p_eventCode) {
-            return true;
-        }
-    }
-    return false;
+    return std::any_of(m_events.begin(), m_events.end(), [&p_eventCode](CtUInt8 s_event) { 
+        return (s_event == p_eventCode); 
+    });
 }

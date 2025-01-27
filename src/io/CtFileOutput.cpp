@@ -36,6 +36,7 @@ SOFTWARE.
 #include <memory>
 
 CtFileOutput::CtFileOutput(const std::string& p_fileName, WriteMode p_mode) {
+    m_delim_size = 0;
     switch (p_mode) {
         case WriteMode::Append:
             m_file.open(p_fileName, std::ios::out | std::ios::app);

@@ -40,6 +40,7 @@ SOFTWARE.
 
 CtSocketUdp::CtSocketUdp() {
     m_addrType = AF_INET;
+    m_port = 0;
     m_socket = socket(m_addrType, SOCK_DGRAM, IPPROTO_UDP);
     if (m_socket == -1) {
         throw CtSocketError("Socket cannot be assigned.");

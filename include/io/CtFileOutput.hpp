@@ -51,7 +51,7 @@ public:
      * 
      * @param p_fileName Filename.
      */
-    EXPORTED_API CtFileOutput(const std::string& p_fileName, WriteMode p_mode = WriteMode::Append);
+    EXPORTED_API explicit CtFileOutput(const std::string& p_fileName, WriteMode p_mode = WriteMode::Append);
 
     /**
      * @brief Destructor for CtFileOutput.

@@ -53,7 +53,7 @@ public:
      * @brief Constructor for CtWorkerPool.
      * @param nworkers The number of worker threads in the pool.
      */
-    EXPORTED_API CtWorkerPool(CtUInt32 nworkers);
+    EXPORTED_API explicit CtWorkerPool(CtUInt32 nworkers);
 
     /**
      * @brief Destructor for CtWorkerPool.
@@ -64,7 +64,7 @@ public:
      * @brief Add a task to the worker pool.
      * @param task The task to be added to the pool.
      */
-    EXPORTED_API void addTask(CtTask& task);
+    EXPORTED_API void addTask(const CtTask& task);
 
     /**
      * @brief Add a task function to the worker pool.
@@ -73,12 +73,12 @@ public:
      * @param fargs The arguments of the task function.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API void addTask(F&& func, FArgs&&... fargs);
+    EXPORTED_API void addTask(const F&& func, FArgs&&... fargs);
 
     /**
      * @brief Wait for all worker threads to finish their tasks.
      */
-    EXPORTED_API void join();
+    EXPORTED_API void join() override;
 
 private:
 
@@ -108,7 +108,7 @@ private:
 };
 
 template <typename F, typename... FArgs>
-void CtWorkerPool::addTask(F&& func, FArgs&&... fargs) {
+void CtWorkerPool::addTask(const F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     addTask(s_task);
