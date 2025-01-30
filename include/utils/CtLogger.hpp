@@ -138,6 +138,8 @@ private:
 
 private:
     std::mutex m_mtx_control;                       /*!< Mutex for controlling access to shared resources. */
+    CtLogger::Level m_level; ///< Level of message logging.
+    std::string m_componentName; ///< Component name.
 };
 
 #endif //INCLUDE_CTLOGGER_HPP_
