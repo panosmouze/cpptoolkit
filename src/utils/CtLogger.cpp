@@ -58,6 +58,7 @@ void CtLogger::log_critical(const std::string& message) {
 }
 
 void CtLogger::log(CtLogger::Level level, const std::string& message) {
+    std::scoped_lock lock(m_mtx_control);
     if (level >= m_level) {
         std::string logEntry = generateLoggerMsg(level, m_componentName, message);
         std::cout << logEntry << std::endl;
