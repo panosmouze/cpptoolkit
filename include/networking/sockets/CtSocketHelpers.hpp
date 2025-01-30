@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtSocketHelpers.hpp
- * @brief 
+ * @brief CtSocketHelpers class declaration that contains helpers for various sockets utilities.
  * @date 21-01-2024
  * 
  */

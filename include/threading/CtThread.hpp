@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtThread.hpp
- * @brief 
+ * @brief CtThread class header file.
  * @date 18-01-2024
  * 
  */
@@ -41,6 +41,12 @@ SOFTWARE.
 /**
  * @class CtThread
  * @brief A simple C++ thread management class providing basic thread control and sleep functionality.
+ * 
+ * @details
+ * The CtThread class provides a simple interface for creating and managing threads in C++.
+ * The class is thread-safe and can be used in multi-threaded environments.
+ * It is intended to be used as a base class for creating custom thread classes.
+ * 
  */
 class CtThread {
 public:
@@ -103,8 +109,8 @@ private:
     void run();
 
 private:
-    std::atomic<bool> m_running; ///< Atomic flag indicating whether the thread is running.
-    std::thread m_thread; ///< The underlying thread object.
+    std::atomic<bool> m_running;    /*!< Atomic flag indicating whether the thread is running. */
+    std::thread m_thread;           /*!< The underlying thread object. */
 };
 
 #endif //INCLUDE_CTTHREAD_HPP_

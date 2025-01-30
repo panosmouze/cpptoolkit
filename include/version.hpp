@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file version.hpp
- * @brief 
+ * @brief Version information for the project.
  * @date 18-01-2024
  * 
  */
@@ -32,6 +32,17 @@ SOFTWARE.
 #ifndef INCLUDE_VERSION_HPP_
 #define INCLUDE_VERSION_HPP_
 
+/**
+ * @brief Version information for the project.
+ * 
+ * @details
+ * The version information is defined by three macros:
+ * - CPPTOOLKIT_VERSION_MAJOR
+ * - CPPTOOLKIT_VERSION_MINOR
+ * - CPPTOOLKIT_VERSION_PATCH
+ * These macros has to be modified after a new release.
+ * 
+ */
 #define CPPTOOLKIT_VERSION_MAJOR 0
 #define CPPTOOLKIT_VERSION_MINOR 1
 #define CPPTOOLKIT_VERSION_PATCH 0

@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file definitions.hpp
- * @brief 
+ * @brief Header file for generic definitions used in teh project.
  * @date 18-01-2024
  * 
  */
@@ -34,6 +34,10 @@ SOFTWARE.
 
 #include "version.hpp"
 
+/**
+ * @brief EXPORTED_API macro for exporting functions in shared libraries.
+ * 
+ */
 #ifdef _WIN32
     #define EXPORTED_API __declspec(dllexport)
 #else

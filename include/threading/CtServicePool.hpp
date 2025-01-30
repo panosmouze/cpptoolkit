@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtServicePool.hpp
- * @brief 
+ * @brief CtServicePool class header file.
  * @date 18-01-2024
  * 
  */
@@ -46,6 +46,26 @@ SOFTWARE.
 /**
  * @class CtServicePool
  * @brief A service pool for managing and executing tasks at specified intervals using a worker pool.
+ * 
+ * @details
+ * The CtServicePool class provides a mechanism for managing and executing tasks at specified intervals using a worker pool.
+ * CtService::m_slot_time is used to determine the interval at which tasks are executed. The default slot time is 10 ms.
+ * You can modify the slot time using the setSlotTime() method. The class uses a worker pool to execute tasks concurrently.
+ * The class is thread-safe and can be used in multi-threaded environments.
+ * 
+ * @code {.cpp}
+ * // create a service pool with 4 worker threads
+ * CtServicePool pool(4);
+ * // add tasks to the pool
+ * // add a lambda function
+ * pool.addTask(100, [](){ std::cout << "Hello from worker thread!" << std::endl; });
+ * // add a function with arguments
+ * pool.addTask(100, func, arg1, arg2);
+ * // start the services
+ * pool.startServices();
+ * // stop the services
+ * pool.shutdownServices();
+ * @endcode 
  */
 class CtServicePool : private CtThread {
 private:
@@ -63,7 +83,6 @@ public:
     /**
      * @brief Constructor for CtServicePool.
      * @param nworkers The number of worker threads in the service pool.
-     * @param slot_time The time interval for each "slot" in milliseconds. Default is 10 milliseconds.
      */
     EXPORTED_API explicit CtServicePool(CtUInt32 nworkers);
 
@@ -123,13 +142,13 @@ private:
     void loop() override;
 
 private:
-    CtUInt32 m_nworkers; ///< The number of worker threads in the service pool.
-    CtUInt32 m_slot_cnt; ///< Counter for the current slot.
-    std::vector<CtServicePack> m_tasks; ///< Vector of tasks in the service pool.
-    std::mutex m_mtx_control; ///< Mutex for controlling access to shared resources.
-    CtWorkerPool m_worker_pool; ///< Worker pool for executing tasks.
-    CtTimer m_timer; ///< Timer for tracking time intervals.
-    uint64_t m_exec_time; ///< Variable used for time tracking during a loop.
+    CtUInt32 m_nworkers;                    /*!< The number of worker threads in the service pool. */
+    CtUInt32 m_slot_cnt;                    /*!< Counter for the current slot. */
+    std::vector<CtServicePack> m_tasks;     /*!< Vector of tasks in the service pool. */
+    std::mutex m_mtx_control;               /*!< Mutex for controlling access to shared resources. */
+    CtWorkerPool m_worker_pool;             /*!< Worker pool for executing tasks. */
+    CtTimer m_timer;                        /*!< Timer for tracking time intervals. */
+    uint64_t m_exec_time;                   /*!< Variable used for time tracking during a loop. */
 };
 
 template <typename F, typename... FArgs>

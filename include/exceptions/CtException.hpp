@@ -35,8 +35,11 @@ SOFTWARE.
 #include <stdexcept>
 
 /**
- * @brief An exception class for the cpptoolkit library. This is an abstract class derived from std::exception
- *      and is used as a base class for all the exceptions in the library.
+ * @brief An exception class for the cpptoolkit library. 
+ * 
+ * @details
+ * This is an abstract class derived from std::exception and is used as a base 
+ * class for all the exceptions in the library.
  * 
  */
 class CtException : public std::exception {
@@ -59,7 +62,7 @@ public:
     };
 
 private:
-    std::string m_msg;                      // The message stored in the exception.
+    std::string m_msg;                      /**< The message stored in the exception. */
 };
 
 #endif //INCLUDE_CTEXCEPTION_HPP_

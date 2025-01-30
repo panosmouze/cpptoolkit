@@ -113,6 +113,8 @@ public:
 
 /**
  * @brief Struct describing a network address.
+ * @details
+ * The network address is described by the IP address and the port number.
  * 
  */
 typedef struct _CtNetAddress {
@@ -121,12 +123,26 @@ typedef struct _CtNetAddress {
 } CtNetAddress;
 
 /**
- * @brief Struct describing raw data buffer.The default buffer size is defined as CT_BUFFER_SIZE bytes.
+ * @brief Struct describing raw data buffer.
+ * 
+ * @details
+ * The default buffer size is defined as CT_BUFFER_SIZE bytes.
  * The buffer can be set either by another buffer object or given the size of the buffer.
  * The buffer has a prespecified size that can be filled with bytes. It can monitor the 
  * size of the buffer that it is currently used and it ensures that the buffer will not 
  * overflow. If an overflow occurs an exception will be thrown - CtOutOfRangeError().
  * 
+ * @code {.cpp}
+ * CtRawData data;
+ * data.nextByte('a');
+ * data.nextByte('b');
+ * data.nextByte('c');
+ * CtUInt8* buffer = data.get(); // returns "abc"
+ * data.removeNLastBytes(1);
+ * buffer = data.get(); // returns "ab"
+ * data.reset(); // resets the buffer
+ * buffer = data.get(); // returns ""
+ * @endcode 
  */
 class CtRawData {
 public:
@@ -287,9 +303,9 @@ public:
     }
 
 private:
-    CtUInt8* m_data;                            // The buffer data.
-    CtUInt32 m_size;                            // The actual size of the buffer.
-    const CtUInt32 m_maxSize;                   // The maximum size of the buffer.
+    CtUInt8* m_data;                            /*!< The buffer data. */
+    CtUInt32 m_size;                            /*!< The actual size of the buffer. */
+    const CtUInt32 m_maxSize;                   /*!< The maximum size of the buffer. */
 };
 
 #endif //INCLUDE_CTTYPES_HPP_

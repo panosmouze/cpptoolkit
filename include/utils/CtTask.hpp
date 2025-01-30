@@ -39,10 +39,25 @@ SOFTWARE.
 
 /**
  * @brief Represents a task class that encapsulates a callable function (task) and a callback function.
- *    The task function is the main function that will be executed. The callback function is the function 
- *    that will be executed after the task function. The task and callback functions can have arguments.
- *    This method can be used to organise a specific functionality and post process of it in a single object.
- *    
+ * @details 
+ * The task function is the main function that will be executed. The callback function is the function
+ * that will be executed after the task function. The task and callback functions can have arguments.
+ * This method can be used to organise a specific functionality and post process of it in a single object.
+ *
+ * @code{.cpp}
+ * CtTask task;
+ * // Set the task function to a lambda function that prints the sum of two integers.
+ * task.setTaskFunc([](int a, int b) {
+ *   std::cout << "Task function: " << a + b << std::endl;
+ * }, 1, 2);
+ * task.setCallbackFunc([](int a, int b) {
+ *   std::cout << "Callback function: " << a - b << std::endl;
+ * }, 1, 2);
+ * 
+ * // Set the task function to a function with arguments.
+ * task.setTaskFunc(func, arg1, arg2);
+ * task.setCallbackFunc(callbackFunc, arg1, arg2);
+ * @endcode
  */
 class CtTask {
 public:
@@ -120,8 +135,8 @@ public:
     EXPORTED_API CtTask& operator=(const CtTask& other);
 
 private:
-    std::function<void()> m_task;           // The main task function
-    std::function<void()> m_callback;       // The callback function
+    std::function<void()> m_task;           /*!< The main task function */
+    std::function<void()> m_callback;       /*!< The callback function */
 };
 
 template <typename F, typename... FArgs>

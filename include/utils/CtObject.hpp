@@ -45,7 +45,17 @@ SOFTWARE.
 
 /**
  * @brief This abstract class can be used as a base class for objects that can trigger events.
- *     The CtObject class provides a mechanism for connecting events with functions that should be triggered.
+ * 
+ * @details
+ * The CtObject class provides a mechanism for connecting events with functions that should be triggered.
+ * This class is thread-safe and can be used in multi-threaded environments.
+ * 
+ * @code {.cpp}
+ * triggerEvent(100);
+ * connectEvent(obj, 100, [](){});
+ * connectEvent(obj, 100, [](){});
+ * @endcode
+ * 
  * 
  */
 class CtObject {
@@ -152,10 +162,10 @@ private:
     EXPORTED_API bool hasEvent(CtUInt32 p_eventCode);
 
 private:
-    std::mutex m_mtx_control;                       // Mutex for controlling access to shared resources.
-    std::vector<CtUInt32> m_events;                  // This vector contains all the registered event codes.
-    std::multimap<CtUInt32, CtTask> m_triggers;      // This map represents a list of tasks that should be triggered for each event code.
-    CtWorkerPool m_pool;                            // This CtWorkerPool executes the triggered tasks.
+    std::mutex m_mtx_control;                       /*!< Mutex for controlling access to shared resources. */
+    std::vector<CtUInt32> m_events;                 /*!< This vector contains all the registered event codes. */
+    std::multimap<CtUInt32, CtTask> m_triggers;     /*!< This map represents a list of tasks that should be triggered for each event code. */
+    CtWorkerPool m_pool;                            /*!< This CtWorkerPool executes the triggered tasks. */
 };
 
 template <typename F, typename... FArgs>

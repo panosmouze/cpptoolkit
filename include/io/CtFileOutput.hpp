@@ -39,6 +39,20 @@ SOFTWARE.
 #include <sstream>
 #include <cstring>
 
+/**
+ * @brief CtFileOutput class for writing data to file.
+ * 
+ * @details
+ * This class provides an interface for writing data to a file. The data can be written in batches or one by one.
+ * The class is thread-safe and can be used in multi-threaded environments.
+ * 
+ * @code {.cpp}
+ * // create a file output object
+ * CtFileOutput fileOutput("output.txt");
+ * fileOutput.write("Hello, World!");
+ * @endcode
+ * 
+ */
 class CtFileOutput {
 public:
     /**
@@ -77,9 +91,9 @@ public:
     EXPORTED_API void write(CtRawData* p_data);
 
 private:
-    std::ofstream m_file; ///< File stream.
-    std::unique_ptr<char[]> m_delim; ///< Batch write delimiter.
-    CtUInt8 m_delim_size; ///< Delimeter size.
+    std::ofstream m_file;               /**< File stream. */
+    std::unique_ptr<char[]> m_delim;    /**< Batch write delimiter. */
+    CtUInt8 m_delim_size;               /**< Delimeter size. */
 };
 
 

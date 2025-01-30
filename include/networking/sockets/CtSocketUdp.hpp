@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtSocketUdp.hpp
- * @brief 
+ * @brief CtSocketUdp class header file.
  * @date 18-01-2024
  * 
  */
@@ -44,6 +44,41 @@ SOFTWARE.
 /**
  * @class CtSocketUdp
  * @brief A class representing a UDP socket wrapper.
+ * 
+ * @details
+ * This class provides an interface for creating and managing UDP sockets.
+ * It can be used for both subscribing and publishing data.
+ * CtSocketHelpers::socketTimeout can be used to set the timeout for polling operations.
+ * By default, the timeout is set to 0 which means that the poll operation will return immediately.
+ * If the timeout is set to -1, the poll operation will block indefinitely.
+ * If set to a positive value, the poll operation will block for that amount of time.
+ * 
+ * Example subscriber:
+ * @code {.cpp}
+ * // create a UDP socket
+ * CtSocketUdp socket;
+ * // set the socket for subscribing
+ * socket.setSub("lo", 1234);
+ * // run a loop to receive messages
+ * while (true) {
+ *      if (socket.pollRead()) {
+ *          CtRawData message;
+ *          socket.receive(&message);
+ *          std::cout << "Received message: " << message.get() << std::endl;
+ *      }
+ * }
+ * @endcode
+ * 
+ * Example publisher:
+ * @code {.cpp}
+ * // create a UDP socket
+ * CtSocketUdp socket;
+ * // set the socket for publishing
+ * socket.setPub(1234, "127.0.0.1");
+ * // send a message
+ * CtRawData message("Hello, World!");
+ * socket.send(message);
+ * @endcode
  * 
  */
 class CtSocketUdp {

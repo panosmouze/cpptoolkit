@@ -39,6 +39,23 @@ SOFTWARE.
 #include <sstream>
 #include <cstring>
 
+/**
+ * @brief CtFileInput class for reading data from file.
+ * 
+ * @details
+ * This class provides an interface for reading data from a file. The data can be read in batches or one by one.
+ * The class is thread-safe and can be used in multi-threaded environments.
+ * 
+ * @code {.cpp}
+ * // create a file input object
+ * CtFileInput fileInput("input.txt");
+ * CtRawData data;
+ * while (fileInput.read(&data)) {
+ *    // process data
+ * }
+ * @endcode
+ * 
+ */
 class CtFileInput {
 public:
     /**
@@ -72,9 +89,9 @@ public:
     EXPORTED_API bool read(CtRawData* p_data);
 
 private:
-    std::ifstream m_file; ///< File stream.
-    char* m_delim; ///< Batch read delimiter.
-    CtUInt8 m_delim_size; ///< Delimeter size.
+    std::ifstream m_file;           /**< File stream. */
+    char* m_delim;                  /**< Batch read delimiter. */
+    CtUInt8 m_delim_size;           /**< Delimeter size. */
 };
 
 #endif //INCLUDE_CTFILEINPUT_HPP_

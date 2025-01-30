@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtTimer.hpp
- * @brief 
+ * @brief CtTimer class header file.
  * @date 18-01-2024
  * 
  */
@@ -40,6 +40,18 @@ SOFTWARE.
 /**
  * @class CtTimer
  * @brief Simple timer utility using std::chrono for high-resolution timing.
+ * 
+ * @details
+ * The CtTimer class provides a simple interface for measuring elapsed time.
+ * 
+ * @code {.cpp}
+ * CtTimer timer;
+ * timer.tic();
+ * // Do something
+ * uint64_t elapsed = timer.toc();
+ * std::cout << "Elapsed time: " << elapsed << " ms" << std::endl;
+ * @endcode
+ * 
  */
 class CtTimer {
 public:
@@ -78,7 +90,7 @@ public:
     EXPORTED_API static uint64_t millisToNano(uint64_t time);
 
 private:
-    uint64_t m_reference; ///< Reference time for measuring elapsed time.
+    uint64_t m_reference;           /*!< Reference time for measuring elapsed time. */
 };
 
 #endif //INCLUDE_CTTIMER_HPP_
