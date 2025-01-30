@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtConfig.hpp
- * @brief 
+ * @brief CtConfig class header file.
  * @date 10-03-2024
  * 
  */
@@ -47,6 +47,11 @@ SOFTWARE.
 /**
  * @class CtConfig
  * @brief A configuration file parser class for extracting various data types from configuration values.
+ * 
+ * @details
+ * The CtConfig class provides a mechanism for reading and writing configuration files providing key-value
+ * pairs of various data types. The class can parse integer, unsigned integer, float, double, and string values.
+ * The class is thread-safe and can be used in multi-threaded environments.
  */
 class CtConfig {
 public:
@@ -182,11 +187,11 @@ private:
     void parseLine(const std::string& p_line);
 
 private:
-    std::mutex m_mtx_control; ///< Internal mutex for synchronization.
-    CtFileInput* m_source;
-    CtFileOutput* m_sink;
-    std::string m_configFile; /**< The path to the configuration file. */
-    std::map<std::string, std::string> m_configValues; /**< A map to store configuration key-value pairs. */
+    std::mutex m_mtx_control;                           /*!< Internal mutex for synchronization. */
+    CtFileInput* m_source;                              /*!< The source file for reading configuration values. */
+    CtFileOutput* m_sink;                               /*!< The sink file for writing configuration values. */
+    std::string m_configFile;                           /*!< The path to the configuration file. */
+    std::map<std::string, std::string> m_configValues;  /*!< A map to store configuration key-value pairs. */
 };
 
 #endif //INCLUDE_CTCONFIG_HPP_

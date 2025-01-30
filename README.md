@@ -40,22 +40,22 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
     cd cpptoolkit
     ```
 
-3. Create a build directory:
+3. Run cmake and generate build files in a /build directory:
 
     ```bash
-    mkdir build && cd build
+    cmake -B build -DCMAKE_BUILD_TYPE=Release
     ```
 
-4. Run CMake:
+4. Build the library, test and examples:
 
     ```bash
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_ENABLE_TESTS=OFF
+    cmake --build build --config Release
     ```
 
-5. Build the project:
+5. Run the tests:
 
     ```bash
-    make
+    ctest --test-dir build -c Release
     ```
 
 ## Purpose

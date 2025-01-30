@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtService.hpp
- * @brief 
+ * @brief CtService class header file.
  * @date 18-01-2024
  * 
  */
@@ -42,6 +42,20 @@ SOFTWARE.
 /**
  * @class CtService
  * @brief A class representing a service that runs a given task at regular intervals using a worker thread.
+ * 
+ * @details
+ * The CtService class provides a mechanism for running a task at regular intervals using a worker thread.
+ * The service can be configured to run the task immediately or after a certain number of time slots.
+ * The service can be stopped and started at any time. The service is thread-safe and can be used in multi-threaded environments.
+ * 
+ * 
+ * @code {.cpp}
+ * // create a service that runs a task every 1000 milliseconds
+ * CtService service(1000, [](){ std::cout << "Hello from service!" << std::endl; });
+ * service.runService();
+ * // do something else
+ * service.stopService();
+ * @endcode
  */
 class CtService : private CtThread {
 public:
@@ -77,7 +91,7 @@ public:
     EXPORTED_API void stopService();
 
 public:
-    static CtUInt32 m_slot_time; ///< The time interval for each "slot" in milliseconds.
+    static CtUInt32 m_slot_time;    /*!< The time interval for each "slot" in milliseconds. */
 
 private:
     /**
@@ -86,8 +100,8 @@ private:
     void loop() override;
 
 private:
-    CtWorker m_worker; ///< Worker for executing the task.
-    uint64_t m_nslots; ///< The number of slots to wait before rerunning the service.
+    CtWorker m_worker;              /*!< Worker for executing the task. */
+    uint64_t m_nslots;              /*!< The number of slots to wait before rerunning the service. */
 };
 
 template <typename F, typename... FArgs>

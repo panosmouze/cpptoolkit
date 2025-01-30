@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtLogger.hpp
- * @brief 
+ * @brief CtLogger class header file.
  * @date 10-03-2024
  * 
  */
@@ -45,6 +45,11 @@ SOFTWARE.
 
 /**
  * @brief A simple logger with log levels and timestamp.
+ * 
+ * @details
+ * The CtLogger class provides a mechanism for logging messages with different log levels.
+ * The log levels are DEBUG, INFO, WARNING, ERROR, and CRITICAL and can be used to filter messages.
+ * The logger also provides a timestamp for each message. It is thread-safe and can be used in multi-threaded environments.
  */
 class CtLogger {
 public:

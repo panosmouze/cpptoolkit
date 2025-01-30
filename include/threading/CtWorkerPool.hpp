@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtWorkerPool.hpp
- * @brief 
+ * @brief CtWorkerPool class header file.
  * @date 18-01-2024
  * 
  */
@@ -46,6 +46,25 @@ SOFTWARE.
 /**
  * @class CtWorkerPool
  * @brief Manages a pool of worker threads for executing tasks concurrently.
+ * 
+ * @details
+ * The CtWorkerPool class provides a mechanism for managing a pool of worker threads that can execute tasks concurrently.
+ * The class is thread-safe and can be used in multi-threaded environments.
+ * 
+ * @code {.cpp}
+ * // create a pool with 4 worker threads
+ * CtWorkerPool pool(4);
+ * // add tasks to the pool
+ * // add a lambda function
+ * pool.addTask([](){ std::cout << "Hello from worker thread!" << std::endl; });
+ * // add a function with arguments
+ * pool.addTask(func, arg1, arg2);
+ * // add a CtTask object
+ * pool.addTask(task);
+ * // wait for all worker threads to finish
+ * pool.join();
+ * @endcode
+ * 
  */
 class CtWorkerPool : private CtThread {
 public:
@@ -94,17 +113,20 @@ private:
      */
     void free();
 
+    /**
+     * @brief Main loop for the worker pool.
+     */
     void loop() override;
 
 private:
-    CtUInt32 m_nworkers; ///< Number of worker threads in the pool.
-    std::vector<std::unique_ptr<CtWorker>> m_workers; ///< Worker thread instances.
-    std::queue<CtTask> m_tasks; ///< Queue of tasks to be executed.
-    std::queue<CtUInt32> m_available_workers_idxs; ///< Queue of available worker indices.
-    std::mutex m_mtx_control; ///< Mutex for controlling access to shared resources.
-    std::atomic<CtUInt32> m_active_tasks; ///< Number of active tasks that are currently running.
-    std::atomic<CtUInt32> m_queued_tasks; ///< Number of queued tasks.
-    CtWorker m_taskAssigner; ///< This worker is a task assigner, assigns active tasks to available workers.
+    CtUInt32 m_nworkers;                                /*!< Number of worker threads in the pool. */
+    std::vector<std::unique_ptr<CtWorker>> m_workers;   /*!< Worker thread instances. */
+    std::queue<CtTask> m_tasks;                         /*!< Queue of tasks to be executed. */
+    std::queue<CtUInt32> m_available_workers_idxs;      /*!< Queue of available worker indices. */
+    std::mutex m_mtx_control;                           /*!< Mutex for controlling access to shared resources. */
+    std::atomic<CtUInt32> m_active_tasks;               /*!< Number of active tasks that are currently running. */
+    std::atomic<CtUInt32> m_queued_tasks;               /*!< Number of queued tasks. */
+    CtWorker m_taskAssigner;                            /*!< This worker is a task assigner, assigns active tasks to available workers. */
 };
 
 template <typename F, typename... FArgs>

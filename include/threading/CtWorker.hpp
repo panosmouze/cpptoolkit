@@ -24,7 +24,7 @@ SOFTWARE.
 
 /**
  * @file CtWorker.hpp
- * @brief 
+ * @brief CtWorker class header file.
  * @date 18-01-2024
  * 
  */
@@ -43,6 +43,25 @@ SOFTWARE.
 /**
  * @class CtWorker
  * @brief Represents a worker thread that can execute tasks asynchronously.
+ * 
+ * @brief
+ * The CtWorker class provides a mechanism for executing tasks asynchronously in a separate thread.
+ * The class is thread-safe and can be used in multi-threaded environments.
+ * 
+ * @code {.cpp}
+ * CtWorker worker;
+ * // add a lambda function to the worker
+ * worker.setTask([](){ std::cout << "Hello from worker thread!" << std::endl; });
+ * // or add a task
+ * worker.setTask(task);
+ * // or add a function with arguments
+ * worker.setTaskFunc(func, arg1, arg2);
+ * // run the task
+ * worker.runTask();
+ * // wait for the task to complete
+ * worker.joinTask();
+ * @endcode
+ * 
  */
 class CtWorker {
 public:
@@ -102,10 +121,10 @@ private:
     void setRunning(bool running);
 
 private:
-    CtTask m_task; ///< The task assigned to the worker.
-    std::atomic<bool> m_running;
-    std::thread m_thread; ///< The worker's thread.
-    std::function<void()> m_callback; ///< Callback function to be executed after the task is completed.
+    CtTask m_task;                                  /*!< The task assigned to the worker. */
+    std::atomic<bool> m_running;                    /*!< Flag indicating if the worker is currently running. */
+    std::thread m_thread;                           /*!< The worker's thread. */
+    std::function<void()> m_callback;               /*!< Callback function to be executed after the task is completed. */
 };
 
 template <typename F, typename... FArgs>
