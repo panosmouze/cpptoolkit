@@ -78,24 +78,9 @@ find_package(GTest REQUIRED)
 
 enable_testing()
 
-add_executable(test_ctservice ${TESTS_DIR}/ctservice.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctservice ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
-target_include_directories( test_ctservice PRIVATE ${GTEST_INCLUDE_DIRS} )
-add_test(NAME CtServiceTests COMMAND test_ctservice)
-
-add_executable(test_ctservicepool ${TESTS_DIR}/ctservicepool.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctservicepool ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
-target_include_directories( test_ctservicepool PRIVATE ${GTEST_INCLUDE_DIRS} )
-add_test(NAME CtServicePoolTests COMMAND test_ctservicepool)
-
-add_executable(test_ctworker ${TESTS_DIR}/ctworker.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctworker ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
-target_include_directories( test_ctworker PRIVATE ${GTEST_INCLUDE_DIRS} )
-add_test(NAME CtWorkerTests COMMAND test_ctworker)
-
-add_executable(test_ctworkerpool ${TESTS_DIR}/ctworkerpool.cpp ${TESTS_DIR}/main_test.cpp)
-target_link_libraries(test_ctworkerpool ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
-target_include_directories( test_ctworkerpool PRIVATE ${GTEST_INCLUDE_DIRS} )
-add_test(NAME CtWorkerPoolTests COMMAND test_ctworkerpool)
+add_executable(test_cttypes ${TESTS_DIR}/cttypes.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_cttypes ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_cttypes PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtTypes COMMAND test_cttypes)
 
 target_compile_definitions(${TARGET_LIBRARY} PRIVATE _UNIX)
