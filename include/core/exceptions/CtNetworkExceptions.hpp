@@ -32,7 +32,7 @@ SOFTWARE.
 #ifndef INCLUDE_CTNETWORKEXCEPTIONS_HPP_
 #define INCLUDE_CTNETWORKEXCEPTIONS_HPP_
 
-#include "exceptions/CtException.hpp"
+#include "core.hpp"
 
 /**
  * @brief This exception is thrown when a socket error occurs.
@@ -40,7 +40,7 @@ SOFTWARE.
  */
 class CtSocketError : public CtException {
 public:
-    explicit CtSocketError(const std::string& msg): CtException(msg) {};
+    explicit CtSocketError(const CtString& msg): CtException(msg) {};
 };
 
 /**
@@ -49,7 +49,7 @@ public:
  */
 class CtSocketBindError : public CtException {
 public:
-    explicit CtSocketBindError(const std::string& msg): CtException(msg) {};
+    explicit CtSocketBindError(const CtString& msg): CtException(msg) {};
 };
 
 /**
@@ -58,7 +58,7 @@ public:
  */
 class CtSocketPollError : public CtException {
 public:
-    explicit CtSocketPollError(const std::string& msg): CtException(msg) {};
+    explicit CtSocketPollError(const CtString& msg): CtException(msg) {};
 };
 
 /**
@@ -67,7 +67,7 @@ public:
  */
 class CtSocketReadError : public CtException {
 public:
-    explicit CtSocketReadError(const std::string& msg): CtException(msg) {};
+    explicit CtSocketReadError(const CtString& msg): CtException(msg) {};
 };
 
 /**
@@ -76,7 +76,7 @@ public:
  */
 class CtSocketWriteError : public CtException {
 public:
-    explicit CtSocketWriteError(const std::string& msg): CtException(msg) {};
+    explicit CtSocketWriteError(const CtString& msg): CtException(msg) {};
 };
 
 #endif //INCLUDE_CTNETWORKEXCEPTIONS_HPP_

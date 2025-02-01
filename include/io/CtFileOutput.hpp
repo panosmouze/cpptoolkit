@@ -32,19 +32,18 @@ SOFTWARE.
 #ifndef INCLUDE_CTFILEOUTPUT_HPP_
 #define INCLUDE_CTFILEOUTPUT_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
 
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <memory>
 
 /**
  * @brief CtFileOutput class for writing data to file.
  * 
  * @details
  * This class provides an interface for writing data to a file. The data can be written in batches or one by one.
- * The class is thread-safe and can be used in multi-threaded environments.
  * 
  * @code {.cpp}
  * // create a file output object
@@ -65,7 +64,7 @@ public:
      * 
      * @param p_fileName Filename.
      */
-    EXPORTED_API explicit CtFileOutput(const std::string& p_fileName, WriteMode p_mode = WriteMode::Append);
+    EXPORTED_API explicit CtFileOutput(const CtString& p_fileName, WriteMode p_mode = WriteMode::Append);
 
     /**
      * @brief Destructor for CtFileOutput.

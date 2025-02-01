@@ -32,14 +32,13 @@ SOFTWARE.
 #include "cpptoolkit.hpp"
 
 #include <iostream>
-#include <atomic>
 
 /** Helper functions */
-void f1(std::atomic<uint8_t>* cnt) {
+void f1(CtAtomic<CtUInt8>* cnt) {
     (*cnt) += 1;
 }
 
-void callback(std::atomic<uint8_t>* cnt) {
+void callback(CtAtomic<CtUInt8>* cnt) {
     (*cnt) -= 1;
 }
 
@@ -53,7 +52,7 @@ void callback(std::atomic<uint8_t>* cnt) {
  */
 void case01() {
     CtWorkerPool pool(10);
-    std::atomic<uint8_t> cnt = 0;
+    CtAtomic<CtUInt8> cnt = 0;
     for (int i = 0; i < 100; i++) {
         pool.addTask([&cnt](){
             cnt++;
@@ -71,7 +70,7 @@ void case01() {
  */
 void case02() {
     CtWorkerPool pool(10);
-    std::atomic<uint8_t> cnt = 0;
+    CtAtomic<CtUInt8> cnt = 0;
     for (int i = 0; i < 100; i++) {
         pool.addTask(f1, &cnt);
     }
@@ -88,7 +87,7 @@ void case02() {
 void case03() {
     CtWorkerPool pool(10);
     CtTask task;
-    std::atomic<uint8_t> cnt = 0;
+    CtAtomic<CtUInt8> cnt = 0;
     for (int i = 0; i < 100; i++) {
         task.setTaskFunc(f1, &cnt);
         task.setCallbackFunc(callback, &cnt);

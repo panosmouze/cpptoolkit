@@ -35,7 +35,7 @@ SOFTWARE.
 
 /** Helper functions */
 
-void f1(uint8_t* cnt, int i) {
+void f1(CtUInt8* cnt, int i) {
     cnt[i]++;
 }
 
@@ -51,7 +51,7 @@ void f1(uint8_t* cnt, int i) {
 void case01() {
     CtService::m_slot_time = 10;
     CtServicePool pool(5);
-    uint8_t cnt[50] = {0};
+    CtUInt8 cnt[50] = {0};
     for (int i = 0; i < 50; i++) {
         pool.addTaskFunc(100, std::to_string(i), [&cnt, i](){
             cnt[i]++;
@@ -79,7 +79,7 @@ void case01() {
 void case02() {
     CtService::m_slot_time = 10;
     CtServicePool pool(5);
-    uint8_t cnt[50] = {0};
+    CtUInt8 cnt[50] = {0};
     for (int i = 0; i < 50; i++) {
         pool.addTaskFunc(100, std::to_string(i), f1, cnt, i);
     }
@@ -105,7 +105,7 @@ void case02() {
 void case03() {
     CtService::m_slot_time = 10;
     CtServicePool pool(5);
-    uint8_t cnt[50] = {0};
+    CtUInt8 cnt[50] = {0};
     CtTask task;
     for (int i = 0; i < 50; i++) {
         task.setTaskFunc(f1, cnt, i);

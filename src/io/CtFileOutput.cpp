@@ -31,11 +31,7 @@ SOFTWARE.
 
 #include "io/CtFileOutput.hpp"
 
-#include "exceptions/CtFileExceptions.hpp"
-
-#include <memory>
-
-CtFileOutput::CtFileOutput(const std::string& p_fileName, WriteMode p_mode) {
+CtFileOutput::CtFileOutput(const CtString& p_fileName, WriteMode p_mode) {
     m_delim_size = 0;
     switch (p_mode) {
         case WriteMode::Append:
@@ -57,18 +53,18 @@ CtFileOutput::~CtFileOutput() {
     }
 }
 
-void CtFileOutput::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
+void CtFileOutput::setDelimiter(const CtChar* p_delim, CtUInt8 p_delim_size) {
     if (p_delim_size > 0 && p_delim != nullptr) {
         m_delim_size = p_delim_size;
         m_delim.reset();
-        m_delim = std::make_unique<char[]>(m_delim_size);
+        m_delim = std::make_unique<CtChar[]>(m_delim_size);
         memcpy(m_delim.get(), p_delim, m_delim_size);
     }
 }
 
 void CtFileOutput::write(CtRawData* p_data) {
     if (m_file.is_open()) {
-        m_file.write((char*)p_data->get(), p_data->size());
+        m_file.write((CtChar*)p_data->get(), p_data->size());
         m_file.write(m_delim.get(), m_delim_size);
     } else {
         throw CtFileWriteError("File is not open.");

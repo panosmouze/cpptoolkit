@@ -23,39 +23,100 @@ SOFTWARE.
 */
 
 /**
- * @file CtSocketHelpers.cpp
+ * @file CtHelpers.cpp
  * @brief 
- * @date 21-01-2024
+ * @date 31-01-2025
  * 
  */
 
-#include "networking/sockets/CtSocketHelpers.hpp"
+#include "core/CtHelpers.hpp"
+
+#include "core/exceptions/CtTypeExceptions.hpp"
+#include "core/exceptions/CtNetworkExceptions.hpp"
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>
 
-int32_t CtSocketHelpers::socketTimeout = 0;
+void CtStringHelpers::split(const CtString& p_string, CtChar p_delimiter, CtVector<CtString> *p_result) {
+    CtString::size_type s_start = 0;
+    auto s_end = p_string.find(p_delimiter);
 
-void CtSocketHelpers::setSocketTimeout(int32_t p_socketTimeout) {
+    while (s_end != CtString::npos) {
+        p_result->push_back(trim(p_string.substr(s_start, s_end - s_start)));
+        s_start = s_end + 1;
+        s_end = p_string.find(p_delimiter, s_start);
+    }
+    
+    p_result->push_back(trim(p_string.substr(s_start)));
+}
+
+
+CtString CtStringHelpers::trim(const CtString& p_string) {
+    auto s_start = p_string.find_first_not_of(" \t\n");
+    auto s_end = p_string.find_last_not_of(" \t\n");
+    return ((s_start == CtString::npos) ? "" : p_string.substr(s_start, s_end - s_start + 1));
+}
+
+CtDouble CtStringHelpers::StrToDouble(const CtString& p_string) {
+    CtDouble parsed_value;
+    try {
+        parsed_value = stod(p_string);
+    } catch (...) {
+        throw CtTypeParseError(p_string + CtString(" can not be parsed as CtDouble."));
+    }
+    return parsed_value;
+}
+
+CtFloat CtStringHelpers::StrToFloat(const CtString& p_string) {
+    CtDouble parsed_value;
+    try {
+        parsed_value = stof(p_string);
+    } catch (...) {
+        throw CtTypeParseError(p_string + CtString(" can not be parsed as CtFloat."));
+    }
+    return parsed_value;
+}
+
+CtUInt32 CtStringHelpers::StrToUInt(const CtString& p_string) {
+    CtUInt32 parsed_value;
+    try {
+        parsed_value = stoul(p_string);
+    } catch (...) {
+        throw CtTypeParseError(p_string + CtString(" can not be parsed as uint."));
+    }
+    return parsed_value;
+}
+
+CtInt32 CtStringHelpers::StrToInt(const CtString& p_string) {
+    CtInt32 parsed_value;
+    try {
+        parsed_value = stoi(p_string);
+    } catch (...) {
+        throw CtTypeParseError(p_string + CtString(" can not be parsed as int."));
+    }
+    return parsed_value;
+}
+
+void CtSocketHelpers::setSocketTimeout(CtInt32 p_socketTimeout) {
     CtSocketHelpers::socketTimeout = p_socketTimeout;
 }
 
-std::vector<std::string> CtSocketHelpers::getInterfaces() {
+CtVector<CtString> CtSocketHelpers::getInterfaces() {
     struct ifaddrs *s_ifaddr, *s_ifa;
-    std::vector<std::string> s_interfaces;
+    CtVector<CtString> s_interfaces;
 
     if (getifaddrs(&s_ifaddr) == -1) {
         throw CtSocketError("Cannot get interfaces.");
     }
 
     for (s_ifa = s_ifaddr; s_ifa != nullptr; s_ifa = s_ifa->ifa_next) {
-        s_interfaces.push_back(std::string(s_ifa->ifa_name));
+        s_interfaces.push_back(CtString(s_ifa->ifa_name));
     }
     return s_interfaces;
 }
 
-std::string CtSocketHelpers::interfaceToAddress(const std::string& p_ifName) {
+CtString CtSocketHelpers::interfaceToAddress(const CtString& p_ifName) {
     struct ifaddrs *ifaddr, *ifa;
 
     if (getifaddrs(&ifaddr) == -1) {
@@ -63,14 +124,14 @@ std::string CtSocketHelpers::interfaceToAddress(const std::string& p_ifName) {
     }
 
     for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
-        if (std::string(ifa->ifa_name) == p_ifName) {
+        if (CtString(ifa->ifa_name) == p_ifName) {
             if (ifa->ifa_addr == nullptr) {
                 freeifaddrs(ifaddr);
                 throw CtSocketError("Not valid interface entered.");
             }
 
             if (ifa->ifa_addr->sa_family == AF_INET) {
-                char ipBuffer[INET_ADDRSTRLEN];
+                CtChar ipBuffer[INET_ADDRSTRLEN];
                 sockaddr_in* sockAddr = reinterpret_cast<sockaddr_in*>(ifa->ifa_addr);
 
                 if (inet_ntop(AF_INET, &(sockAddr->sin_addr), ipBuffer, INET_ADDRSTRLEN) == nullptr) {
@@ -88,7 +149,7 @@ std::string CtSocketHelpers::interfaceToAddress(const std::string& p_ifName) {
     throw CtSocketError("Not valid interface found.");
 }
 
-CtUInt32 CtSocketHelpers::getAddressAsUInt(const std::string& p_addr) {
+CtUInt32 CtSocketHelpers::getAddressAsUInt(const CtString& p_addr) {
     CtUInt32 result = inet_addr(p_addr.c_str());
 
     if (result == INADDR_NONE) {
@@ -98,17 +159,12 @@ CtUInt32 CtSocketHelpers::getAddressAsUInt(const std::string& p_addr) {
     return result;
 };
 
-std::string CtSocketHelpers::getAddressAsString(CtUInt32 p_addr) {
-    char result[INET_ADDRSTRLEN];
+CtString CtSocketHelpers::getAddressAsString(CtUInt32 p_addr) {
+    CtChar result[INET_ADDRSTRLEN];
 
     if (inet_ntop(AF_INET, &p_addr, result, INET_ADDRSTRLEN) == nullptr) {
         throw CtSocketError("Failed to convert IPv4 address.");
     }
 
-    return std::string(result);
-};
-
-void CtSocketHelpers::setConnectionTimeout(timeval& timeout, CtUInt32 timeout_ms) {
-    timeout.tv_sec = timeout_ms/1000;
-    timeout.tv_usec = 1000*(timeout_ms%1000);
+    return CtString(result);
 };

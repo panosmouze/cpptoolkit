@@ -31,18 +31,7 @@ SOFTWARE.
 
 #include "utils/CtConfig.hpp"
 
-#include "io/CtFileInput.hpp"
-#include "io/CtFileOutput.hpp"
-
-#include "exceptions/CtFileExceptions.hpp"
-#include "exceptions/CtTypeExceptions.hpp"
-
-#include <string>
-#include <map>
-#include <fstream>
-#include <stdexcept>
-
-CtConfig::CtConfig(const std::string& configFile) : m_configFile(configFile) {
+CtConfig::CtConfig(const CtString& configFile) : m_configFile(configFile) {
     m_source = nullptr;
     m_sink = nullptr;
 }
@@ -64,7 +53,7 @@ void CtConfig::read() {
     CtRawData data(512);
 
     while(m_source->read(&data)) {
-        parseLine(std::string((char*)data.get(), data.size()));
+        parseLine(CtString((CtChar*)data.get(), data.size()));
         data.reset();
     }
 
@@ -76,11 +65,11 @@ void CtConfig::write() {
     std::scoped_lock lock(m_mtx_control);
     m_sink = new CtFileOutput(m_configFile, CtFileOutput::WriteMode::Truncate);
     m_sink->setDelimiter("\n", 1);
-    std::map<std::string, std::string>::iterator iter;
+    CtMap<CtString, CtString>::iterator iter;
 
     CtRawData data(512);
     for (iter = m_configValues.begin(); iter != m_configValues.end(); ++iter) {
-        std::string line = iter->first + std::string(" = ") + iter->second;
+        CtString line = iter->first + CtString(" = ") + iter->second;
         data.clone((CtUInt8*)line.c_str(), line.size());
         m_sink->write(&data);
         data.reset();
@@ -90,12 +79,12 @@ void CtConfig::write() {
     m_sink = nullptr;
 }
 
-void CtConfig::parseLine(const std::string& line) {
+void CtConfig::parseLine(const CtString& line) {
     size_t separatorPos = line.find('=');
     size_t commentPos = line.find('#');
     size_t eol = line.size();
-    bool hasComment = commentPos != std::string::npos;
-    bool hasSeparator = separatorPos != std::string::npos;
+    bool hasComment = commentPos != CtString::npos;
+    bool hasSeparator = separatorPos != CtString::npos;
 
     if (hasSeparator && hasComment) {
         if (separatorPos > commentPos) {
@@ -109,8 +98,8 @@ void CtConfig::parseLine(const std::string& line) {
         return;
     }
 
-    std::string key = line.substr(0, separatorPos);
-    std::string value = line.substr(separatorPos + 1, eol - (separatorPos + 1));
+    CtString key = line.substr(0, separatorPos);
+    CtString value = line.substr(separatorPos + 1, eol - (separatorPos + 1));
 
     key.erase(0, key.find_first_not_of(" \t\r\n"));
     key.erase(key.find_last_not_of(" \t\r\n") + 1);
@@ -120,78 +109,54 @@ void CtConfig::parseLine(const std::string& line) {
     m_configValues[key] = value;
 }
 
-int32_t CtConfig::parseAsInt(const std::string& key) {
-    int32_t parsed_value;
-    std::string str_value = getValue(key);
-    try {
-        parsed_value = stoi(str_value);
-    } catch (...) {
-        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as int."));
-    }
-    return parsed_value;
+CtInt32 CtConfig::parseAsInt(const CtString& key) {
+    CtString str_value = getValue(key);
+    return CtStringHelpers::StrToInt(str_value);
 }
 
-uint32_t CtConfig::parseAsUInt(const std::string& key) {
-    uint32_t parsed_value;
-    std::string str_value = getValue(key);
-    try {
-        parsed_value = stoul(str_value);
-    } catch (...) {
-        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as uint."));
-    }
-    return parsed_value;
+CtUInt32 CtConfig::parseAsUInt(const CtString& key) {
+    CtString str_value = getValue(key);
+    return CtStringHelpers::StrToUInt(str_value);
 }
 
-float CtConfig::parseAsFloat(const std::string& key) {
-    float parsed_value;
-    std::string str_value = getValue(key);
-    try {
-        parsed_value = stof(str_value);
-    } catch (...) {
-        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as float."));
-    }
-    return parsed_value;
+CtFloat CtConfig::parseAsFloat(const CtString& key) {
+    CtString str_value = getValue(key);
+    return CtStringHelpers::StrToFloat(str_value);
 }
 
-double CtConfig::parseAsDouble(const std::string& key) {
-    double parsed_value;
-    std::string str_value = getValue(key);
-    try {
-        parsed_value = stod(str_value);
-    } catch (...) {
-        throw CtTypeParseError(std::string("Value of <") + key + std::string("> can not be parsed as double."));
-    }
-    return parsed_value;
+CtDouble CtConfig::parseAsDouble(const CtString& key) {
+    CtString str_value = getValue(key);
+    return CtStringHelpers::StrToDouble(str_value);
 }
 
-std::string CtConfig::parseAsString(const std::string& key) {
+CtString CtConfig::parseAsString(const CtString& key) {
     return getValue(key);
 }
 
-std::string CtConfig::getValue(const std::string& key) {
+CtString CtConfig::getValue(const CtString& key) {
     if (m_configValues.find(key) != m_configValues.end()) {
         return m_configValues[key];
     } else {
-        throw CtKeyNotFoundError(std::string("Key <") + key + std::string("> not found."));
+        throw CtKeyNotFoundError(CtString("Key <") + key + CtString("> not found."));
     }
 }
 
-void CtConfig::writeInt(const std::string& p_key, const int32_t& p_value) {
+void CtConfig::writeInt(const CtString& p_key, const CtInt32& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfig::writeUInt(const std::string& p_key, const uint32_t& p_value) {
+void CtConfig::writeUInt(const CtString& p_key, const CtUInt32& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfig::writeFloat(const std::string& p_key, const float& p_value) {
+void CtConfig::writeFloat(const CtString& p_key, const CtFloat& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfig::writeDouble(const std::string& p_key, const double& p_value) {
+void CtConfig::writeDouble(const CtString& p_key, const CtDouble& p_value) {
     writeString(p_key, std::to_string(p_value));
 }
 
-void CtConfig::writeString(const std::string& p_key, const std::string& p_value) {
+void CtConfig::writeString(const CtString& p_key, const CtString& p_value) {
     m_configValues[p_key] = p_value;
 }

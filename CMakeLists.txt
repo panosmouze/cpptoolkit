@@ -31,6 +31,8 @@ include_directories(${INCLUDE_DIR})
 
 # Library Build
 add_library(${TARGET_LIBRARY} SHARED
+    ${SOURCE_DIR}/core/CtTypes.cpp
+    ${SOURCE_DIR}/core/CtHelpers.cpp
     ${SOURCE_DIR}/io/CtFileOutput.cpp
     ${SOURCE_DIR}/io/CtFileInput.cpp
     ${SOURCE_DIR}/time/CtTimer.cpp
@@ -43,8 +45,7 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/threading/CtServicePool.cpp
     ${SOURCE_DIR}/threading/CtWorker.cpp
     ${SOURCE_DIR}/threading/CtWorkerPool.cpp
-    ${SOURCE_DIR}/networking/sockets/CtSocketHelpers.cpp
-    ${SOURCE_DIR}/networking/sockets/CtSocketUdp.cpp
+    ${SOURCE_DIR}/networking/CtSocketUdp.cpp
 )
 
 # Examples Build

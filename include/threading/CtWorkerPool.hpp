@@ -32,15 +32,12 @@ SOFTWARE.
 #ifndef INCLUDE_CTWORKERPOOL_HPP_
 #define INCLUDE_CTWORKERPOOL_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
+
 #include "threading/CtWorker.hpp"
 #include "threading/CtThread.hpp"
 #include "utils/CtTask.hpp"
 
-#include <queue>
-#include <atomic>
-#include <mutex>
 #include <functional>
 
 /**
@@ -119,14 +116,14 @@ private:
     void loop() override;
 
 private:
-    CtUInt32 m_nworkers;                                /*!< Number of worker threads in the pool. */
-    std::vector<std::unique_ptr<CtWorker>> m_workers;   /*!< Worker thread instances. */
-    std::queue<CtTask> m_tasks;                         /*!< Queue of tasks to be executed. */
-    std::queue<CtUInt32> m_available_workers_idxs;      /*!< Queue of available worker indices. */
-    std::mutex m_mtx_control;                           /*!< Mutex for controlling access to shared resources. */
-    std::atomic<CtUInt32> m_active_tasks;               /*!< Number of active tasks that are currently running. */
-    std::atomic<CtUInt32> m_queued_tasks;               /*!< Number of queued tasks. */
-    CtWorker m_taskAssigner;                            /*!< This worker is a task assigner, assigns active tasks to available workers. */
+    CtUInt32 m_nworkers;                             /*!< Number of worker threads in the pool. */
+    CtVector<std::unique_ptr<CtWorker>> m_workers;   /*!< Worker thread instances. */
+    CtQueue<CtTask> m_tasks;                         /*!< Queue of tasks to be executed. */
+    CtQueue<CtUInt32> m_available_workers_idxs;      /*!< Queue of available worker indices. */
+    CtMutex m_mtx_control;                           /*!< Mutex for controlling access to shared resources. */
+    CtAtomic<CtUInt32> m_active_tasks;               /*!< Number of active tasks that are currently running. */
+    CtAtomic<CtUInt32> m_queued_tasks;               /*!< Number of queued tasks. */
+    CtWorker m_taskAssigner;                         /*!< This worker is a task assigner, assigns active tasks to available workers. */
 };
 
 template <typename F, typename... FArgs>

@@ -31,9 +31,7 @@ SOFTWARE.
 
 #include "io/CtFileInput.hpp"
 
-#include "exceptions/CtFileExceptions.hpp"
-
-CtFileInput::CtFileInput(const std::string& p_fileName) {
+CtFileInput::CtFileInput(const CtString& p_fileName) {
     m_delim = nullptr;
     m_delim_size = 0;
     m_file.open(p_fileName, std::ofstream::in);
@@ -51,10 +49,10 @@ CtFileInput::~CtFileInput() {
     }
 }
 
-void CtFileInput::setDelimiter(const char* p_delim, CtUInt8 p_delim_size) {
+void CtFileInput::setDelimiter(const CtChar* p_delim, CtUInt8 p_delim_size) {
     if (p_delim_size > 0 && p_delim != nullptr) {
         m_delim_size = p_delim_size;
-        m_delim = new char[m_delim_size];
+        m_delim = new CtChar[m_delim_size];
         memcpy(m_delim, p_delim, m_delim_size);
     }
 }
@@ -63,7 +61,7 @@ bool CtFileInput::read(CtRawData* p_data) {
     bool s_res = false;
 
     if (m_file.is_open()) {
-        char next_char;
+        CtChar next_char;
         CtUInt8* delim_ptr = nullptr;
 
         while (m_file.get(next_char)) {

@@ -38,7 +38,6 @@ CtTask::CtTask(const CtTask& other) : m_task(other.m_task), m_callback(other.m_c
 }
 
 CtTask::~CtTask() {
-
 }
 
 std::function<void()> CtTask::getTaskFunc() {

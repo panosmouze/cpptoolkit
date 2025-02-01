@@ -23,42 +23,20 @@ SOFTWARE.
 */
 
 /**
- * @file CtThreadExceptions.hpp
- * @brief CtThreadExceptions header file.
+ * @file CtExceptions.hpp
+ * @brief Master header file for the exceptions in the cpptoolkit library.
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTTHREADEXCEPTIONS_HPP_
-#define INCLUDE_CTTHREADEXCEPTIONS_HPP_
+#ifndef INCLUDE_CTEXCEPTIONS_HPP_
+#define INCLUDE_CTEXCEPTIONS_HPP_
 
-#include "exceptions/CtException.hpp"
+#include "core/exceptions/CtException.hpp"
+#include "core/exceptions/CtThreadExceptions.hpp"
+#include "core/exceptions/CtNetworkExceptions.hpp"
+#include "core/exceptions/CtEventExceptions.hpp"
+#include "core/exceptions/CtFileExceptions.hpp"
+#include "core/exceptions/CtTypeExceptions.hpp"
 
-/**
- * @brief This exception is thrown when a thread error occurs.
- * 
- */
-class CtThreadError : public CtException {
-public:
-    explicit CtThreadError(const std::string& msg): CtException(msg) {};
-};
-
-/**
- * @brief This exception is thrown when a service pool error occurs.
- * 
- */
-class CtServiceError : public CtException {
-public:
-    explicit CtServiceError(const std::string& msg): CtException(msg) {};
-};
-
-/**
- * @brief This exception is thrown when a worker error occurs.
- * 
- */
-class CtWorkerError : public CtException {
-public:
-    explicit CtWorkerError(const std::string& msg): CtException(msg) {};
-};
-
-#endif //INCLUDE_CTTHREADEXCEPTIONS_HPP_
+#endif //INCLUDE_CTEXCEPTIONS_HPP_

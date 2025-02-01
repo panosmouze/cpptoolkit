@@ -32,9 +32,7 @@ SOFTWARE.
 #ifndef INCLUDE_CTSOCKETUDP_HPP_
 #define INCLUDE_CTSOCKETUDP_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
-#include "networking/sockets/CtSocketHelpers.hpp"
+#include "core.hpp"
 
 #include <cstring>
 #include <unistd.h>
@@ -101,14 +99,14 @@ public:
      * @param p_interfaceName The interface name to bind to.
      * @param p_port The port to bind to.
      */
-    EXPORTED_API void setSub(const std::string& p_interfaceName, uint16_t p_port);
+    EXPORTED_API void setSub(const CtString& p_interfaceName, CtUInt16 p_port);
 
     /**
      * @brief Set the socket for publishing.
      * @param p_port The port to send data to.
      * @param p_addr The address to send data to. Default to empty string.
      */
-    EXPORTED_API void setPub(uint16_t p_port, const std::string& p_addr = "0.0.0.0");
+    EXPORTED_API void setPub(CtUInt16 p_port, const CtString& p_addr = "0.0.0.0");
 
     /**
      * @brief Check if there is data available to read.
@@ -129,7 +127,7 @@ public:
      * @param p_data Buffer containing the data to sent.
      * @param p_size Size of the buffer.
      */
-    EXPORTED_API void send(uint8_t* p_data, CtUInt32 p_size);
+    EXPORTED_API void send(CtUInt8* p_data, CtUInt32 p_size);
 
     /**
      * @brief Send data over the socket.
@@ -144,7 +142,7 @@ public:
      * @param p_size Size of the buffer.
      * @param p_client Pointer to a CtNetAddress object to store the client's address (output parameter).
      */
-    EXPORTED_API void receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_client = nullptr);
+    EXPORTED_API void receive(CtUInt8* p_data, CtUInt32 p_size, CtNetAddress* p_client = nullptr);
 
     /**
      * @brief Receive data from the socket.
@@ -156,8 +154,8 @@ public:
 private:
     int m_addrType;                         /**< The socket domain (IPv4 or IPv6). */
     int m_socket;                           /**< The socket descriptor. */
-    uint16_t m_port;                        /**< The port associated with the socket. */
-    std::string m_addr;                     /**< The address associated with the socket. */
+    CtUInt16 m_port;                        /**< The port associated with the socket. */
+    CtString m_addr;                        /**< The address associated with the socket. */
     struct pollfd m_pollin_sockets[1];      /**< Array for polling-in file descriptors. */
     struct pollfd m_pollout_sockets[1];     /**< Array for polling-out file descriptors. */
     sockaddr_in m_pubAddress;               /**< The address for publishing data. */

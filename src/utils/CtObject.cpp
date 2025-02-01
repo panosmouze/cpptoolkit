@@ -31,12 +31,7 @@ SOFTWARE.
 
 #include "utils/CtObject.hpp"
 
-#include "exceptions/CtEventExceptions.hpp"
-
-#include <iostream>
-
 CtObject::CtObject() : m_pool(1) {
-
 }
 
 CtObject::~CtObject() {
@@ -64,10 +59,10 @@ void CtObject::triggerEvent(CtUInt32 p_eventCode) {
     if (!hasEvent(p_eventCode)) {
         throw CtEventNotExistsError("Event is not registed. " + std::to_string(p_eventCode));
     }
-    std::pair<std::multimap<CtUInt32, CtTask>::iterator, std::multimap<CtUInt32, CtTask>::iterator> s_iterRange;
+    std::pair<CtMultiMap<CtUInt32, CtTask>::iterator, CtMultiMap<CtUInt32, CtTask>::iterator> s_iterRange;
     s_iterRange = m_triggers.equal_range(p_eventCode);
 
-    std::multimap<CtUInt32, CtTask>::iterator s_iter;
+    CtMultiMap<CtUInt32, CtTask>::iterator s_iter;
     for (s_iter = s_iterRange.first; s_iter != s_iterRange.second; ++s_iter) {
         m_pool.addTask(s_iter->second);
     }

@@ -31,51 +31,51 @@ SOFTWARE.
 
 #include "utils/CtLogger.hpp"
 
-CtLogger::CtLogger(CtLogger::Level level, const std::string& componentName) : m_level(level), m_componentName(componentName) {
+CtLogger::CtLogger(CtLogger::Level level, const CtString& componentName) : m_level(level), m_componentName(componentName) {
 }
 
 CtLogger::~CtLogger() {
 }
 
-void CtLogger::log_debug(const std::string& message) {
+void CtLogger::log_debug(const CtString& message) {
     log(CtLogger::Level::DEBUG, message);
 }
 
-void CtLogger::log_info(const std::string& message) {
+void CtLogger::log_info(const CtString& message) {
     log(CtLogger::Level::INFO, message);
 }
 
-void CtLogger::log_warning(const std::string& message) {
+void CtLogger::log_warning(const CtString& message) {
     log(CtLogger::Level::WARNING, message);
 }
 
-void CtLogger::log_error(const std::string& message) {
+void CtLogger::log_error(const CtString& message) {
     log(CtLogger::Level::ERROR, message);
 }
 
-void CtLogger::log_critical(const std::string& message) {
+void CtLogger::log_critical(const CtString& message) {
     log(CtLogger::Level::CRITICAL, message);
 }
 
-void CtLogger::log(CtLogger::Level level, const std::string& message) {
+void CtLogger::log(CtLogger::Level level, const CtString& message) {
     std::scoped_lock lock(m_mtx_control);
     if (level >= m_level) {
-        std::string logEntry = generateLoggerMsg(level, m_componentName, message);
+        CtString logEntry = generateLoggerMsg(level, m_componentName, message);
         std::cout << logEntry << std::endl;
     }
 }
 
-const std::string CtLogger::generateLoggerMsg(CtLogger::Level level, const std::string& componentName, const std::string& message) {
+const CtString CtLogger::generateLoggerMsg(CtLogger::Level level, const CtString& componentName, const CtString& message) {
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     std::time_t now_c = std::chrono::system_clock::to_time_t(now);
     std::stringstream timestamp;
     timestamp << std::put_time(std::localtime(&now_c), "%Y-%m-%d %X");
 
-    return std::string("[" + timestamp.str() + "] [" + levelToString(level) + "] " + componentName + ": " + message);
+    return CtString("[" + timestamp.str() + "] [" + levelToString(level) + "] " + componentName + ": " + message);
 }
 
-const std::string CtLogger::levelToString(CtLogger::Level level) {
-    std::string levelStr;
+const CtString CtLogger::levelToString(CtLogger::Level level) {
+    CtString levelStr;
     switch (level) {
         case CtLogger::Level::DEBUG:
             levelStr = "DEBUG";
@@ -100,7 +100,7 @@ const std::string CtLogger::levelToString(CtLogger::Level level) {
     return levelStr;
 }
 
-CtLogger::Level CtLogger::stringToLevel(const std::string& levelStr) {
+CtLogger::Level CtLogger::stringToLevel(const CtString& levelStr) {
     Level level;
     if (levelStr.compare("DEBUG") == 0) {
         level = CtLogger::Level::DEBUG;

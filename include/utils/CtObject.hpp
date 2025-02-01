@@ -32,15 +32,11 @@ SOFTWARE.
 #ifndef INCLUDE_CTOBJECT_HPP_
 #define INCLUDE_CTOBJECT_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
 
 #include "utils/CtTask.hpp"
 #include "threading/CtWorkerPool.hpp"
 
-#include <string>
-#include <map>
-#include <mutex>
 #include <functional>
 
 /**
@@ -162,9 +158,9 @@ private:
     EXPORTED_API bool hasEvent(CtUInt32 p_eventCode);
 
 private:
-    std::mutex m_mtx_control;                       /*!< Mutex for controlling access to shared resources. */
-    std::vector<CtUInt32> m_events;                 /*!< This vector contains all the registered event codes. */
-    std::multimap<CtUInt32, CtTask> m_triggers;     /*!< This map represents a list of tasks that should be triggered for each event code. */
+    CtMutex m_mtx_control;                          /*!< Mutex for controlling access to shared resources. */
+    CtVector<CtUInt32> m_events;                    /*!< This vector contains all the registered event codes. */
+    CtMultiMap<CtUInt32, CtTask> m_triggers;        /*!< This map represents a list of tasks that should be triggered for each event code. */
     CtWorkerPool m_pool;                            /*!< This CtWorkerPool executes the triggered tasks. */
 };
 

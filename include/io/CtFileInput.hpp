@@ -32,8 +32,7 @@ SOFTWARE.
 #ifndef INCLUDE_CTFILEINPUT_HPP_
 #define INCLUDE_CTFILEINPUT_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -44,7 +43,6 @@ SOFTWARE.
  * 
  * @details
  * This class provides an interface for reading data from a file. The data can be read in batches or one by one.
- * The class is thread-safe and can be used in multi-threaded environments.
  * 
  * @code {.cpp}
  * // create a file input object
@@ -63,7 +61,7 @@ public:
      * 
      * @param p_fileName Filename.
      */
-    EXPORTED_API explicit CtFileInput(const std::string& p_fileName);
+    EXPORTED_API explicit CtFileInput(const CtString& p_fileName);
 
     /**
      * @brief Destructor for CtFileInput.
@@ -78,7 +76,7 @@ public:
      * @param p_delim The delimiter.
      * @param p_delim_size The delimiter size.
      */
-    EXPORTED_API void setDelimiter(const char* p_delim, CtUInt8 p_delim_size);
+    EXPORTED_API void setDelimiter(const CtChar* p_delim, CtUInt8 p_delim_size);
 
     /**
      * @brief This method read data from the file.
@@ -90,7 +88,7 @@ public:
 
 private:
     std::ifstream m_file;           /**< File stream. */
-    char* m_delim;                  /**< Batch read delimiter. */
+    CtChar* m_delim;                /**< Batch read delimiter. */
     CtUInt8 m_delim_size;           /**< Delimeter size. */
 };
 

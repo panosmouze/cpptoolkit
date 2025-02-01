@@ -30,7 +30,6 @@ SOFTWARE.
  */
 
 #include "threading/CtService.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
 
 CtUInt32 CtService::m_slot_time = 10;
 

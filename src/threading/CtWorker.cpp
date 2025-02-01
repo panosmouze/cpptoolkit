@@ -30,8 +30,6 @@ SOFTWARE.
  */
 
 #include "threading/CtWorker.hpp"
-#include "utils/CtTask.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
 
 CtWorker::CtWorker() : m_running(false) {
 }

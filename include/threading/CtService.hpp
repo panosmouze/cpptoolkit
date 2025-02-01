@@ -32,8 +32,8 @@ SOFTWARE.
 #ifndef INCLUDE_CTSERVICE_HPP_
 #define INCLUDE_CTSERVICE_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
+
 #include "threading/CtThread.hpp"
 #include "threading/CtWorker.hpp"
 #include "utils/CtTask.hpp"
@@ -101,7 +101,7 @@ private:
 
 private:
     CtWorker m_worker;              /*!< Worker for executing the task. */
-    uint64_t m_nslots;              /*!< The number of slots to wait before rerunning the service. */
+    CtUInt64 m_nslots;              /*!< The number of slots to wait before rerunning the service. */
 };
 
 template <typename F, typename... FArgs>

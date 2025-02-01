@@ -32,17 +32,10 @@ SOFTWARE.
 #ifndef INCLUDE_CTCONFIG_HPP_
 #define INCLUDE_CTCONFIG_HPP_
 
-
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
 
 #include "io/CtFileOutput.hpp"
 #include "io/CtFileInput.hpp"
-
-#include <fstream>
-#include <string>
-#include <map>
-#include <mutex>
 
 /**
  * @class CtConfig
@@ -50,7 +43,7 @@ SOFTWARE.
  * 
  * @details
  * The CtConfig class provides a mechanism for reading and writing configuration files providing key-value
- * pairs of various data types. The class can parse integer, unsigned integer, float, double, and string values.
+ * pairs of various data types. The class can parse integer, unsigned integer, CtFloat, CtDouble, and string values.
  * The class is thread-safe and can be used in multi-threaded environments.
  */
 class CtConfig {
@@ -59,7 +52,7 @@ public:
      * @brief Constructor for CtConfig.
      * @param configFile The path to the configuration file to be parsed.
      */
-    EXPORTED_API explicit CtConfig(const std::string& p_configFile);
+    EXPORTED_API explicit CtConfig(const CtString& p_configFile);
 
     /**
      * @brief Destructor for cleaning up resources.
@@ -86,7 +79,7 @@ public:
      * @param key The key value to be parsed.
      * @return The parsed integer value.
      */
-    EXPORTED_API int32_t parseAsInt(const std::string& p_key);
+    EXPORTED_API CtInt32 parseAsInt(const CtString& p_key);
 
     /**
      * @brief Parse a value as a 32-bit unsigned integer or 
@@ -96,27 +89,27 @@ public:
      * @param key The key value to be parsed.
      * @return The parsed unsigned integer value.
      */
-    EXPORTED_API uint32_t parseAsUInt(const std::string& p_key);
+    EXPORTED_API CtUInt32 parseAsUInt(const CtString& p_key);
 
     /**
-     * @brief Parse a value as a float or 
+     * @brief Parse a value as a CtFloat or 
      *          throw CtKeyNotFoundError if key is not found in the map or
-     *          throw CtParseError if key value cannot be parsed as float.
+     *          throw CtParseError if key value cannot be parsed as CtFloat.
      * 
      * @param key The key value to be parsed.
      * @return The parsed floating-point value.
      */
-    EXPORTED_API float parseAsFloat(const std::string& p_key);
+    EXPORTED_API CtFloat parseAsFloat(const CtString& p_key);
 
     /**
-     * @brief Parse a value as a double-precision floating-point number or 
+     * @brief Parse a value as a CtDouble-precision floating-point number or 
      *          throw CtKeyNotFoundError if key is not found in the map or
-     *          throw CtParseError if key value cannot be parsed as double.
+     *          throw CtParseError if key value cannot be parsed as CtDouble.
      * 
      * @param key The key value to be parsed.
-     * @return The parsed double value.
+     * @return The parsed CtDouble value.
      */
-    EXPORTED_API double parseAsDouble(const std::string& p_key);
+    EXPORTED_API CtDouble parseAsDouble(const CtString& p_key);
 
     /**
      * @brief Parse a value as a standard C++ string or 
@@ -125,7 +118,7 @@ public:
      * @param key The key value to be parsed.
      * @return The parsed string.
      */
-    EXPORTED_API std::string parseAsString(const std::string& p_key);
+    EXPORTED_API CtString parseAsString(const CtString& p_key);
     
     /**
      * @brief Write value to key as int.
@@ -133,7 +126,7 @@ public:
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
-    EXPORTED_API void writeInt(const std::string& p_key, const int32_t& p_value);
+    EXPORTED_API void writeInt(const CtString& p_key, const CtInt32& p_value);
 
     /**
      * @brief Write value to key as uint.
@@ -141,23 +134,23 @@ public:
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
-    EXPORTED_API void writeUInt(const std::string& p_key, const uint32_t& p_value);
+    EXPORTED_API void writeUInt(const CtString& p_key, const CtUInt32& p_value);
 
     /**
-     * @brief Write value to key as float.
+     * @brief Write value to key as CtFloat.
      * 
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
-    EXPORTED_API void writeFloat(const std::string& p_key, const float& p_value);
+    EXPORTED_API void writeFloat(const CtString& p_key, const CtFloat& p_value);
 
     /**
-     * @brief Write value to key as double.
+     * @brief Write value to key as CtDouble.
      * 
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
-    EXPORTED_API void writeDouble(const std::string& p_key, const double& p_value);
+    EXPORTED_API void writeDouble(const CtString& p_key, const CtDouble& p_value);
 
     /**
      * @brief Write value to key as string.
@@ -165,7 +158,7 @@ public:
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
-    EXPORTED_API void writeString(const std::string& p_key, const std::string& p_value);
+    EXPORTED_API void writeString(const CtString& p_key, const CtString& p_value);
 
 private:
     /**
@@ -173,25 +166,25 @@ private:
      *          throw CtKeyNotFoundError if key is not found in the map.
      * 
      * @param key The key value to be parsed.
-     * @return std::string The string value assosiated with the given key.
+     * @return CtString The string value assosiated with the given key.
      */
-    std::string getValue(const std::string& p_key);
+    CtString getValue(const CtString& p_key);
 
     /**
      * @brief This method gets a line as input and parse it in order to find the key and value
-     *          of configured item. These values are stored in the std::map m_configValues.
+     *          of configured item. These values are stored in the CtMap m_configValues.
      *          This method can throw CtFileParseError if file cannot be parsed.
      * 
      * @param line 
      */
-    void parseLine(const std::string& p_line);
+    void parseLine(const CtString& p_line);
 
 private:
-    std::mutex m_mtx_control;                           /*!< Internal mutex for synchronization. */
-    CtFileInput* m_source;                              /*!< The source file for reading configuration values. */
-    CtFileOutput* m_sink;                               /*!< The sink file for writing configuration values. */
-    std::string m_configFile;                           /*!< The path to the configuration file. */
-    std::map<std::string, std::string> m_configValues;  /*!< A map to store configuration key-value pairs. */
+    CtMutex m_mtx_control;                      /*!< Internal mutex for synchronization. */
+    CtFileInput* m_source;                      /*!< The source file for reading configuration values. */
+    CtFileOutput* m_sink;                       /*!< The sink file for writing configuration values. */
+    CtString m_configFile;                      /*!< The path to the configuration file. */
+    CtMap<CtString, CtString> m_configValues;   /*!< A map to store configuration key-value pairs. */
 };
 
 #endif //INCLUDE_CTCONFIG_HPP_

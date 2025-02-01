@@ -30,10 +30,8 @@ SOFTWARE.
  */
 
 #include "threading/CtThread.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
 
 #include <chrono>
-#include <thread>
 
 CtThread::CtThread() : m_running(false) {
 
@@ -78,6 +76,6 @@ void CtThread::setRunning(bool running) {
     m_running.store(running);
 }
 
-void CtThread::sleepFor(uint64_t time) {
+void CtThread::sleepFor(CtUInt64 time) {
     std::this_thread::sleep_for(std::chrono::milliseconds(time));
 }
