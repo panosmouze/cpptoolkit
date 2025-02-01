@@ -65,7 +65,7 @@ bool CtFileInput::read(CtRawData* p_data) {
         CtUInt8* delim_ptr = nullptr;
 
         while (m_file.get(next_char)) {
-            p_data->nextByte(next_char);
+            p_data->setNextByte(next_char);
             
             if (m_delim != nullptr && p_data->size() >= m_delim_size) {
                 delim_ptr = p_data->getNLastBytes(m_delim_size);
