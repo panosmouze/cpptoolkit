@@ -50,10 +50,19 @@ CtRawData::~CtRawData() {
     delete[] m_data;
 }
 
-void CtRawData::nextByte(char byte) {
-    if (m_size < m_maxSize) {
-        m_data[m_size++] = byte;
+void CtRawData::setNextByte(CtUInt8 p_data) {
+    if (m_size >= m_maxSize) {
+        throw CtOutOfRangeError("Data size is out of range.");
+    } 
+    m_data[m_size++] = p_data;
+}
+
+void CtRawData::setNextBytes(CtUInt8* p_data, CtUInt32 p_size) {
+    if (m_size + p_size > m_maxSize) {
+        throw CtOutOfRangeError("Data size is out of range.");
     }
+    memcpy(&m_data[m_size], p_data, p_size);
+    m_size += p_size;
 }
 
 CtUInt8* CtRawData::getNLastBytes(CtUInt32 p_num) {

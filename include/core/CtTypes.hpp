@@ -134,10 +134,20 @@ public:
      * @brief Sets the next byte of the buffer. It also raises the size of the buffer.
      *      If the buffer is full an exception will be thrown - CtOutOfRangeError()
      * 
-     * @param byte The byte to be added.
+     * @param p_data The byte to be added.
      * @return void 
      */
-    EXPORTED_API void nextByte(char byte);
+    EXPORTED_API void setNextByte(CtUInt8 p_data);
+
+    /**
+     * @brief Sets the next byte of the buffer. It also raises the size of the buffer.
+     *      If the buffer is full an exception will be thrown - CtOutOfRangeError()
+     * 
+     * @param p_data The byte to be added.
+     * @param p_size The number of bytes to be added.
+     * @return void 
+     */
+    EXPORTED_API void setNextBytes(CtUInt8* p_data, CtUInt32 p_size);
 
     /**
      * @brief This method returns a pointer to the last N bytes of the buffer.
