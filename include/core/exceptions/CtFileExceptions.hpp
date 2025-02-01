@@ -23,57 +23,42 @@ SOFTWARE.
 */
 
 /**
- * @file cpptoolkit.hpp
- * @brief Master header file for the C++ Toolkit library.
- * @date 10-01-2025
+ * @file CtFileExceptions.hpp
+ * @brief CtFileExceptions header file.
+ * @date 10-03-2024
  * 
  */
 
-#ifndef INCLUDE_CPPTOOLKIT_HPP_
-#define INCLUDE_CPPTOOLKIT_HPP_
+#ifndef INCLUDE_CTFILEEXCEPTIONS_HPP_
+#define INCLUDE_CTFILEEXCEPTIONS_HPP_
 
-/** 
- * Include basic header files
- * 
- */
 #include "core.hpp"
 
 /**
- * Include objects related to IO
+ * @brief This exception is thrown when a file cannot be read.
  * 
  */
-#include "io/CtFileInput.hpp"
-#include "io/CtFileOutput.hpp"
+class CtFileReadError : public CtException {
+public:
+    explicit CtFileReadError(const CtString& msg): CtException(msg) {};
+};
 
 /**
- * Include objects related to networking
+ * @brief This exception is thrown when a file cannot be written.
  * 
  */
-#include "networking/CtSocketUdp.hpp"
+class CtFileWriteError : public CtException {
+public:
+    explicit CtFileWriteError(const CtString& msg): CtException(msg) {};
+};
 
 /**
- * Include objects related to threading
+ * @brief This exception is thrown when a file cannot be parsed.
  * 
  */
-#include "threading/CtThread.hpp"
-#include "threading/CtWorker.hpp"
-#include "threading/CtWorkerPool.hpp"
-#include "threading/CtService.hpp"
-#include "threading/CtServicePool.hpp"
+class CtFileParseError : public CtException {
+public:
+    explicit CtFileParseError(const CtString& msg): CtException(msg) {};
+};
 
-/**
- * Include objects related to time management
- * 
- */
-#include "time/CtTimer.hpp"
-
-/**
- * Include objects related to utils
- * 
- */
-#include "utils/CtConfig.hpp"
-#include "utils/CtLogger.hpp"
-#include "utils/CtObject.hpp"
-#include "utils/CtTask.hpp"
-
-#endif //INCLUDE_CPPTOOLKIT_HPP_
+#endif //INCLUDE_CTFILEEXCEPTIONS_HPP_

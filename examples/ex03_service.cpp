@@ -40,7 +40,7 @@ SOFTWARE.
  * 
  */
 void case01() {
-    uint8_t cnt = 0;
+    CtUInt8 cnt = 0;
     CtService service(10, [&cnt](){cnt++;});
     service.runService();
 

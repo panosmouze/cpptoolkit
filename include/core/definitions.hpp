@@ -23,20 +23,25 @@ SOFTWARE.
 */
 
 /**
- * @file CtExceptions.hpp
- * @brief Master header file for the exceptions in the cpptoolkit library.
+ * @file definitions.hpp
+ * @brief Header file for generic definitions used in teh project.
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTEXCEPTIONS_HPP_
-#define INCLUDE_CTEXCEPTIONS_HPP_
+#ifndef INCLUDE_DEFINITIONS_HPP_
+#define INCLUDE_DEFINITIONS_HPP_
 
-#include "exceptions/CtException.hpp"
-#include "exceptions/CtThreadExceptions.hpp"
-#include "exceptions/CtNetworkExceptions.hpp"
-#include "exceptions/CtEventExceptions.hpp"
-#include "exceptions/CtFileExceptions.hpp"
-#include "exceptions/CtTypeExceptions.hpp"
+#include "version.hpp"
 
-#endif //INCLUDE_CTEXCEPTIONS_HPP_
+/**
+ * @brief EXPORTED_API macro for exporting functions in shared libraries.
+ * 
+ */
+#ifdef _WIN32
+    #define EXPORTED_API __declspec(dllexport)
+#else
+    #define EXPORTED_API __attribute__((visibility("default")))
+#endif
+
+#endif //INCLUDE_DEFINITIONS_HPP_

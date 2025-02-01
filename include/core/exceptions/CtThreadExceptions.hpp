@@ -23,26 +23,42 @@ SOFTWARE.
 */
 
 /**
- * @file definitions.hpp
- * @brief Header file for generic definitions used in teh project.
+ * @file CtThreadExceptions.hpp
+ * @brief CtThreadExceptions header file.
  * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_DEFINITIONS_HPP_
-#define INCLUDE_DEFINITIONS_HPP_
+#ifndef INCLUDE_CTTHREADEXCEPTIONS_HPP_
+#define INCLUDE_CTTHREADEXCEPTIONS_HPP_
 
-#include "version.hpp"
+#include "core.hpp"
 
 /**
- * @brief EXPORTED_API macro for exporting functions in shared libraries.
+ * @brief This exception is thrown when a thread error occurs.
  * 
  */
-#ifdef _WIN32
-    #define EXPORTED_API __declspec(dllexport)
-#else
-    #define EXPORTED_API __attribute__((visibility("default")))
-#endif
+class CtThreadError : public CtException {
+public:
+    explicit CtThreadError(const CtString& msg): CtException(msg) {};
+};
 
+/**
+ * @brief This exception is thrown when a service pool error occurs.
+ * 
+ */
+class CtServiceError : public CtException {
+public:
+    explicit CtServiceError(const CtString& msg): CtException(msg) {};
+};
 
-#endif //INCLUDE_DEFINITIONS_HPP_
+/**
+ * @brief This exception is thrown when a worker error occurs.
+ * 
+ */
+class CtWorkerError : public CtException {
+public:
+    explicit CtWorkerError(const CtString& msg): CtException(msg) {};
+};
+
+#endif //INCLUDE_CTTHREADEXCEPTIONS_HPP_

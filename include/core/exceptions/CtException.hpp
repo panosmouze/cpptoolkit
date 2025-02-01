@@ -23,42 +23,48 @@ SOFTWARE.
 */
 
 /**
- * @file CtTypeExceptions.hpp
- * @brief CtTypeExceptions header file.
- * @date 10-03-2024
+ * @file CtException.hpp
+ * @brief CtException header file.
+ * @date 18-01-2024
  * 
  */
 
-#ifndef INCLUDE_CTTYPEEXCEPTIONS_HPP_
-#define INCLUDE_CTTYPEEXCEPTIONS_HPP_
+#ifndef INCLUDE_CTEXCEPTION_HPP_
+#define INCLUDE_CTEXCEPTION_HPP_
 
-#include "exceptions/CtException.hpp"
+#include "core.hpp"
+
+#include <stdexcept>
 
 /**
- * @brief This exception is thrown when a type cannot be parsed.
+ * @brief An exception class for the cpptoolkit library. 
+ * 
+ * @details
+ * This is an abstract class derived from std::exception and is used as a base 
+ * class for all the exceptions in the library.
  * 
  */
-class CtTypeParseError : public CtException {
+class CtException : public std::exception {
+protected:
+    /**
+     * @brief Construct a new Ct Exception object
+     * 
+     * @param msg Message to be stored in the exception.
+     */
+    explicit CtException(const CtString& msg) : m_msg(msg) {};
+
 public:
-    explicit CtTypeParseError(const std::string& msg): CtException(msg) {};
+    /**
+     * @brief This method returns the message stored in the exception.
+     * 
+     * @return const char* the message stored in the exception.
+     */
+    const char* what() const noexcept override {
+        return m_msg.c_str();
+    };
+
+private:
+    CtString m_msg;                      /**< The message stored in the exception. */
 };
 
-/**
- * @brief This exception is thrown when a key is not found in a container.
- * 
- */
-class CtKeyNotFoundError : public CtException {
-public:
-    explicit CtKeyNotFoundError(const std::string& msg): CtException(msg) {};
-};
-
-/**
- * @brief This exception is thrown when an index is out of bounds.
- * 
- */
-class CtOutOfRangeError : public CtException {
-public:
-    explicit CtOutOfRangeError(const std::string& msg): CtException(msg) {};
-};
-
-#endif //INCLUDE_CTTYPEEXCEPTIONS_HPP_
+#endif //INCLUDE_CTEXCEPTION_HPP_

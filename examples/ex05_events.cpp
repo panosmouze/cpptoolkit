@@ -37,7 +37,7 @@ SOFTWARE.
 class CtMainPage : public CtObject {
 public: 
     // Create a list of custom events
-    enum MyEvents : uint32_t {
+    enum MyEvents : CtUInt32 {
         EVENT1 = 1,
         EVENT2 = 2,
         EVENT3 = 3

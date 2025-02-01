@@ -32,8 +32,7 @@ SOFTWARE.
 #ifndef INCLUDE_CTTASK_HPP_
 #define INCLUDE_CTTASK_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
 
 #include <functional>
 

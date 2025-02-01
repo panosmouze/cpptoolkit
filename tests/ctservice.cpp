@@ -32,13 +32,13 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
-void f1(uint32_t* idx) {
+void f1(CtUInt32* idx) {
     *idx += 1;
 }
 
 
 TEST(CtService, ServiceFunctionalityUsingNormalFunction) {
-    uint32_t idx = 0;
+    CtUInt32 idx = 0;
     // set slot time to 100ms
     CtService::m_slot_time = 100;
     // create a new service and run f1 every 10 slots => 1s
@@ -54,7 +54,7 @@ TEST(CtService, ServiceFunctionalityUsingNormalFunction) {
 
 
 TEST(CtService, ServiceFunctionalityUsingCtTask) {
-    uint32_t idx = 0;
+    CtUInt32 idx = 0;
     // set slot time to 100ms
     CtService::m_slot_time = 100;
     CtTask task;

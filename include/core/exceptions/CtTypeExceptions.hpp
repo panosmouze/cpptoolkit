@@ -23,42 +23,42 @@ SOFTWARE.
 */
 
 /**
- * @file CtFileExceptions.hpp
- * @brief CtFileExceptions header file.
+ * @file CtTypeExceptions.hpp
+ * @brief CtTypeExceptions header file.
  * @date 10-03-2024
  * 
  */
 
-#ifndef INCLUDE_CTFILEEXCEPTIONS_HPP_
-#define INCLUDE_CTFILEEXCEPTIONS_HPP_
+#ifndef INCLUDE_CTTYPEEXCEPTIONS_HPP_
+#define INCLUDE_CTTYPEEXCEPTIONS_HPP_
 
-#include "exceptions/CtException.hpp"
+#include "core.hpp"
 
 /**
- * @brief This exception is thrown when a file cannot be read.
+ * @brief This exception is thrown when a type cannot be parsed.
  * 
  */
-class CtFileReadError : public CtException {
+class CtTypeParseError : public CtException {
 public:
-    explicit CtFileReadError(const std::string& msg): CtException(msg) {};
+    explicit CtTypeParseError(const CtString& msg): CtException(msg) {};
 };
 
 /**
- * @brief This exception is thrown when a file cannot be written.
+ * @brief This exception is thrown when a key is not found in a container.
  * 
  */
-class CtFileWriteError : public CtException {
+class CtKeyNotFoundError : public CtException {
 public:
-    explicit CtFileWriteError(const std::string& msg): CtException(msg) {};
+    explicit CtKeyNotFoundError(const CtString& msg): CtException(msg) {};
 };
 
 /**
- * @brief This exception is thrown when a file cannot be parsed.
+ * @brief This exception is thrown when an index is out of bounds.
  * 
  */
-class CtFileParseError : public CtException {
+class CtOutOfRangeError : public CtException {
 public:
-    explicit CtFileParseError(const std::string& msg): CtException(msg) {};
+    explicit CtOutOfRangeError(const CtString& msg): CtException(msg) {};
 };
 
-#endif //INCLUDE_CTFILEEXCEPTIONS_HPP_
+#endif //INCLUDE_CTTYPEEXCEPTIONS_HPP_

@@ -32,16 +32,13 @@ SOFTWARE.
 #ifndef INCLUDE_CTSERVICEPOOL_HPP_
 #define INCLUDE_CTSERVICEPOOL_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
+
 #include "threading/CtService.hpp"
 #include "threading/CtWorkerPool.hpp"
 #include "threading/CtThread.hpp"
 #include "time/CtTimer.hpp"
 #include "utils/CtTask.hpp"
-
-#include <vector>
-#include <mutex>
 
 /**
  * @class CtServicePool
@@ -75,7 +72,7 @@ private:
      */
     typedef struct _CtServicePack {
         CtTask task;
-        std::string id;
+        CtString id;
         CtUInt32 nslots;
     } CtServicePack;
 
@@ -97,7 +94,7 @@ public:
      * @param id An optional ID for the task.
      * @param task The task to be added.
      */
-    EXPORTED_API void addTask(CtUInt32 nslots, const std::string& id, CtTask& task);
+    EXPORTED_API void addTask(CtUInt32 nslots, const CtString& id, CtTask& task);
 
     /**
      * @brief Add a task to the service pool with a specified interval and an optional ID.
@@ -107,13 +104,13 @@ public:
      * @param fargs The task function's arguments to be added.
      */
     template <typename F, typename... FArgs>
-    EXPORTED_API void addTaskFunc(CtUInt32 nslots, const std::string& id, F&& func, FArgs&&... fargs);
+    EXPORTED_API void addTaskFunc(CtUInt32 nslots, const CtString& id, F&& func, FArgs&&... fargs);
 
     /**
      * @brief Remove a task from the service pool based on its ID.
      * @param id The ID of the task to be removed.
      */
-    EXPORTED_API void removeTask(const std::string& id);
+    EXPORTED_API void removeTask(const CtString& id);
 
     /**
      * @brief Start the services provided by the service pool.
@@ -144,15 +141,15 @@ private:
 private:
     CtUInt32 m_nworkers;                    /*!< The number of worker threads in the service pool. */
     CtUInt32 m_slot_cnt;                    /*!< Counter for the current slot. */
-    std::vector<CtServicePack> m_tasks;     /*!< Vector of tasks in the service pool. */
-    std::mutex m_mtx_control;               /*!< Mutex for controlling access to shared resources. */
+    CtVector<CtServicePack> m_tasks;        /*!< Vector of tasks in the service pool. */
+    CtMutex m_mtx_control;                  /*!< Mutex for controlling access to shared resources. */
     CtWorkerPool m_worker_pool;             /*!< Worker pool for executing tasks. */
     CtTimer m_timer;                        /*!< Timer for tracking time intervals. */
-    uint64_t m_exec_time;                   /*!< Variable used for time tracking during a loop. */
+    CtUInt64 m_exec_time;                   /*!< Variable used for time tracking during a loop. */
 };
 
 template <typename F, typename... FArgs>
-void CtServicePool::addTaskFunc(CtUInt32 nslots, const std::string& id, F&& func, FArgs&&... fargs) {
+void CtServicePool::addTaskFunc(CtUInt32 nslots, const CtString& id, F&& func, FArgs&&... fargs) {
     CtTask s_task;
     s_task.setTaskFunc(std::bind(func, std::forward<FArgs>(fargs)...));
     addTask(nslots, id, s_task);

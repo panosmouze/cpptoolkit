@@ -32,15 +32,12 @@ SOFTWARE.
 #ifndef INCLUDE_CTLOGGER_HPP_
 #define INCLUDE_CTLOGGER_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
+
 #include "io/CtFileOutput.hpp"
 
-#include <mutex>
-#include <string>
 #include <iomanip>
 #include <chrono>
-#include <vector>
 #include <iostream>
 
 /**
@@ -64,7 +61,7 @@ public:
      * @param level The selected level given as CtLogger::Level. All messages that have level above or equal to this value will be logged.
      * @param componentName The name of the component or module.
      */
-    EXPORTED_API explicit CtLogger(CtLogger::Level level = CtLogger::Level::DEBUG, const std::string& componentName = "");
+    EXPORTED_API explicit CtLogger(CtLogger::Level level = CtLogger::Level::DEBUG, const CtString& componentName = "");
 
     /**
      * @brief Destructor.
@@ -76,35 +73,35 @@ public:
      * 
      * @param message The log message.
      */
-    EXPORTED_API void log_debug(const std::string& message);
+    EXPORTED_API void log_debug(const CtString& message);
 
     /**
      * @brief Log a message with info log level.
      * 
      * @param message The log message.
      */
-    EXPORTED_API void log_info(const std::string& message);
+    EXPORTED_API void log_info(const CtString& message);
 
     /**
      * @brief Log a message with warning log level.
      * 
      * @param message The log message.
      */
-    EXPORTED_API void log_warning(const std::string& message);
+    EXPORTED_API void log_warning(const CtString& message);
 
     /**
      * @brief Log a message with error log level.
      * 
      * @param message The log message.
      */
-    EXPORTED_API void log_error(const std::string& message);
+    EXPORTED_API void log_error(const CtString& message);
 
     /**
      * @brief Log a message with critical log level.
      * 
      * @param message The log message.
      */
-    EXPORTED_API void log_critical(const std::string& message);
+    EXPORTED_API void log_critical(const CtString& message);
 
     /**
      * @brief Given the logger output level in string format this method returns the enum CtLogger::Level format.
@@ -112,7 +109,7 @@ public:
      * @param level_str The level in string format.
      * @return CtLogger::Level The level in enum format.
      */
-    EXPORTED_API static CtLogger::Level stringToLevel(const std::string& level_str);
+    EXPORTED_API static CtLogger::Level stringToLevel(const CtString& level_str);
 
 private:
     /**
@@ -121,15 +118,15 @@ private:
      * @param componentName The name of the component or module.
      * @param message The log message.
      */
-    void log(CtLogger::Level level, const std::string& message);
+    void log(CtLogger::Level level, const CtString& message);
 
     /**
      * @brief Given the logger output level in enum CtLogger::Level format this method returns it in a string format.
      * 
      * @param level The level in enum CtLogger::Level format.
-     * @return std::string The level in string format.
+     * @return CtString The level in string format.
      */
-    static const std::string levelToString(CtLogger::Level level);
+    static const CtString levelToString(CtLogger::Level level);
 
     /**
      * @brief This method generates the message to be printed via logger.
@@ -137,14 +134,14 @@ private:
      * @param level The level of the message.
      * @param component_name The component's name.
      * @param message The message.
-     * @return const std::string The generated message to be printed via logger.
+     * @return const CtString The generated message to be printed via logger.
      */
-    static const std::string generateLoggerMsg(CtLogger::Level level, const std::string& component_name, const std::string& message);
+    static const CtString generateLoggerMsg(CtLogger::Level level, const CtString& component_name, const CtString& message);
 
 private:
-    std::mutex m_mtx_control;                       /*!< Mutex for controlling access to shared resources. */
-    CtLogger::Level m_level; ///< Level of message logging.
-    std::string m_componentName; ///< Component name.
+    CtMutex m_mtx_control;                          /*!< Mutex for controlling access to shared resources. */
+    CtLogger::Level m_level;                        /*!< Level of message logging. */
+    CtString m_componentName;                       /*!< Component name. */
 };
 
 #endif //INCLUDE_CTLOGGER_HPP_

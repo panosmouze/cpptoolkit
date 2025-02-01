@@ -32,11 +32,9 @@ SOFTWARE.
 #ifndef INCLUDE_CTTHREAD_HPP_
 #define INCLUDE_CTTHREAD_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
 
 #include <thread>
-#include <atomic>
 
 /**
  * @class CtThread
@@ -54,7 +52,7 @@ public:
      * @brief Make the thread sleep for a specified duration in milliseconds.
      * @param time Duration to sleep in milliseconds.
      */
-    EXPORTED_API static void sleepFor(uint64_t time);
+    EXPORTED_API static void sleepFor(CtUInt64 time);
 
 protected:
     /**
@@ -109,7 +107,7 @@ private:
     void run();
 
 private:
-    std::atomic<bool> m_running;    /*!< Atomic flag indicating whether the thread is running. */
+    CtAtomic<bool> m_running;       /*!< Atomic flag indicating whether the thread is running. */
     std::thread m_thread;           /*!< The underlying thread object. */
 };
 

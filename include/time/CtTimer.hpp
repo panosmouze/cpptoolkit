@@ -32,8 +32,7 @@ SOFTWARE.
 #ifndef INCLUDE_CTTIMER_HPP_
 #define INCLUDE_CTTIMER_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
 
 #include <chrono>
 
@@ -48,7 +47,7 @@ SOFTWARE.
  * CtTimer timer;
  * timer.tic();
  * // Do something
- * uint64_t elapsed = timer.toc();
+ * CtUInt64 elapsed = timer.toc();
  * std::cout << "Elapsed time: " << elapsed << " ms" << std::endl;
  * @endcode
  * 
@@ -74,23 +73,23 @@ public:
      * @brief Measure the elapsed time since the last call to tic().
      * @return Elapsed time in milliseconds.
      */
-    EXPORTED_API uint64_t toc();
+    EXPORTED_API CtUInt64 toc();
 
     /**
      * @brief Get the current time in milliseconds.
      * @return Current time in milliseconds.
      */
-    EXPORTED_API static uint64_t current();
+    EXPORTED_API static CtUInt64 current();
 
     /**
      * @brief Convert time from milliseconds to nanoseconds.
      * @param time Time value in milliseconds.
      * @return Time value converted to nanoseconds.
      */
-    EXPORTED_API static uint64_t millisToNano(uint64_t time);
+    EXPORTED_API static CtUInt64 millisToNano(CtUInt64 time);
 
 private:
-    uint64_t m_reference;           /*!< Reference time for measuring elapsed time. */
+    CtUInt64 m_reference;           /*!< Reference time for measuring elapsed time. */
 };
 
 #endif //INCLUDE_CTTIMER_HPP_

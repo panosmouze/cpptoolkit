@@ -40,8 +40,8 @@ SOFTWARE.
 #define W2_PORT 5042
 
 typedef struct _DummyData {
-    uint8_t id;
-    char name[25];
+    CtUInt8 id;
+    CtChar name[25];
 } DummyData;
 
 void worker1Func();
@@ -86,7 +86,7 @@ void worker1Func() {
             while(true) {
                 if (socket1.pollWrite()) {
                     DummyData data = {1, "bob"};
-                    socket1.send((uint8_t*)&data, sizeof(DummyData));
+                    socket1.send((CtUInt8*)&data, sizeof(DummyData));
                     break;
                 }
             }
@@ -105,7 +105,7 @@ void worker2Func() {
     while(true) {
         if (socket2.pollWrite()) {
             DummyData data = {2, "alice"};
-            socket2.send((uint8_t*)&data, sizeof(DummyData));
+            socket2.send((CtUInt8*)&data, sizeof(DummyData));
 
             /* Wait response msg */
             while(true) {

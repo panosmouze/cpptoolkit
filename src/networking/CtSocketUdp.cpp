@@ -29,14 +29,7 @@ SOFTWARE.
  * 
  */
 
-#include "networking/sockets/CtSocketUdp.hpp"
-#include "networking/sockets/CtSocketHelpers.hpp"
-#include "exceptions/CtNetworkExceptions.hpp"
-
-#include <cstring>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <poll.h>
+#include "networking/CtSocketUdp.hpp"
 
 CtSocketUdp::CtSocketUdp() {
     m_addrType = AF_INET;
@@ -56,18 +49,18 @@ CtSocketUdp::~CtSocketUdp() {
     close(m_socket);
 }
 
-void CtSocketUdp::setSub(const std::string& p_interfaceName, uint16_t p_port) {
+void CtSocketUdp::setSub(const CtString& p_interfaceName, CtUInt16 p_port) {
     memset(&m_subAddress, 0, sizeof(m_subAddress));
     m_subAddress.sin_family = m_addrType;
     m_subAddress.sin_addr.s_addr = CtSocketHelpers::getAddressAsUInt(CtSocketHelpers::interfaceToAddress(p_interfaceName));
     m_subAddress.sin_port = htons(p_port);
 
     if (bind(m_socket, (struct sockaddr*)&m_subAddress, sizeof(m_subAddress)) == -1) {
-        throw CtSocketBindError(std::string("Socket bind to port ") + std::to_string(p_port) + std::string(" failed."));
+        throw CtSocketBindError(CtString("Socket bind to port ") + std::to_string(p_port) + CtString(" failed."));
     }
 }
 
-void CtSocketUdp::setPub(uint16_t p_port, const std::string& p_addr) {
+void CtSocketUdp::setPub(CtUInt16 p_port, const CtString& p_addr) {
     memset(&m_pubAddress, 0, sizeof(m_pubAddress));
     m_pubAddress.sin_family = m_addrType;
     m_pubAddress.sin_addr.s_addr = CtSocketHelpers::getAddressAsUInt(p_addr);
@@ -98,7 +91,7 @@ bool CtSocketUdp::pollWrite() {
     }
 }
 
-void CtSocketUdp::send(uint8_t* p_data, CtUInt32 p_size) {
+void CtSocketUdp::send(CtUInt8* p_data, CtUInt32 p_size) {
     if (sendto(m_socket, p_data, p_size, MSG_DONTWAIT, (struct sockaddr*)&m_pubAddress, sizeof(m_pubAddress)) == -1) {
         throw CtSocketWriteError("Sending data via socket failed.");
     }
@@ -108,7 +101,7 @@ void CtSocketUdp::send(CtRawData& p_message) {
     send(p_message.get(), p_message.size());
 }
 
-void CtSocketUdp::receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_client) {
+void CtSocketUdp::receive(CtUInt8* p_data, CtUInt32 p_size, CtNetAddress* p_client) {
     sockaddr_in s_clientAddress_in;
     socklen_t s_clientAddressLength = sizeof(s_clientAddress_in);
     int bytesRead = recvfrom(m_socket, p_data, p_size, MSG_DONTWAIT, (struct sockaddr*)&s_clientAddress_in, &s_clientAddressLength);
@@ -126,7 +119,7 @@ void CtSocketUdp::receive(uint8_t* p_data, CtUInt32 p_size, CtNetAddress* p_clie
 }
 
 void CtSocketUdp::receive(CtRawData* p_message, CtNetAddress* p_client) {
-    uint8_t* s_buffer = new uint8_t[p_message->maxSize()];
+    CtUInt8* s_buffer = new CtUInt8[p_message->maxSize()];
     receive(s_buffer, p_message->maxSize(), p_client);
     p_message->clone(s_buffer, p_message->maxSize());
     delete[] s_buffer;

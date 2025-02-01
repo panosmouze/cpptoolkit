@@ -32,7 +32,7 @@ SOFTWARE.
 #ifndef INCLUDE_CTEVENTEXCEPTIONS_HPP_
 #define INCLUDE_CTEVENTEXCEPTIONS_HPP_
 
-#include "exceptions/CtException.hpp"
+#include "core.hpp"
 
 /**
  * @brief This exception is thrown when an event does not exist in the event manager.
@@ -40,7 +40,7 @@ SOFTWARE.
  */
 class CtEventNotExistsError : public CtException {
 public:
-    explicit CtEventNotExistsError(const std::string& msg): CtException(msg) {};
+    explicit CtEventNotExistsError(const CtString& msg): CtException(msg) {};
 };
 
 /**
@@ -49,7 +49,7 @@ public:
  */
 class CtEventAlreadyExistsError : public CtException {
 public:
-    explicit CtEventAlreadyExistsError(const std::string& msg): CtException(msg) {};
+    explicit CtEventAlreadyExistsError(const CtString& msg): CtException(msg) {};
 };
 
 #endif //INCLUDE_CTEVENTEXCEPTIONS_HPP_

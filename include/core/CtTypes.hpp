@@ -33,14 +33,14 @@ SOFTWARE.
 #define INCLUDE_CTTYPES_HPP_
 
 #include "definitions.hpp"
-#include "exceptions/CtTypeExceptions.hpp"
 
 #include <stdint.h>
 #include <string>
-#include <cstring>
-#include <memory>
-#include <string>
 #include <vector>
+#include <mutex>
+#include <queue>
+#include <atomic>
+#include <map>
 
 /**
  * @brief Typedefs for basic types.
@@ -56,60 +56,23 @@ SOFTWARE.
 #define CtInt32 int32_t
 #define CtInt64 int64_t
 
+#define CtFloat float
+#define CtDouble double
+
 #define CtChar char
+#define CtString std::string
+#define CtVector std::vector
+#define CtMutex std::mutex
+#define CtQueue std::queue
+#define CtAtomic std::atomic
+#define CtMap std::map
+#define CtMultiMap std::multimap
 
 /**
  * @brief Default buffer size
  * 
  */
 #define CT_BUFFER_SIZE 2048
-
-/**
- * @brief CtString class extends the std::string class. It provides additional methods for string manipulation.
- * 
- */
-class CtString : public std::string {
-public:
-    using std::string::string;
-
-    /**
-     * @brief CtString constructor.
-     * 
-     * @param str The string to be used.
-     */
-    explicit CtString(const std::string& str) : std::string(str) {}
-
-    /**
-     * @brief This method splits the string into substrings using the given delimiter.
-     * 
-     * @param delimiter This is the delimiter that will be used to split the string.
-     * @param result The vector that will contain the substrings.
-     */
-    void split(char delimiter, std::vector<CtString> *result) const {
-        std::string::size_type start = 0;
-        auto end = find(delimiter);
-
-        while (end != std::string::npos) {
-            result->push_back((CtString)trim(substr(start, end - start)));
-            start = end + 1;
-            end = find(delimiter, start);
-        }
-        
-        result->push_back((CtString)trim(substr(start)));
-    }
-
-    /**
-     * @brief This method trims the string from the left and right side.
-     * 
-     * @param s The string to be trimmed.
-     * @return CtString The trimmed string.
-     */
-    CtString trim(const std::string& s) const {
-        auto start = s.find_first_not_of(" \t\n");
-        auto end = s.find_last_not_of(" \t\n");
-        return (CtString)((start == std::string::npos) ? "" : s.substr(start, end - start + 1));
-    }
-};
 
 /**
  * @brief Struct describing a network address.
@@ -152,28 +115,20 @@ public:
      * 
      * @param p_size The size of the buffer. The default size is defined as CT_BUFFER_SIZE bytes. 
      */
-    EXPORTED_API explicit CtRawData(CtUInt32 p_size = CT_BUFFER_SIZE) : m_maxSize(p_size) {
-        m_data = new CtUInt8[m_maxSize];
-        m_size = 0;
-    };
+    EXPORTED_API explicit CtRawData(CtUInt32 p_size = CT_BUFFER_SIZE);
 
     /**
      * @brief CtRawData copy constructor.
      * 
      * @param p_data Another CtRawData object that it is used to init the currently created.
      */
-    EXPORTED_API CtRawData(CtRawData& p_data) : m_maxSize(p_data.maxSize()) {
-        m_data = new CtUInt8[m_maxSize];
-        clone(p_data);
-    };
+    EXPORTED_API CtRawData(CtRawData& p_data);
 
     /**
      * @brief Destructor.
      * 
      */
-    EXPORTED_API virtual ~CtRawData() {
-        delete[] m_data;
-    }
+    EXPORTED_API virtual ~CtRawData();
 
     /**
      * @brief Sets the next byte of the buffer. It also raises the size of the buffer.
@@ -182,11 +137,7 @@ public:
      * @param byte The byte to be added.
      * @return void 
      */
-    EXPORTED_API void nextByte(char byte) {
-        if (m_size < m_maxSize) {
-            m_data[m_size++] = byte;
-        }
-    }
+    EXPORTED_API void nextByte(char byte);
 
     /**
      * @brief This method returns a pointer to the last N bytes of the buffer.
@@ -195,12 +146,7 @@ public:
      * @param p_num Number of bytes to be returned.
      * @return CtUInt8* Pointer to the last N bytes of the buffer.
      */
-    EXPORTED_API CtUInt8* getNLastBytes(CtUInt32 p_num) {
-        if (p_num > m_size) {
-            throw CtOutOfRangeError("Data size is out of range.");
-        }
-        return &m_data[m_size - p_num];
-    }
+    EXPORTED_API CtUInt8* getNLastBytes(CtUInt32 p_num);
 
     /**
      * @brief This method removes the last N bytes of the buffer. It also reduces the size of the buffer.
@@ -209,39 +155,28 @@ public:
      * @param p_num Number of bytes to be returned.
      * @return EXPORTED_API 
      */
-    EXPORTED_API void removeNLastBytes(CtUInt32 p_num) {
-        if (p_num > m_size) {
-            throw CtOutOfRangeError("Data size is out of range.");
-        }
-        m_size -= p_num;
-    }
+    EXPORTED_API void removeNLastBytes(CtUInt32 p_num);
 
     /**
      * @brief The actual size of the buffer.
      * 
      * @return CtUInt32 The actual size of the buffer.
      */
-    EXPORTED_API CtUInt32 size() {
-        return m_size;
-    }
+    EXPORTED_API CtUInt32 size();
 
     /**
      * @brief The max size of the buffer.
      * 
      * @return CtUInt32 The max size of the buffer.
      */
-    EXPORTED_API CtUInt32 maxSize() {
-        return m_maxSize;
-    }
+    EXPORTED_API CtUInt32 maxSize();
 
     /**
      * @brief This method returns a pointer to the buffer data.
      * 
      * @return CtUInt8* Pointer to the buffer data. 
      */
-    EXPORTED_API CtUInt8* get() {
-        return m_data;
-    }
+    EXPORTED_API CtUInt8* get();
 
     /**
      * @brief This method fills the buffer with the data given in the parameters.
@@ -252,13 +187,7 @@ public:
      * @param p_size The size of the gven buffer.
      * @return void
      */
-    EXPORTED_API void clone(const CtUInt8* p_data, CtUInt32 p_size) {
-        if (p_size > m_maxSize) {
-            throw CtOutOfRangeError("Data size is out of range.");
-        }
-        m_size = p_size;
-        memcpy(m_data, p_data, p_size);
-    }
+    EXPORTED_API void clone(const CtUInt8* p_data, CtUInt32 p_size);
 
 
     /**
@@ -269,13 +198,7 @@ public:
      * @param p_data A CtRawData object to be cloned.
      * @return void
      */
-    EXPORTED_API void clone(CtRawData& p_data) {
-        if (p_data.size() > m_maxSize) {
-            throw CtOutOfRangeError("Data size is out of range.");
-        }
-        m_size = p_data.size();
-        memcpy(m_data, p_data.get(), p_data.size());
-    }
+    EXPORTED_API void clone(CtRawData& p_data);
 
     /**
      * @brief This method resets the buffer to 0 size. The allocated memory is not freed.
@@ -283,9 +206,7 @@ public:
      * 
      * @return void 
      */
-    EXPORTED_API void reset() {
-        m_size = 0;
-    }
+    EXPORTED_API void reset();
 
     /**
      * @brief Assignment operator for CtRawData.
@@ -295,12 +216,7 @@ public:
      * 
      * @return CtRawData& Reference to the current CtRawData object.
      */
-    EXPORTED_API CtRawData& operator=(CtRawData& other) {
-        if (this != &other) {
-            clone(other);
-        }
-        return *this;
-    }
+    EXPORTED_API CtRawData& operator=(CtRawData& other);
 
 private:
     CtUInt8* m_data;                            /*!< The buffer data. */

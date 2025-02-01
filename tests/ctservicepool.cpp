@@ -32,18 +32,18 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
-void f1(uint32_t* idx) {
+void f1(CtUInt32* idx) {
     *idx += 1;
 }
 
 
 TEST(CtServicePool, ServicePoolFunctionalityUsingNormalFunction) {
-    uint32_t idx[15] = {0};
+    CtUInt32 idx[15] = {0};
     // set slot time to 100ms
     CtService::m_slot_time = 100;
     // create a new service and run f1 every 10 slots => 1s
     CtServicePool pool(2);
-    for (uint8_t i = 0; i< 15; i++) {
+    for (CtUInt8 i = 0; i< 15; i++) {
         pool.addTaskFunc(i+1, std::to_string(i), f1, &idx[i]);
     }
     // start services
@@ -52,19 +52,19 @@ TEST(CtServicePool, ServicePoolFunctionalityUsingNormalFunction) {
     CtThread::sleepFor(3000);
     // stop services
     pool.shutdownServices();
-    for (uint8_t i = 0; i < 14; i++) {
+    for (CtUInt8 i = 0; i < 14; i++) {
         ASSERT_GT(idx[i], 0);
     }
 };
 
 
 TEST(CtServicePool, ServicePoolFunctionalityUsingCtTask) {
-    uint32_t idx[15] = {0};
+    CtUInt32 idx[15] = {0};
     // set slot time to 100ms
     CtService::m_slot_time = 100;
     // create a new service and run f1 every 10 slots => 1s
     CtServicePool pool(2);
-    for (uint8_t i = 0; i< 15; i++) {
+    for (CtUInt8 i = 0; i< 15; i++) {
         pool.addTaskFunc(i+2, std::to_string(i), [&idx, i](){
             idx[i]++;
         });
@@ -75,7 +75,7 @@ TEST(CtServicePool, ServicePoolFunctionalityUsingCtTask) {
     CtThread::sleepFor(3000);
     // stop services
     pool.shutdownServices();
-    for (uint8_t i = 0; i < 14; i++) {
+    for (CtUInt8 i = 0; i < 14; i++) {
         ASSERT_GT(idx[i], 0);
     }
 };

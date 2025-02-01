@@ -32,12 +32,11 @@ SOFTWARE.
 #ifndef INCLUDE_CTWORKER_HPP_
 #define INCLUDE_CTWORKER_HPP_
 
-#include "definitions.hpp"
-#include "CtTypes.hpp"
+#include "core.hpp"
+
 #include "utils/CtTask.hpp"
 
 #include <thread>
-#include <atomic>
 #include <functional>
 
 /**
@@ -122,7 +121,7 @@ private:
 
 private:
     CtTask m_task;                                  /*!< The task assigned to the worker. */
-    std::atomic<bool> m_running;                    /*!< Flag indicating if the worker is currently running. */
+    CtAtomic<bool> m_running;                       /*!< Flag indicating if the worker is currently running. */
     std::thread m_thread;                           /*!< The worker's thread. */
     std::function<void()> m_callback;               /*!< Callback function to be executed after the task is completed. */
 };
