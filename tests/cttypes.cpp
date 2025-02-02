@@ -32,6 +32,13 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
+/**
+ * @brief CtRawDataTest01
+ * 
+ * @details
+ * Test the basic functionality of CtRawData class.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest01) {
     CtRawData data;
     data.setNextByte(0x1);
@@ -46,14 +53,29 @@ TEST(CtTypes, CtRawDataTest01) {
     ASSERT_EQ(data.size(), 0);
 }
 
+/**
+ * @brief CtRawDataTest02
+ * 
+ * @details
+ * Test if the buffer is correct when setNextByte() is called.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest02) {
     CtRawData data(4);
     data.setNextByte(0x1C);
     data.setNextByte(0x2C);
     CtUInt8 buffer[2] = {0x1C, 0x2C};
-    memcmp(data.get(), buffer, data.size());
+    CtUInt8 res = memcmp(data.get(), buffer, data.size());
+    ASSERT_EQ(res, 0);
 }
 
+/**
+ * @brief CtRawDataTest03
+ * 
+ * @details
+ * Test if CtOutOfRangeError is thrown when setNextByte() is called and the buffer is full.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest03) {
     EXPECT_THROW({
         CtRawData data(1);
@@ -62,6 +84,13 @@ TEST(CtTypes, CtRawDataTest03) {
     }, CtOutOfRangeError);
 }
 
+/**
+ * @brief CtRawDataTest04
+ * 
+ * @details
+ * Test if the buffer is correct when setNextBytes() is called.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest04) {
     CtUInt8 buffer[5] = {0x1C};
     CtRawData data(5);
@@ -70,6 +99,13 @@ TEST(CtTypes, CtRawDataTest04) {
     ASSERT_EQ(res, 0);
 }
 
+/**
+ * @brief CtRawDataTest05
+ * 
+ * @details
+ * Test if CtOutOfRangeError is thrown when setNextBytes() is called and the buffer is full.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest05) {
     EXPECT_THROW({
         CtUInt8 buffer[5] = {0x1C};
@@ -78,6 +114,13 @@ TEST(CtTypes, CtRawDataTest05) {
     }, CtOutOfRangeError);
 }
 
+/**
+ * @brief CtRawDataTest06
+ * 
+ * @details
+ * Test if the buffer is correct when a CtRawData object is copied.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest06) {
     CtRawData data1(3);
     data1.setNextByte(0x1C);
@@ -88,6 +131,13 @@ TEST(CtTypes, CtRawDataTest06) {
     ASSERT_EQ(res, 0);
 }
 
+/**
+ * @brief CtRawDataTest07
+ * 
+ * @details
+ * Test if getNLastBytes() returns the correct buffer.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest08) {
     CtRawData data(6);
     data.setNextByte(0x1C);
@@ -102,6 +152,13 @@ TEST(CtTypes, CtRawDataTest08) {
     ASSERT_EQ(res, 0);
 }
 
+/**
+ * @brief CtRawDataTest09
+ * 
+ * @details
+ * Test if CtOutOfRangeError is thrown when getNLastBytes() is called and the buffer is not full.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest09) {
     EXPECT_THROW({
         CtRawData data(10);
@@ -115,6 +172,13 @@ TEST(CtTypes, CtRawDataTest09) {
     }, CtOutOfRangeError);
 }
 
+/**
+ * @brief CtRawDataTest10
+ * 
+ * @details
+ * Test if the buffer is correct when removeNLastBytes() is called.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest10) {
     CtRawData data(10);
     data.setNextByte(0x1C);
@@ -130,6 +194,13 @@ TEST(CtTypes, CtRawDataTest10) {
     ASSERT_EQ(res, 0);
 }
 
+/**
+ * @brief CtRawDataTest11
+ * 
+ * @details
+ * Test if CtOutOfRangeError is thrown when removeNLastBytes() is called and the buffer is not full.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest11) {
     EXPECT_THROW({
         CtRawData data(10);
@@ -143,6 +214,13 @@ TEST(CtTypes, CtRawDataTest11) {
     }, CtOutOfRangeError);
 }
 
+/**
+ * @brief CtRawDataTest12
+ * 
+ * @details
+ * Test if the buffer is correct when a CtRawData object is assigned.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest12) {
     CtRawData data1(10);
     data1.setNextByte(0x1C);
@@ -155,6 +233,13 @@ TEST(CtTypes, CtRawDataTest12) {
     ASSERT_NE(data1.size(), data2.size());
 }
 
+/**
+ * @brief CtRawDataTest13
+ * 
+ * @details
+ * Test if the buffer is correct when clone() is called.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest13) {
     CtRawData data(2);
     CtUInt8 buffer[2] = {0x1C};
@@ -165,6 +250,13 @@ TEST(CtTypes, CtRawDataTest13) {
     ASSERT_EQ(res, 0);
 }
 
+/**
+ * @brief CtRawDataTest14
+ * 
+ * @details
+ * Test if CtOutOfRangeError is thrown when clone() is called and the buffer is bigger than the CtRawData object.
+ * 
+ */
 TEST(CtTypes, CtRawDataTest14) {
     EXPECT_THROW({
         CtRawData data(1);
