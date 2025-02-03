@@ -59,13 +59,28 @@ void CtFileOutput::setDelimiter(const CtChar* p_delim, CtUInt8 p_delim_size) {
         m_delim.reset();
         m_delim = std::make_unique<CtChar[]>(m_delim_size);
         memcpy(m_delim.get(), p_delim, m_delim_size);
+    } else if (p_delim_size == 0) {
+        m_delim_size = 0;
+        m_delim.reset();
+    } else {
+        throw CtFileWriteError("Delimiter is NULL.");
     }
 }
 
 void CtFileOutput::write(CtRawData* p_data) {
     if (m_file.is_open()) {
         m_file.write((CtChar*)p_data->get(), p_data->size());
-        m_file.write(m_delim.get(), m_delim_size);
+        if (m_delim_size > 0) {
+            m_file.write(m_delim.get(), m_delim_size);
+        }
+    } else {
+        throw CtFileWriteError("File is not open.");
+    }
+}
+
+void CtFileOutput::writePart(CtRawData* p_data) {
+    if (m_file.is_open()) {
+        m_file.write((CtChar*)p_data->get(), p_data->size());
     } else {
         throw CtFileWriteError("File is not open.");
     }

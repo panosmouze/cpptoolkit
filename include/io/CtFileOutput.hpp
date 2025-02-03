@@ -84,10 +84,24 @@ public:
     /**
      * @brief This method writes to file.
      * 
+     * @details
+     * Use this method to write data one by one. After writing the data, the delimiter is written.
+     * 
      * @param p_data The data to be written.
      * @return void
      */
     EXPORTED_API void write(CtRawData* p_data);
+
+    /**
+     * @brief This method writes to file.
+     * 
+     * @details
+     * Use this method to write data in batches. No delimiter is written.
+     * 
+     * @param p_data The data to be written.
+     * @return void
+     */
+    EXPORTED_API void writePart(CtRawData* p_data);
 
 private:
     std::ofstream m_file;               /**< File stream. */

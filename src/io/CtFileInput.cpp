@@ -63,9 +63,16 @@ bool CtFileInput::read(CtRawData* p_data) {
     if (m_file.is_open()) {
         CtChar next_char;
         CtUInt8* delim_ptr = nullptr;
+        p_data->reset();
 
         while (m_file.get(next_char)) {
-            p_data->setNextByte(next_char);
+            try {
+                p_data->setNextByte(next_char);
+            } catch (const CtOutOfRangeError& e) {
+                m_file.seekg(-(m_delim_size+1), std::ios::cur);
+                p_data->removeNLastBytes(m_delim_size);
+                break;
+            }
             
             if (m_delim != nullptr && p_data->size() >= m_delim_size) {
                 delim_ptr = p_data->getNLastBytes(m_delim_size);
@@ -74,10 +81,6 @@ bool CtFileInput::read(CtRawData* p_data) {
                     p_data->removeNLastBytes(m_delim_size);
                     break;
                 }
-            }
-
-            if (p_data->size() == p_data->maxSize()) {
-                break;
             }
         }
 
