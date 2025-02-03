@@ -83,4 +83,9 @@ target_link_libraries(test_cttypes ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIB
 target_include_directories( test_cttypes PRIVATE ${GTEST_INCLUDE_DIRS} )
 add_test(NAME CtTypes COMMAND test_cttypes)
 
+add_executable(test_ctfile ${TESTS_DIR}/ctfile.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctfile ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctfile PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtFile COMMAND test_ctfile)
+
 target_compile_definitions(${TARGET_LIBRARY} PRIVATE _UNIX)
