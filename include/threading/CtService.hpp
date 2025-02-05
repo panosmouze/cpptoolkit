@@ -61,14 +61,14 @@ class CtService : private CtThread {
 public:
     /**
      * @brief Constructor for CtService.
-     * @param nslots The time slots between task executions in milliseconds. Default is 0 (run immediately).
+     * @param nslots The number of time slots between task executions. Default is 0 (run immediately).
      * @param task The task to be executed by the service.
      */
     EXPORTED_API CtService(CtUInt64 nslots, const CtTask& task);
 
     /**
      * @brief Constructor for CtService.
-     * @param nslots The time slots between task executions in milliseconds. Default is 0 (run immediately).
+     * @param nslots The number of time slots between task executions. Default is 0 (run immediately).
      * @param func The task function to be executed by the service.
      * @param fargs The task function's parameters.
      */
@@ -82,6 +82,10 @@ public:
 
     /**
      * @brief Run the task provided by the service.
+     * 
+     * @details
+     * CtServiceError is thrown in case of service is already running.
+     * 
      */
     EXPORTED_API void runService();
 
@@ -89,6 +93,19 @@ public:
      * @brief Stop the task provided by the service.
      */
     EXPORTED_API void stopService();
+
+    /**
+     * @brief Get the Interval Validity Factor.
+     * 
+     * @details
+     * This method returns a factor that represents the validity of the interval.
+     * If the factor is 1, the task is executed at the correct interval. If the factor is less than 1, 
+     * the task is executed less frequently than expected. The closer the factor is to 1, the more
+     * frequently the task is executed. 
+     * 
+     * @return float The interval validity factor.
+     */
+    EXPORTED_API float getIntervalValidity();
 
 public:
     static CtUInt32 m_slot_time;    /*!< The time interval for each "slot" in milliseconds. */
@@ -102,6 +119,8 @@ private:
 private:
     CtWorker m_worker;              /*!< Worker for executing the task. */
     CtUInt64 m_nslots;              /*!< The number of slots to wait before rerunning the service. */
+    CtUInt32 m_skip_ctr;            /*!< Task execution skip counter. */
+    CtUInt32 m_exec_ctr;            /*!< Total loop counter. */
 };
 
 template <typename F, typename... FArgs>

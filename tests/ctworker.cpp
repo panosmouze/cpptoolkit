@@ -32,43 +32,67 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
-void f1(bool* flag) {
-    *flag = true;
-}
+/**************************** Helper definitions ****************************/
+#define TASK_DURATION_MS    100
 
-void callback(bool* flag) {
-    *flag = true;
-}
+/********************************* Main test ********************************/
 
-TEST(CtWorker, WorkerFunctionalityUsingNormalFunction) {
-    bool task_flag = false;
-    bool callback_flag = false;
-    // create a new service and run f1 every 10 slots => 1s
+/**
+ * @brief CtWorkerTest01
+ * 
+ * @details
+ * Test the main functionality of CtWorker methods isRunning, setTaskFunc, runTask and joinTask.
+ * 
+ */
+TEST(CtWorker, CtWorkerTest01) {
     CtWorker worker;
-    worker.setTaskFunc(f1, &task_flag);
-    // run service
+    bool flagTask = false;
+    ASSERT_EQ(worker.isRunning(), false);
+    worker.setTaskFunc([&flagTask](){flagTask = true; CtThread::sleepFor(TASK_DURATION_MS);});
     worker.runTask();
-    // wait for worker to finish the task
+    ASSERT_EQ(worker.isRunning(), true);
     worker.joinTask();
-    ASSERT_EQ(task_flag, true);
-    ASSERT_EQ(callback_flag, false);
-};
+    ASSERT_EQ(flagTask, true);
+}
 
+/**
+ * @brief CtWorkerTest02
+ * 
+ * @details
+ * Test if CtWorkerError is thrown when task added while another is still running
+ * 
+ */
+TEST(CtWorker, CtWorkerTest02) {
+    CtWorker worker;
+    worker.setTaskFunc([](){CtThread::sleepFor(TASK_DURATION_MS);});
+    worker.runTask();
+    EXPECT_THROW({
+        worker.setTaskFunc([](){CtThread::sleepFor(TASK_DURATION_MS);});
+    }, CtWorkerError);
+}
 
-TEST(CtWorker, WorkerFunctionalityUsingCtTask) {
-    bool task_flag = false;
-    bool callback_flag = false;
-    // setup task
+/**
+ * @brief CtWorkerTest03
+ * 
+ * @details
+ * Test the main functionality of CtWorker methods and the worker callback functionality.
+ * 
+ */
+TEST(CtWorker, CtWorkerTest03) {
+    CtWorker worker;
+    bool flagTask = false;
+    bool flagCallback = false;
+    bool flagWorkerCallback = false;
+    ASSERT_EQ(worker.isRunning(), false);
     CtTask task;
-    task.setTaskFunc(f1, &task_flag);
-    task.setCallbackFunc(callback, &callback_flag);
-    // create a new worker
-    CtWorker worker;
-    worker.setTask(task);
-    // run task
+    task.setTaskFunc([&flagTask](){flagTask = true; CtThread::sleepFor(TASK_DURATION_MS);});
+    task.setCallbackFunc([&flagCallback](){flagCallback = true;});
+    worker.setTask(task, [&flagWorkerCallback](){flagWorkerCallback = true;});
     worker.runTask();
-    // wait for worker to finish the task
+    ASSERT_EQ(worker.isRunning(), true);
+    ASSERT_EQ(flagCallback, false);
     worker.joinTask();
-    ASSERT_EQ(task_flag, true);
-    ASSERT_EQ(callback_flag, true);
-};
+    ASSERT_EQ(flagTask, true);
+    ASSERT_EQ(flagCallback, true);
+    ASSERT_EQ(flagWorkerCallback, true);
+}

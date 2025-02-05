@@ -90,6 +90,11 @@ public:
 
     /**
      * @brief Add a task to the service pool with a specified interval and an optional ID.
+     * 
+     * @details
+     * Adding a task to the service pool with a specified interval and an optional ID.
+     * The service pool automatically starts when a task is added.
+     * 
      * @param nslots The interval in slots for executing the task.
      * @param id An optional ID for the task.
      * @param task The task to be added.
@@ -98,6 +103,11 @@ public:
 
     /**
      * @brief Add a task to the service pool with a specified interval and an optional ID.
+     * 
+     * @details
+     * Adding a task to the service pool with a specified interval and an optional ID.
+     * The service pool automatically starts when a task is added.
+     * 
      * @param nslots The interval in slots for executing the task.
      * @param id An optional ID for the task.
      * @param func The task function to be added.
@@ -121,16 +131,6 @@ public:
      * @brief Shutdown the services provided by the service pool.
      */
     EXPORTED_API void shutdownServices();
-
-    /**
-     * @brief Get slot time.
-     */
-    EXPORTED_API CtUInt32 getSlotTime();
-
-    /**
-     * @brief Set slot time.
-     */
-    EXPORTED_API void setSlotTime(CtUInt32 nslots);
 
 private:
     /**

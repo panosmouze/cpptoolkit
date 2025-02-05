@@ -28,3 +28,25 @@ SOFTWARE.
  * @date 18-01-2024
  * 
  */
+
+#include <gtest/gtest.h>
+#include "cpptoolkit.hpp"
+
+/**************************** Helper definitions ****************************/
+#define POOL_SIZE           4
+#define NUM_OF_TASKS        100
+#define TASK_DURATION_MS    100
+
+/********************************* Main test ********************************/
+
+TEST(CtWorkerPool, CtWorkerPoolTest01) {
+    CtWorkerPool pool(POOL_SIZE);
+    bool flag[NUM_OF_TASKS] = {false};
+    for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
+        pool.addTask([&flag, idx]{CtThread::sleepFor(TASK_DURATION_MS); flag[idx] = true;});
+    }
+    pool.join();
+    for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
+        ASSERT_EQ(flag[idx], true);
+    }
+}

@@ -23,55 +23,37 @@ SOFTWARE.
 */
 
 /**
- * @file CtWorker.cpp
+ * @file cttask.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 03-02-2025
  * 
  */
 
-#include "threading/CtWorker.hpp"
+#include <gtest/gtest.h>
+#include "cpptoolkit.hpp"
 
-CtWorker::CtWorker() : m_running(false) {
-}
+/**************************** Helper definitions ****************************/
 
-CtWorker::~CtWorker() {
-    joinTask();
-}
+/********************************* Main test ********************************/
 
-bool CtWorker::isRunning() {
-    return m_running.load();
-}
+/**
+ * @brief CtTaskTest01
+ * 
+ * @details
+ * Test the basic functionality of CtTask class.
+ * 
+ */
+TEST(CtTask, CtTaskTest01) {
+    CtTask task;
+    CtUInt8 cnt = 0;
+    task.setTaskFunc([&cnt]{cnt++;});
+    task.setCallbackFunc([&cnt]{cnt--;});
+    std::function<void()> taskFunc = task.getTaskFunc();
+    std::function<void()> callbackFunc = task.getCallbackFunc();
 
-void CtWorker::setRunning(bool running) {
-    return m_running.store(running);
-}
-
-void CtWorker::setTask(const CtTask& task, std::function<void()> callback) {
-    alreadyRunningCheck();
-    m_task = task;
-    m_callback = callback;
-}
-
-void CtWorker::runTask() {
-    alreadyRunningCheck();
-    setRunning(true);
-    m_thread = std::thread([this]{
-        m_task.getTaskFunc()();
-        m_task.getCallbackFunc()();
-        m_callback();
-        setRunning(false);
-    });
-}
-
-void CtWorker::joinTask() {
-    if (m_thread.joinable()) {
-        m_thread.join();
-    }
-}
-
-void CtWorker::alreadyRunningCheck() {
-    if (isRunning()) {
-        throw CtWorkerError("CtWorker already running.");
-    }
-    joinTask();
+    ASSERT_EQ(cnt, 0);
+    taskFunc();
+    ASSERT_EQ(cnt, 1);
+    callbackFunc();
+    ASSERT_EQ(cnt, 0);
 }

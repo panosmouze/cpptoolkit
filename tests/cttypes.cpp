@@ -32,6 +32,10 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
+/**************************** Helper definitions ****************************/
+
+/********************************* Main test ********************************/
+
 /**
  * @brief CtRawDataTest01
  * 
@@ -77,9 +81,9 @@ TEST(CtTypes, CtRawDataTest02) {
  * 
  */
 TEST(CtTypes, CtRawDataTest03) {
+    CtRawData data(1);
+    data.setNextByte(0x1);
     EXPECT_THROW({
-        CtRawData data(1);
-        data.setNextByte(0x1);
         data.setNextByte(0x2);
     }, CtOutOfRangeError);
 }
@@ -107,9 +111,9 @@ TEST(CtTypes, CtRawDataTest04) {
  * 
  */
 TEST(CtTypes, CtRawDataTest05) {
+    CtUInt8 buffer[5] = {0x1C};
+    CtRawData data(4);
     EXPECT_THROW({
-        CtUInt8 buffer[5] = {0x1C};
-        CtRawData data(4);
         data.setNextBytes(buffer, 5);
     }, CtOutOfRangeError);
 }
@@ -160,14 +164,14 @@ TEST(CtTypes, CtRawDataTest08) {
  * 
  */
 TEST(CtTypes, CtRawDataTest09) {
+    CtRawData data(10);
+    data.setNextByte(0x1C);
+    data.setNextByte(0x2C);
+    data.setNextByte(0x3C);
+    data.setNextByte(0x4C);
+    data.setNextByte(0x5C);
+    data.setNextByte(0x6C);
     EXPECT_THROW({
-        CtRawData data(10);
-        data.setNextByte(0x1C);
-        data.setNextByte(0x2C);
-        data.setNextByte(0x3C);
-        data.setNextByte(0x4C);
-        data.setNextByte(0x5C);
-        data.setNextByte(0x6C);
         data.getNLastBytes(7);
     }, CtOutOfRangeError);
 }
@@ -202,14 +206,14 @@ TEST(CtTypes, CtRawDataTest10) {
  * 
  */
 TEST(CtTypes, CtRawDataTest11) {
+    CtRawData data(10);
+    data.setNextByte(0x1C);
+    data.setNextByte(0x2C);
+    data.setNextByte(0x3C);
+    data.setNextByte(0x4C);
+    data.setNextByte(0x5C);
+    data.setNextByte(0x6C);
     EXPECT_THROW({
-        CtRawData data(10);
-        data.setNextByte(0x1C);
-        data.setNextByte(0x2C);
-        data.setNextByte(0x3C);
-        data.setNextByte(0x4C);
-        data.setNextByte(0x5C);
-        data.setNextByte(0x6C);
         data.removeNLastBytes(7);
     }, CtOutOfRangeError);
 }
@@ -258,9 +262,9 @@ TEST(CtTypes, CtRawDataTest13) {
  * 
  */
 TEST(CtTypes, CtRawDataTest14) {
+    CtRawData data(1);
+    CtUInt8 buffer[2] = {0x1C};
     EXPECT_THROW({
-        CtRawData data(1);
-        CtUInt8 buffer[2] = {0x1C};
         data.clone(buffer, 2);
     }, CtOutOfRangeError);
 }
