@@ -77,7 +77,7 @@ void CtWorkerPool::free() {
 }
 
 void CtWorkerPool::loop() {
-    bool s_breakFlag = false;
+    CtBool s_breakFlag = CT_FALSE;
     while (!s_breakFlag) {
         for (int idx = 0; idx < m_nworkers; idx++) {
             if (!m_workers.at(idx).get()->isRunning() && m_queued_tasks.load() != 0) {
@@ -86,5 +86,5 @@ void CtWorkerPool::loop() {
         }
         s_breakFlag = (m_queued_tasks.load() == 0) && (m_active_tasks.load() == 0);
     }
-    setRunning(false);
+    setRunning(CT_FALSE);
 }

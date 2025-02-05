@@ -74,7 +74,7 @@ void worker1Func() {
     socket1.setPub(W2_PORT);
 
     /* Wait for incoming msg */
-    while(true) {
+    while(CT_TRUE) {
         if (socket1.pollRead()) {
             CtRawData msg;
             socket1.receive(&msg);
@@ -83,7 +83,7 @@ void worker1Func() {
 
 
             /* Send response msg */
-            while(true) {
+            while(CT_TRUE) {
                 if (socket1.pollWrite()) {
                     DummyData data = {1, "bob"};
                     socket1.send((CtUInt8*)&data, sizeof(DummyData));
@@ -102,13 +102,13 @@ void worker2Func() {
     socket2.setPub(W1_PORT);
 
     /* Send msg */
-    while(true) {
+    while(CT_TRUE) {
         if (socket2.pollWrite()) {
             DummyData data = {2, "alice"};
             socket2.send((CtUInt8*)&data, sizeof(DummyData));
 
             /* Wait response msg */
-            while(true) {
+            while(CT_TRUE) {
                 if (socket2.pollRead()) {
                     CtRawData msg;
                     socket2.receive(&msg);

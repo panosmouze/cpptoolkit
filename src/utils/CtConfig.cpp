@@ -83,8 +83,8 @@ void CtConfig::parseLine(const CtString& line) {
     size_t separatorPos = line.find('=');
     size_t commentPos = line.find('#');
     size_t eol = line.size();
-    bool hasComment = commentPos != CtString::npos;
-    bool hasSeparator = separatorPos != CtString::npos;
+    CtBool hasComment = commentPos != CtString::npos;
+    CtBool hasSeparator = separatorPos != CtString::npos;
 
     if (hasSeparator && hasComment) {
         if (separatorPos > commentPos) {

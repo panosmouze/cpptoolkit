@@ -82,9 +82,9 @@ public:
      * @brief This method read data from the file.
      * 
      * @param p_data Where to store the data read
-     * @return bool Returns True on success or False on EOF.
+     * @return CtBool Returns True on success or False on EOF.
      */
-    EXPORTED_API bool read(CtRawData* p_data);
+    EXPORTED_API CtBool read(CtRawData* p_data);
 
 private:
     std::ifstream m_file;           /**< File stream. */

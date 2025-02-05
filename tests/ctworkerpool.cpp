@@ -41,12 +41,12 @@ SOFTWARE.
 
 TEST(CtWorkerPool, CtWorkerPoolTest01) {
     CtWorkerPool pool(POOL_SIZE);
-    bool flag[NUM_OF_TASKS] = {false};
+    CtBool flag[NUM_OF_TASKS] = {CT_FALSE};
     for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
-        pool.addTask([&flag, idx]{CtThread::sleepFor(TASK_DURATION_MS); flag[idx] = true;});
+        pool.addTask([&flag, idx]{CtThread::sleepFor(TASK_DURATION_MS); flag[idx] = CT_TRUE;});
     }
     pool.join();
     for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
-        ASSERT_EQ(flag[idx], true);
+        ASSERT_EQ(flag[idx], CT_TRUE);
     }
 }

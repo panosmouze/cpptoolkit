@@ -58,7 +58,7 @@ SOFTWARE.
  * // set the socket for subscribing
  * socket.setSub("lo", 1234);
  * // run a loop to receive messages
- * while (true) {
+ * while (CT_TRUE) {
  *      if (socket.pollRead()) {
  *          CtRawData message;
  *          socket.receive(&message);
@@ -111,16 +111,16 @@ public:
     /**
      * @brief Check if there is data available to read.
      * 
-     * @return True if data is available, false otherwise.
+     * @return True if data is available, CT_FALSE otherwise.
      */
-    EXPORTED_API bool pollRead();
+    EXPORTED_API CtBool pollRead();
 
     /**
      * @brief Check if data can be written to the fd.
      * 
-     * @return True if there is at least one byte available, false otherwise.
+     * @return True if there is at least one byte available, CT_FALSE otherwise.
      */
-    EXPORTED_API bool pollWrite();
+    EXPORTED_API CtBool pollWrite();
 
     /**
      * @brief Send data over the socket.

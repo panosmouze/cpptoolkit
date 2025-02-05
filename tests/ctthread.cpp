@@ -80,7 +80,7 @@ private:
 class CtTestThread02 : private CtThread {
 public:
     CtTestThread02() : CtThread() {
-        flag = false;
+        flag = CT_FALSE;
         CtThread::start();
     }
 
@@ -90,7 +90,7 @@ public:
         CtThread::join();
     }
 
-    bool isRunning() {
+    CtBool isRunning() {
         return CtThread::isRunning();
     }
 
@@ -101,12 +101,12 @@ public:
 protected:
     void loop() override {
         CtThread::sleepFor(THREAD_LOOP_MS);
-        flag = true;
-        setRunning(false);
+        flag = CT_TRUE;
+        setRunning(CT_FALSE);
     }
 
 private:
-    bool flag;
+    CtBool flag;
 };
 
 /********************************* Main test ********************************/
@@ -135,9 +135,9 @@ TEST(CtThread, CtThreadTest01) {
  */
 TEST(CtThread, CtThreadTest02) {
     CtTestThread02 thread;
-    ASSERT_EQ(thread.isRunning(), true);
+    ASSERT_EQ(thread.isRunning(), CT_TRUE);
     thread.join();
-    ASSERT_EQ(thread.getStatus(), true);
+    ASSERT_EQ(thread.getStatus(), CT_TRUE);
 }
 
 /**

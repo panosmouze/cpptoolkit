@@ -67,9 +67,9 @@ protected:
 
     /**
      * @brief Check if the thread is currently running.
-     * @return True if the thread is running, false otherwise.
+     * @return True if the thread is running, CT_FALSE otherwise.
      */
-    EXPORTED_API bool isRunning();
+    EXPORTED_API CtBool isRunning();
 
     /**
      * @brief Start the thread.
@@ -98,7 +98,7 @@ protected:
      * @brief Set the running state of the thread.
      * @param running The running state to set.
      */
-    void setRunning(bool running);
+    void setRunning(CtBool running);
 
 private:
     /**
@@ -107,7 +107,7 @@ private:
     void run();
 
 private:
-    CtAtomic<bool> m_running;       /*!< Atomic flag indicating whether the thread is running. */
+    CtAtomic<CtBool> m_running;       /*!< Atomic flag indicating whether the thread is running. */
     std::thread m_thread;           /*!< The underlying thread object. */
 };
 

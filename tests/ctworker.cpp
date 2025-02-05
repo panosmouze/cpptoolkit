@@ -46,13 +46,13 @@ SOFTWARE.
  */
 TEST(CtWorker, CtWorkerTest01) {
     CtWorker worker;
-    bool flagTask = false;
-    ASSERT_EQ(worker.isRunning(), false);
-    worker.setTaskFunc([&flagTask](){flagTask = true; CtThread::sleepFor(TASK_DURATION_MS);});
+    CtBool flagTask = CT_FALSE;
+    ASSERT_EQ(worker.isRunning(), CT_FALSE);
+    worker.setTaskFunc([&flagTask](){flagTask = CT_TRUE; CtThread::sleepFor(TASK_DURATION_MS);});
     worker.runTask();
-    ASSERT_EQ(worker.isRunning(), true);
+    ASSERT_EQ(worker.isRunning(), CT_TRUE);
     worker.joinTask();
-    ASSERT_EQ(flagTask, true);
+    ASSERT_EQ(flagTask, CT_TRUE);
 }
 
 /**
@@ -80,19 +80,19 @@ TEST(CtWorker, CtWorkerTest02) {
  */
 TEST(CtWorker, CtWorkerTest03) {
     CtWorker worker;
-    bool flagTask = false;
-    bool flagCallback = false;
-    bool flagWorkerCallback = false;
-    ASSERT_EQ(worker.isRunning(), false);
+    CtBool flagTask = CT_FALSE;
+    CtBool flagCallback = CT_FALSE;
+    CtBool flagWorkerCallback = CT_FALSE;
+    ASSERT_EQ(worker.isRunning(), CT_FALSE);
     CtTask task;
-    task.setTaskFunc([&flagTask](){flagTask = true; CtThread::sleepFor(TASK_DURATION_MS);});
-    task.setCallbackFunc([&flagCallback](){flagCallback = true;});
-    worker.setTask(task, [&flagWorkerCallback](){flagWorkerCallback = true;});
+    task.setTaskFunc([&flagTask](){flagTask = CT_TRUE; CtThread::sleepFor(TASK_DURATION_MS);});
+    task.setCallbackFunc([&flagCallback](){flagCallback = CT_TRUE;});
+    worker.setTask(task, [&flagWorkerCallback](){flagWorkerCallback = CT_TRUE;});
     worker.runTask();
-    ASSERT_EQ(worker.isRunning(), true);
-    ASSERT_EQ(flagCallback, false);
+    ASSERT_EQ(worker.isRunning(), CT_TRUE);
+    ASSERT_EQ(flagCallback, CT_FALSE);
     worker.joinTask();
-    ASSERT_EQ(flagTask, true);
-    ASSERT_EQ(flagCallback, true);
-    ASSERT_EQ(flagWorkerCallback, true);
+    ASSERT_EQ(flagTask, CT_TRUE);
+    ASSERT_EQ(flagCallback, CT_TRUE);
+    ASSERT_EQ(flagWorkerCallback, CT_TRUE);
 }

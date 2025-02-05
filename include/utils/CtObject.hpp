@@ -153,9 +153,9 @@ private:
      * 
      * @param p_eventCode The event code to be checked.
      * 
-     * @return bool True if the event code is registered, false otherwise.
+     * @return CtBool True if the event code is registered, CT_FALSE otherwise.
      */
-    EXPORTED_API bool hasEvent(CtUInt32 p_eventCode);
+    EXPORTED_API CtBool hasEvent(CtUInt32 p_eventCode);
 
 private:
     CtMutex m_mtx_control;                          /*!< Mutex for controlling access to shared resources. */
