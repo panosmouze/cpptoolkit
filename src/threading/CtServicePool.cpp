@@ -34,7 +34,6 @@ SOFTWARE.
 CtServicePool::CtServicePool(CtUInt32 nworkers) : m_nworkers(nworkers), m_worker_pool(m_nworkers) {
     m_slot_cnt = 0;
     m_exec_time = 0;
-    start();
 }
 
 CtServicePool::~CtServicePool() {
@@ -70,14 +69,6 @@ void CtServicePool::startServices() {
 void CtServicePool::shutdownServices() {
     stop();
     m_worker_pool.join();
-}
-
-CtUInt32 CtServicePool::getSlotTime() {
-    return CtService::m_slot_time;
-}
-
-void CtServicePool::setSlotTime(CtUInt32 slot_time) {
-    CtService::m_slot_time = slot_time;
 }
 
 void CtServicePool::loop() {

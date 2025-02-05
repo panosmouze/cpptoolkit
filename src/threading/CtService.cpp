@@ -33,9 +33,8 @@ SOFTWARE.
 
 CtUInt32 CtService::m_slot_time = 10;
 
-CtService::CtService(CtUInt64 nslots, const CtTask& task) : m_nslots(nslots){
+CtService::CtService(CtUInt64 nslots, const CtTask& task) : m_nslots(nslots), m_skip_ctr(1), m_exec_ctr(1) {
     m_worker.setTask(task);
-    runService();
 }
 
 CtService::~CtService() {
@@ -46,7 +45,7 @@ void CtService::runService() {
     try {
         start();
     } catch(const CtThreadError& e) {
-
+        throw CtServiceError("Service is already running.");
     }
 }
 
@@ -55,11 +54,23 @@ void CtService::stopService() {
     m_worker.joinTask();
 }
 
+float CtService::getIntervalValidity() {
+    return m_skip_ctr/(float)m_exec_ctr;
+}
+
 void CtService::loop() {
     try {
         m_worker.runTask();
     } catch(const CtWorkerError& e) {
-
+        /* 
+         * Service interval is smaller than the task runtime. The worker 
+         * is still running while it is time to run again.
+         * Exception cannot be thrown at this point because this is 
+         * a thread running. The "controller" of this thread could not 
+         * catch this exception.
+         */
+        m_skip_ctr += 1;
     }
+    m_exec_ctr += 1;
     CtThread::sleepFor(m_nslots*m_slot_time);
 }

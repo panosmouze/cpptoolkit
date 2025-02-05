@@ -35,6 +35,7 @@ CtWorker::CtWorker() : m_running(false) {
 }
 
 CtWorker::~CtWorker() {
+    joinTask();
 }
 
 bool CtWorker::isRunning() {
