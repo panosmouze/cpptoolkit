@@ -32,40 +32,58 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
-void f1(CtUInt32* idx) {
-    *idx += 1;
+/**************************** Helper definitions ****************************/
+#define SERVICE_INTERVAL_SLOT           10
+#define MAIN_SLEEP_MS                   950
+#define RESOURCE_CUNSUMING_TASK_MS      200
+
+/********************************* Main test ********************************/
+
+/**
+ * @brief CtServiceTest01
+ * 
+ * @details
+ * Test main functionality of CtService methods runService, stopService.
+ * 
+ */
+TEST(CtService, CtServiceTest01) {
+    CtUInt8 cnt;
+    CtService service(SERVICE_INTERVAL_SLOT, [&cnt](){cnt++;});
+    service.runService();
+    CtThread::sleepFor(MAIN_SLEEP_MS);
+    ASSERT_NE(service.getIntervalValidity(), 1);
+    service.stopService();
+    ASSERT_GE(cnt, 9);
+    ASSERT_LE(cnt, 10);
 }
 
-
-TEST(CtService, ServiceFunctionalityUsingNormalFunction) {
-    CtUInt32 idx = 0;
-    // set slot time to 100ms
-    CtService::m_slot_time = 100;
-    // create a new service and run f1 every 10 slots => 1s
-    CtService service(10, f1, &idx);
-    // run service
+/**
+ * @brief CtServiceTest02
+ * 
+ * @details
+ * Test if CtServiceError is thrown if CtService started two times.
+ * 
+ */
+TEST(CtService, CtServiceTest02) {
+    CtUInt8 cnt;
+    CtService service(SERVICE_INTERVAL_SLOT, [&cnt](){CtThread::sleepFor(RESOURCE_CUNSUMING_TASK_MS); cnt++;});
     service.runService();
-    // sleep for 1500ms
-    CtThread::sleepFor(1500);
-    // stop service
-    service.stopService();
-    ASSERT_EQ(idx, 2);
-};
+    EXPECT_THROW({
+        service.runService();
+    }, CtServiceError);
+}
 
-
-TEST(CtService, ServiceFunctionalityUsingCtTask) {
-    CtUInt32 idx = 0;
-    // set slot time to 100ms
-    CtService::m_slot_time = 100;
-    CtTask task;
-    task.setTaskFunc([&idx](){idx++;});
-    // create a new service and run task every 10 slots => 1s
-    CtService service(10, task);
-    // run service
+/**
+ * @brief CtServiceTest03
+ * 
+ * @details
+ * Test functionality of getIntervalValidity.
+ * 
+ */
+TEST(CtService, CtServiceTest03) {
+    CtUInt8 cnt;
+    CtService service(SERVICE_INTERVAL_SLOT, [&cnt](){CtThread::sleepFor(RESOURCE_CUNSUMING_TASK_MS); cnt++;});
     service.runService();
-    // sleep for 1500ms
-    CtThread::sleepFor(1500);
-    // stop service
-    service.stopService();
-    ASSERT_EQ(idx, 2);
-};
+    CtThread::sleepFor(MAIN_SLEEP_MS);
+    ASSERT_NE(service.getIntervalValidity(), 1);
+}

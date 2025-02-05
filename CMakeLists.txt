@@ -88,4 +88,34 @@ target_link_libraries(test_ctfile ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBR
 target_include_directories( test_ctfile PRIVATE ${GTEST_INCLUDE_DIRS} )
 add_test(NAME CtFile COMMAND test_ctfile)
 
+add_executable(test_cttask ${TESTS_DIR}/cttask.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_cttask ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_cttask PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtTask COMMAND test_cttask)
+
+add_executable(test_ctthread ${TESTS_DIR}/ctthread.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctthread ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctthread PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtThread COMMAND test_ctthread)
+
+add_executable(test_ctworker ${TESTS_DIR}/ctworker.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctworker ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctworker PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtWorker COMMAND test_ctworker)
+
+add_executable(test_ctworkerpool ${TESTS_DIR}/ctworkerpool.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctworkerpool ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctworkerpool PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtWorkerPool COMMAND test_ctworkerpool)
+
+add_executable(test_ctservice ${TESTS_DIR}/ctservice.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctservice ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctservice PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtService COMMAND test_ctservice)
+
+add_executable(test_ctservicepool ${TESTS_DIR}/ctservicepool.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctservicepool ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctservicepool PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtServicePool COMMAND test_ctservicepool)
+
 target_compile_definitions(${TARGET_LIBRARY} PRIVATE _UNIX)

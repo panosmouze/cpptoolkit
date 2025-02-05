@@ -32,6 +32,10 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
+/**************************** Helper definitions ****************************/
+
+/********************************* Main test ********************************/
+
 /**
  * @brief CtFileIOTest01
  * 

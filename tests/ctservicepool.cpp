@@ -32,50 +32,64 @@ SOFTWARE.
 #include <gtest/gtest.h>
 #include "cpptoolkit.hpp"
 
-void f1(CtUInt32* idx) {
-    *idx += 1;
-}
+/**************************** Helper definitions ****************************/
+#define NUM_OF_SERVICES     10
+#define TIME_INTERVAL       25
+#define MAIN_SLEEP_MS       1100
+/********************************* Main test ********************************/
 
-
-TEST(CtServicePool, ServicePoolFunctionalityUsingNormalFunction) {
-    CtUInt32 idx[15] = {0};
-    // set slot time to 100ms
-    CtService::m_slot_time = 100;
-    // create a new service and run f1 every 10 slots => 1s
-    CtServicePool pool(2);
-    for (CtUInt8 i = 0; i< 15; i++) {
-        pool.addTaskFunc(i+1, std::to_string(i), f1, &idx[i]);
-    }
-    // start services
-    pool.startServices();
-    // sleep for 3000ms
-    CtThread::sleepFor(3000);
-    // stop services
-    pool.shutdownServices();
-    for (CtUInt8 i = 0; i < 14; i++) {
-        ASSERT_GT(idx[i], 0);
-    }
-};
-
-
-TEST(CtServicePool, ServicePoolFunctionalityUsingCtTask) {
-    CtUInt32 idx[15] = {0};
-    // set slot time to 100ms
-    CtService::m_slot_time = 100;
-    // create a new service and run f1 every 10 slots => 1s
-    CtServicePool pool(2);
-    for (CtUInt8 i = 0; i< 15; i++) {
-        pool.addTaskFunc(i+2, std::to_string(i), [&idx, i](){
-            idx[i]++;
+/**
+ * @brief CtServicePool01
+ * 
+ * @details
+ * Test the basic functionality of CtServicePool class.
+ * 
+ */
+TEST(CtServicePool, CtServicePool01) {
+    CtServicePool pool(4);
+    CtUInt8 data[NUM_OF_SERVICES] = {0};
+    for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES; idx++) {
+        CtString id = std::string("service") + std::to_string(idx);
+        pool.addTaskFunc(TIME_INTERVAL, id, [&data, idx]() {
+            data[idx] += 1;
         });
     }
-    // start services
     pool.startServices();
-    // sleep for 3000ms
-    CtThread::sleepFor(3000);
-    // stop services
+    CtThread::sleepFor(MAIN_SLEEP_MS);
     pool.shutdownServices();
-    for (CtUInt8 i = 0; i < 14; i++) {
-        ASSERT_GT(idx[i], 0);
+    for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES; idx++) {
+        ASSERT_LE(data[idx], 5);
     }
-};
+}
+
+/**
+ * @brief CtServicePool02
+ * 
+ * @details
+ * Test the basic functionality of CtServicePool class.
+ * 
+ */
+TEST(CtServicePool, CtServicePool02) {
+    CtServicePool pool(4);
+    CtUInt8 data[NUM_OF_SERVICES] = {0};
+    for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES; idx++) {
+        CtString id = std::string("service") + std::to_string(idx);
+        pool.addTaskFunc(TIME_INTERVAL, id, [&data, idx]() {
+            data[idx] += 1;
+        });
+    }
+    pool.startServices();
+    CtThread::sleepFor(MAIN_SLEEP_MS);
+    for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES/2; idx++) {
+        CtString id = std::string("service") + std::to_string(idx);
+        pool.removeTask(id);
+    }
+    CtThread::sleepFor(MAIN_SLEEP_MS);
+    pool.shutdownServices();
+    for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES/2; idx++) {
+        ASSERT_LE(data[idx], 6);
+    }
+    for (CtUInt8 idx = NUM_OF_SERVICES/2; idx < NUM_OF_SERVICES; idx++) {
+        ASSERT_LE(data[idx], 11);
+    }
+}

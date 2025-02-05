@@ -23,9 +23,9 @@ SOFTWARE.
 */
 
 /**
- * @file ctworkerpool.cpp
+ * @file cttask.cpp
  * @brief 
- * @date 18-01-2024
+ * @date 03-02-2025
  * 
  */
 
@@ -33,20 +33,27 @@ SOFTWARE.
 #include "cpptoolkit.hpp"
 
 /**************************** Helper definitions ****************************/
-#define POOL_SIZE           4
-#define NUM_OF_TASKS        100
-#define TASK_DURATION_MS    100
 
 /********************************* Main test ********************************/
 
-TEST(CtWorkerPool, CtWorkerPoolTest01) {
-    CtWorkerPool pool(POOL_SIZE);
-    bool flag[NUM_OF_TASKS] = {false};
-    for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
-        pool.addTask([&flag, idx]{CtThread::sleepFor(TASK_DURATION_MS); flag[idx] = true;});
-    }
-    pool.join();
-    for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
-        ASSERT_EQ(flag[idx], true);
-    }
+/**
+ * @brief CtTaskTest01
+ * 
+ * @details
+ * Test the basic functionality of CtTask class.
+ * 
+ */
+TEST(CtTask, CtTaskTest01) {
+    CtTask task;
+    CtUInt8 cnt = 0;
+    task.setTaskFunc([&cnt]{cnt++;});
+    task.setCallbackFunc([&cnt]{cnt--;});
+    std::function<void()> taskFunc = task.getTaskFunc();
+    std::function<void()> callbackFunc = task.getCallbackFunc();
+
+    ASSERT_EQ(cnt, 0);
+    taskFunc();
+    ASSERT_EQ(cnt, 1);
+    callbackFunc();
+    ASSERT_EQ(cnt, 0);
 }
