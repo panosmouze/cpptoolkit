@@ -96,20 +96,20 @@ TEST(CtFileIO, CtFileIOTest02) {
         CtFileInput fileIn("file.txt");
         fileIn.setDelimiter("\n", 1);
 
-        bool status = fileIn.read(&data);
+        CtBool status = fileIn.read(&data);
         CtUInt8* buffer = data.get();
         CtUInt8 res = memcmp(buffer, "HelloTest01", 11);
         ASSERT_EQ(res, 0);
-        ASSERT_EQ(status, true);
+        ASSERT_EQ(status, CT_TRUE);
 
         status = fileIn.read(&data);
         buffer = data.get();
         res = memcmp(buffer, "HelloTest02", 11);
         ASSERT_EQ(res, 0);
-        ASSERT_EQ(status, true);
+        ASSERT_EQ(status, CT_TRUE);
 
         status = fileIn.read(&data);
-        ASSERT_EQ(status, false);
+        ASSERT_EQ(status, CT_FALSE);
     }
 }
 
@@ -147,8 +147,8 @@ TEST(CtFileIO, CtFileIOTest04) {
         CtFileInput fileIn("empty.txt");
         fileIn.setDelimiter("\n", 1);
 
-        bool status = fileIn.read(&data);
-        ASSERT_EQ(status, false);
+        CtBool status = fileIn.read(&data);
+        ASSERT_EQ(status, CT_FALSE);
     }
 }
 
@@ -267,8 +267,8 @@ TEST(CtFileIO, CtFileIOTest07) {
         ASSERT_EQ(data.size(), 10000);
         fileIn.read(&data);
         ASSERT_EQ(data.size(), 10000);
-        bool res = fileIn.read(&data);
-        ASSERT_EQ(res, false);
+        CtBool res = fileIn.read(&data);
+        ASSERT_EQ(res, CT_FALSE);
     }
 }
 
@@ -310,7 +310,7 @@ TEST(CtFileIO, CtFileIOTest08) {
         ASSERT_EQ(data.size(), 10000);
         fileIn.read(&data);
         ASSERT_EQ(data.size(), 10000);
-        bool res = fileIn.read(&data);
-        ASSERT_EQ(res, false);
+        CtBool res = fileIn.read(&data);
+        ASSERT_EQ(res, CT_FALSE);
     }
 }

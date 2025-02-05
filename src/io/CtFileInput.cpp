@@ -57,8 +57,8 @@ void CtFileInput::setDelimiter(const CtChar* p_delim, CtUInt8 p_delim_size) {
     }
 }
 
-bool CtFileInput::read(CtRawData* p_data) {
-    bool s_res = false;
+CtBool CtFileInput::read(CtRawData* p_data) {
+    CtBool s_res = CT_FALSE;
 
     if (m_file.is_open()) {
         CtChar next_char;
@@ -85,9 +85,9 @@ bool CtFileInput::read(CtRawData* p_data) {
         }
 
         if (p_data->size() > 0) {
-            s_res = true;
+            s_res = CT_TRUE;
         } else if (m_file.eof()) {
-            s_res = false;
+            s_res = CT_FALSE;
         }
     } else {
         throw CtFileReadError("File is not open.");

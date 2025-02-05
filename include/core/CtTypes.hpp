@@ -46,33 +46,38 @@ SOFTWARE.
  * @brief Typedefs for basic types.
  * 
  */
-#define CtUInt8 uint8_t
-#define CtUInt16 uint16_t
-#define CtUInt32 uint32_t
-#define CtUInt64 uint64_t
+#define CtUInt8         uint8_t
+#define CtUInt16        uint16_t
+#define CtUInt32        uint32_t
+#define CtUInt64        uint64_t
 
-#define CtInt8 int8_t
-#define CtInt16 int16_t
-#define CtInt32 int32_t
-#define CtInt64 int64_t
+#define CtInt8          int8_t
+#define CtInt16         int16_t
+#define CtInt32         int32_t
+#define CtInt64         int64_t
 
-#define CtFloat float
-#define CtDouble double
+#define CtBool          uint8_t
 
-#define CtChar char
-#define CtString std::string
-#define CtVector std::vector
-#define CtMutex std::mutex
-#define CtQueue std::queue
-#define CtAtomic std::atomic
-#define CtMap std::map
-#define CtMultiMap std::multimap
+#define CtFloat         float
+#define CtDouble        double
+
+#define CtChar          char
+#define CtString        std::string
+#define CtVector        std::vector
+#define CtMutex         std::mutex
+#define CtQueue         std::queue
+#define CtAtomic        std::atomic
+#define CtMap           std::map
+#define CtMultiMap      std::multimap
 
 /**
  * @brief Default buffer size
  * 
  */
-#define CT_BUFFER_SIZE 2048
+#define CT_BUFFER_SIZE  2048u
+
+#define CT_TRUE         1u
+#define CT_FALSE        0u
 
 /**
  * @brief Struct describing a network address.

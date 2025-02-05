@@ -67,27 +67,27 @@ void CtSocketUdp::setPub(CtUInt16 p_port, const CtString& p_addr) {
     m_pubAddress.sin_port = htons(p_port);
 }
 
-bool CtSocketUdp::pollRead() {
+CtBool CtSocketUdp::pollRead() {
     int pollResult = poll(m_pollin_sockets, 1, CtSocketHelpers::socketTimeout);
 
     if (pollResult < 0) {
         throw CtSocketPollError("Socket polling-in failed.");
     } else if (pollResult == 0) {
-        return false;
+        return CT_FALSE;
     } else {
-        return true;
+        return CT_TRUE;
     }
 }
 
-bool CtSocketUdp::pollWrite() {
+CtBool CtSocketUdp::pollWrite() {
     int pollResult = poll(m_pollout_sockets, 1, CtSocketHelpers::socketTimeout);
 
     if (pollResult < 0) {
         throw CtSocketPollError("Socket polling-out failed.");
     } else if (pollResult == 0) {
-        return false;
+        return CT_FALSE;
     } else {
-        return true;
+        return CT_TRUE;
     }
 }
 

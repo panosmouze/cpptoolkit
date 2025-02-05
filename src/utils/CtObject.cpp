@@ -76,7 +76,7 @@ void CtObject::registerEvent(CtUInt32 p_eventCode) {
     m_events.push_back(p_eventCode);
 }
 
-bool CtObject::hasEvent(CtUInt32 p_eventCode) {
+CtBool CtObject::hasEvent(CtUInt32 p_eventCode) {
     return std::any_of(m_events.begin(), m_events.end(), [&p_eventCode](CtUInt8 s_event) { 
         return (s_event == p_eventCode); 
     });

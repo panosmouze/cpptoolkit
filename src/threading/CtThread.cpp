@@ -33,7 +33,7 @@ SOFTWARE.
 
 #include <chrono>
 
-CtThread::CtThread() : m_running(false) {
+CtThread::CtThread() : m_running(CT_FALSE) {
 
 }
 
@@ -50,7 +50,7 @@ void CtThread::run() {
 void CtThread::start() {
     if (!isRunning()) {
         join();
-        setRunning(true);
+        setRunning(CT_TRUE);
         m_thread = std::thread(&CtThread::run, this);
     } else {
         throw CtThreadError("Thread already running.");
@@ -58,7 +58,7 @@ void CtThread::start() {
 }
 
 void CtThread::stop() {
-    setRunning(false);
+    setRunning(CT_FALSE);
     CtThread::join();
 }
 
@@ -68,11 +68,11 @@ void CtThread::join() {
     }
 }
 
-bool CtThread::isRunning() {
+CtBool CtThread::isRunning() {
     return m_running.load();
 }
 
-void CtThread::setRunning(bool running) {
+void CtThread::setRunning(CtBool running) {
     m_running.store(running);
 }
 

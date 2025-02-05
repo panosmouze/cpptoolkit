@@ -75,11 +75,11 @@ public:
     EXPORTED_API ~CtWorker();
 
     /**
-     * @brief Returns true if the worker is currently running.
+     * @brief Returns CT_TRUE if the worker is currently running.
      * 
      * @return EXPORTED_API Worker status.
      */
-    EXPORTED_API bool isRunning();
+    EXPORTED_API CtBool isRunning();
 
     /**
      * @brief Run the task assigned to the worker.
@@ -117,11 +117,11 @@ private:
     /**
      * @brief Helper function set the m_running flag.
      */
-    void setRunning(bool running);
+    void setRunning(CtBool running);
 
 private:
     CtTask m_task;                                  /*!< The task assigned to the worker. */
-    CtAtomic<bool> m_running;                       /*!< Flag indicating if the worker is currently running. */
+    CtAtomic<CtBool> m_running;                       /*!< Flag indicating if the worker is currently running. */
     std::thread m_thread;                           /*!< The worker's thread. */
     std::function<void()> m_callback;               /*!< Callback function to be executed after the task is completed. */
 };

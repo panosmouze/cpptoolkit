@@ -31,18 +31,18 @@ SOFTWARE.
 
 #include "threading/CtWorker.hpp"
 
-CtWorker::CtWorker() : m_running(false) {
+CtWorker::CtWorker() : m_running(CT_FALSE) {
 }
 
 CtWorker::~CtWorker() {
     joinTask();
 }
 
-bool CtWorker::isRunning() {
+CtBool CtWorker::isRunning() {
     return m_running.load();
 }
 
-void CtWorker::setRunning(bool running) {
+void CtWorker::setRunning(CtBool running) {
     return m_running.store(running);
 }
 
@@ -54,12 +54,12 @@ void CtWorker::setTask(const CtTask& task, std::function<void()> callback) {
 
 void CtWorker::runTask() {
     alreadyRunningCheck();
-    setRunning(true);
+    setRunning(CT_TRUE);
     m_thread = std::thread([this]{
         m_task.getTaskFunc()();
         m_task.getCallbackFunc()();
         m_callback();
-        setRunning(false);
+        setRunning(CT_FALSE);
     });
 }
 

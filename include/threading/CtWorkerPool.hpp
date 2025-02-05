@@ -101,7 +101,7 @@ private:
     /**
      * @brief Assign a task to a specified worker.
      * @param idx The index of the worker to which the task is assigned.
-     * @return True if a task was successfully assigned, false otherwise.
+     * @return True if a task was successfully assigned, CT_FALSE otherwise.
      */
     void assignTask(CtUInt32 idx);
 
