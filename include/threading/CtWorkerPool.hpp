@@ -97,7 +97,6 @@ public:
     EXPORTED_API void join() override;
 
 private:
-
     /**
      * @brief Assign a task to a specified worker.
      * @param idx The index of the worker to which the task is assigned.

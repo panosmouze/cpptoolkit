@@ -34,7 +34,6 @@ SOFTWARE.
 #include <chrono>
 
 CtThread::CtThread() : m_running(CT_FALSE) {
-
 }
 
 CtThread::~CtThread() {

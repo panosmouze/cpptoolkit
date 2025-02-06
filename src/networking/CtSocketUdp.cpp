@@ -68,7 +68,7 @@ void CtSocketUdp::setPub(CtUInt16 p_port, const CtString& p_addr) {
 }
 
 CtBool CtSocketUdp::pollRead() {
-    int pollResult = poll(m_pollin_sockets, 1, CtSocketHelpers::socketTimeout);
+    CtInt32 pollResult = poll(m_pollin_sockets, 1, CtSocketHelpers::socketTimeout);
 
     if (pollResult < 0) {
         throw CtSocketPollError("Socket polling-in failed.");
@@ -80,8 +80,7 @@ CtBool CtSocketUdp::pollRead() {
 }
 
 CtBool CtSocketUdp::pollWrite() {
-    int pollResult = poll(m_pollout_sockets, 1, CtSocketHelpers::socketTimeout);
-
+    CtInt32 pollResult = poll(m_pollout_sockets, 1, CtSocketHelpers::socketTimeout);
     if (pollResult < 0) {
         throw CtSocketPollError("Socket polling-out failed.");
     } else if (pollResult == 0) {
@@ -104,7 +103,7 @@ void CtSocketUdp::send(CtRawData& p_message) {
 void CtSocketUdp::receive(CtUInt8* p_data, CtUInt32 p_size, CtNetAddress* p_client) {
     sockaddr_in s_clientAddress_in;
     socklen_t s_clientAddressLength = sizeof(s_clientAddress_in);
-    int bytesRead = recvfrom(m_socket, p_data, p_size, MSG_DONTWAIT, (struct sockaddr*)&s_clientAddress_in, &s_clientAddressLength);
+    CtInt32 bytesRead = recvfrom(m_socket, p_data, p_size, MSG_DONTWAIT, (struct sockaddr*)&s_clientAddress_in, &s_clientAddressLength);
 
     if (bytesRead == -1) {
         throw CtSocketReadError("Receiving data via socket failed.");
