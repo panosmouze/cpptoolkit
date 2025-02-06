@@ -49,7 +49,7 @@ void CtObject::waitPendingEvents() {
 void CtObject::connectEvent(CtUInt32 p_eventCode, CtTask& p_task) {
     std::scoped_lock lock(m_mtx_control);
     if (!hasEvent(p_eventCode)) {
-        throw CtEventNotExistsError("Event is not registed. " + std::to_string(p_eventCode));
+        throw CtEventNotExistsError("Event is not registed. " + ToCtString(p_eventCode));
     }
     m_triggers.insert({p_eventCode, p_task});
 }
@@ -57,7 +57,7 @@ void CtObject::connectEvent(CtUInt32 p_eventCode, CtTask& p_task) {
 void CtObject::triggerEvent(CtUInt32 p_eventCode) {
     std::scoped_lock lock(m_mtx_control);
     if (!hasEvent(p_eventCode)) {
-        throw CtEventNotExistsError("Event is not registed. " + std::to_string(p_eventCode));
+        throw CtEventNotExistsError("Event is not registed. " + ToCtString(p_eventCode));
     }
     std::pair<CtMultiMap<CtUInt32, CtTask>::iterator, CtMultiMap<CtUInt32, CtTask>::iterator> s_iterRange;
     s_iterRange = m_triggers.equal_range(p_eventCode);

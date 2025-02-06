@@ -79,7 +79,7 @@ void worker1Func() {
             CtRawData msg;
             socket1.receive(&msg);
             DummyData* data = (DummyData*)msg.get();
-            std::cout << ("receive data from id: " + std::to_string(data->id) + ", name: " + data->name) << std::endl;
+            std::cout << ("receive data from id: " + ToCtString(data->id) + ", name: " + data->name) << std::endl;
 
 
             /* Send response msg */
@@ -113,7 +113,7 @@ void worker2Func() {
                     CtRawData msg;
                     socket2.receive(&msg);
                     DummyData* data = (DummyData*)msg.get();
-                    std::cout << ("receive data from id: " + std::to_string(data->id) + ", name: " + data->name) << std::endl;
+                    std::cout << ("receive data from id: " + ToCtString(data->id) + ", name: " + data->name) << std::endl;
                     break;
                 }
             }

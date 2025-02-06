@@ -160,6 +160,13 @@ public:
      */
     EXPORTED_API void writeString(const CtString& p_key, const CtString& p_value);
 
+    /**
+     * @brief This method resets the configuration values.
+     * 
+     * @return void  
+     */
+    EXPORTED_API void reset();
+
 private:
     /**
      * @brief This method returns the value assosiated with the given key or 

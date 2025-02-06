@@ -53,19 +53,19 @@ void case01() {
     CtServicePool pool(5);
     CtUInt8 cnt[50] = {0};
     for (int i = 0; i < 50; i++) {
-        pool.addTaskFunc(100, std::to_string(i), [&cnt, i](){
+        pool.addTaskFunc(100, ToCtString(i), [&cnt, i](){
             cnt[i]++;
         });
     }
 
     CtThread::sleepFor(2050);
     for (int i = 45; i < 50; i++) {
-        pool.removeTask(std::to_string(i));
+        pool.removeTask(ToCtString(i));
     }
     CtThread::sleepFor(3050);
     pool.shutdownServices();
     for (int i = 0; i < 50; i++) {
-        std::cout << "idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]) << std::endl;
+        std::cout << "idx: " + ToCtString(i) + ", cnt: " + ToCtString(cnt[i]) << std::endl;
     }
 }
 
@@ -81,17 +81,17 @@ void case02() {
     CtServicePool pool(5);
     CtUInt8 cnt[50] = {0};
     for (int i = 0; i < 50; i++) {
-        pool.addTaskFunc(100, std::to_string(i), f1, cnt, i);
+        pool.addTaskFunc(100, ToCtString(i), f1, cnt, i);
     }
 
     CtThread::sleepFor(2050);
     for (int i = 45; i < 50; i++) {
-        pool.removeTask(std::to_string(i));
+        pool.removeTask(ToCtString(i));
     }
     CtThread::sleepFor(3050);
     pool.shutdownServices();
     for (int i = 0; i < 50; i++) {
-        std::cout << "idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]) << std::endl;
+        std::cout << "idx: " + ToCtString(i) + ", cnt: " + ToCtString(cnt[i]) << std::endl;
     }
 }
 
@@ -109,17 +109,17 @@ void case03() {
     CtTask task;
     for (int i = 0; i < 50; i++) {
         task.setTaskFunc(f1, cnt, i);
-        pool.addTask(100, std::to_string(i), task);
+        pool.addTask(100, ToCtString(i), task);
     }
 
     CtThread::sleepFor(2050);
     for (int i = 45; i < 50; i++) {
-        pool.removeTask(std::to_string(i));
+        pool.removeTask(ToCtString(i));
     }
     CtThread::sleepFor(3050);
     pool.shutdownServices();
     for (int i = 0; i < 50; i++) {
-        std::cout << "idx: " + std::to_string(i) + ", cnt: " + std::to_string(cnt[i]) << std::endl;
+        std::cout << "idx: " + ToCtString(i) + ", cnt: " + ToCtString(cnt[i]) << std::endl;
     }
 }
 

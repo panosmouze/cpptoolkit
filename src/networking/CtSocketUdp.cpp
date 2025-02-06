@@ -56,7 +56,7 @@ void CtSocketUdp::setSub(const CtString& p_interfaceName, CtUInt16 p_port) {
     m_subAddress.sin_port = htons(p_port);
 
     if (bind(m_socket, (struct sockaddr*)&m_subAddress, sizeof(m_subAddress)) == -1) {
-        throw CtSocketBindError(CtString("Socket bind to port ") + std::to_string(p_port) + CtString(" failed."));
+        throw CtSocketBindError(CtString("Socket bind to port ") + ToCtString(p_port) + CtString(" failed."));
     }
 }
 

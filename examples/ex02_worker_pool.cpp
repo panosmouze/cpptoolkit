@@ -59,7 +59,7 @@ void case01() {
         });
     }
     pool.join();
-    std::cout << std::to_string(cnt) << std::endl;
+    std::cout << ToCtString(cnt) << std::endl;
 }
 
 /**
@@ -75,7 +75,7 @@ void case02() {
         pool.addTask(f1, &cnt);
     }
     pool.join();
-    std::cout << std::to_string(cnt) << std::endl;
+    std::cout << ToCtString(cnt) << std::endl;
 }
 
 /**
@@ -94,7 +94,7 @@ void case03() {
         pool.addTask(task);
     }
     pool.join();
-    std::cout << std::to_string(cnt) << std::endl;
+    std::cout << ToCtString(cnt) << std::endl;
 }
 
 /** Run all cases */

@@ -133,6 +133,10 @@ CtString CtConfig::parseAsString(const CtString& key) {
     return getValue(key);
 }
 
+void CtConfig::reset() {
+    m_configValues.clear();
+}
+
 CtString CtConfig::getValue(const CtString& key) {
     if (m_configValues.find(key) != m_configValues.end()) {
         return m_configValues[key];
@@ -142,19 +146,19 @@ CtString CtConfig::getValue(const CtString& key) {
 }
 
 void CtConfig::writeInt(const CtString& p_key, const CtInt32& p_value) {
-    writeString(p_key, std::to_string(p_value));
+    writeString(p_key, ToCtString(p_value));
 }
 
 void CtConfig::writeUInt(const CtString& p_key, const CtUInt32& p_value) {
-    writeString(p_key, std::to_string(p_value));
+    writeString(p_key, ToCtString(p_value));
 }
 
 void CtConfig::writeFloat(const CtString& p_key, const CtFloat& p_value) {
-    writeString(p_key, std::to_string(p_value));
+    writeString(p_key, ToCtString(p_value));
 }
 
 void CtConfig::writeDouble(const CtString& p_key, const CtDouble& p_value) {
-    writeString(p_key, std::to_string(p_value));
+    writeString(p_key, ToCtString(p_value));
 }
 
 void CtConfig::writeString(const CtString& p_key, const CtString& p_value) {
