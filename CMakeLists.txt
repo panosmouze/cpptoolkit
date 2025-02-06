@@ -118,4 +118,19 @@ target_link_libraries(test_ctservicepool ${TARGET_LIBRARY} gtest_main ${GTEST_BO
 target_include_directories( test_ctservicepool PRIVATE ${GTEST_INCLUDE_DIRS} )
 add_test(NAME CtServicePool COMMAND test_ctservicepool)
 
+add_executable(test_cttimer ${TESTS_DIR}/cttimer.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_cttimer ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_cttimer PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtTimer COMMAND test_cttimer)
+
+add_executable(test_ctconfig ${TESTS_DIR}/ctconfig.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctconfig ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctconfig PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtConfig COMMAND test_ctconfig)
+
+add_executable(test_ctobject ${TESTS_DIR}/ctobject.cpp ${TESTS_DIR}/main_test.cpp)
+target_link_libraries(test_ctobject ${TARGET_LIBRARY} gtest_main ${GTEST_BOTH_LIBRARIES})
+target_include_directories( test_ctobject PRIVATE ${GTEST_INCLUDE_DIRS} )
+add_test(NAME CtObject COMMAND test_ctobject)
+
 target_compile_definitions(${TARGET_LIBRARY} PRIVATE _UNIX)

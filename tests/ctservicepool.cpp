@@ -49,7 +49,7 @@ TEST(CtServicePool, CtServicePool01) {
     CtServicePool pool(4);
     CtUInt8 data[NUM_OF_SERVICES] = {0};
     for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES; idx++) {
-        CtString id = std::string("service") + std::to_string(idx);
+        CtString id = CtString("service") + ToCtString(idx);
         pool.addTaskFunc(TIME_INTERVAL, id, [&data, idx]() {
             data[idx] += 1;
         });
@@ -73,7 +73,7 @@ TEST(CtServicePool, CtServicePool02) {
     CtServicePool pool(4);
     CtUInt8 data[NUM_OF_SERVICES] = {0};
     for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES; idx++) {
-        CtString id = std::string("service") + std::to_string(idx);
+        CtString id = CtString("service") + ToCtString(idx);
         pool.addTaskFunc(TIME_INTERVAL, id, [&data, idx]() {
             data[idx] += 1;
         });
@@ -81,7 +81,7 @@ TEST(CtServicePool, CtServicePool02) {
     pool.startServices();
     CtThread::sleepFor(MAIN_SLEEP_MS);
     for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES/2; idx++) {
-        CtString id = std::string("service") + std::to_string(idx);
+        CtString id = CtString("service") + ToCtString(idx);
         pool.removeTask(id);
     }
     CtThread::sleepFor(MAIN_SLEEP_MS);
