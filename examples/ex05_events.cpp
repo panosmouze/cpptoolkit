@@ -70,7 +70,7 @@ public:
 };
 
 void callback(int idx) {
-    std::cout << "EVENT1-3 executed with id: " + std::to_string(idx) << std::endl;
+    std::cout << "EVENT1-3 executed with id: " + ToCtString(idx) << std::endl;
 }
 
 int main() {

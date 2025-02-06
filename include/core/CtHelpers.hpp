@@ -35,6 +35,8 @@ SOFTWARE.
 #include "core/definitions.hpp"
 #include "core/CtTypes.hpp"
 
+#define ToCtString(x) std::to_string(x) /**< Convert a number to a string. */
+
 /**
  * @brief This namespace contains string helper functions.
  * 

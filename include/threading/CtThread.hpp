@@ -107,7 +107,7 @@ private:
     void run();
 
 private:
-    CtAtomic<CtBool> m_running;       /*!< Atomic flag indicating whether the thread is running. */
+    CtAtomic<CtBool> m_running;     /*!< Atomic flag indicating whether the thread is running. */
     std::thread m_thread;           /*!< The underlying thread object. */
 };
 

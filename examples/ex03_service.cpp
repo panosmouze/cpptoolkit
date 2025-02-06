@@ -46,7 +46,7 @@ void case01() {
 
     CtThread::sleepFor(1900);
     service.stopService();
-    std::cout << std::to_string(cnt) << std::endl;
+    std::cout << ToCtString(cnt) << std::endl;
 }
 
 /** Run all cases */
