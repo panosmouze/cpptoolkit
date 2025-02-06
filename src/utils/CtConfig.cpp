@@ -133,6 +133,10 @@ CtString CtConfig::parseAsString(const CtString& key) {
     return getValue(key);
 }
 
+void CtConfig::reset() {
+    m_configValues.clear();
+}
+
 CtString CtConfig::getValue(const CtString& key) {
     if (m_configValues.find(key) != m_configValues.end()) {
         return m_configValues[key];
