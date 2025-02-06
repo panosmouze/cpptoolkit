@@ -36,7 +36,6 @@ CtTimer::CtTimer() {
 }
 
 CtTimer::~CtTimer() {
-    
 }
 
 void CtTimer::tic() {

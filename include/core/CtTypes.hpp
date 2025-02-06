@@ -114,7 +114,6 @@ typedef struct _CtNetAddress {
  */
 class CtRawData {
 public:
-
     /**
      * @brief CtRawData constructor.
      * 

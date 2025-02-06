@@ -51,7 +51,6 @@ public:
     }
 
     ~CtMainPage() {
-
     }
 
     void test1() {
