@@ -31,6 +31,8 @@ SOFTWARE.
 
 #include "utils/CtObject.hpp"
 
+#include <algorithm>
+
 CtObject::CtObject() : m_pool(1) {
 }
 

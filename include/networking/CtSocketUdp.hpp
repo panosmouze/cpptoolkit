@@ -81,7 +81,6 @@ SOFTWARE.
  */
 class CtSocketUdp {
 public:
-
     /**
      * @brief Constructor for CtSocketUdp.
      * 

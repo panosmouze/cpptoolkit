@@ -59,11 +59,9 @@ void CtFileOutput::setDelimiter(const CtChar* p_delim, CtUInt8 p_delim_size) {
         m_delim.reset();
         m_delim = std::make_unique<CtChar[]>(m_delim_size);
         memcpy(m_delim.get(), p_delim, m_delim_size);
-    } else if (p_delim_size == 0) {
+    } else {
         m_delim_size = 0;
         m_delim.reset();
-    } else {
-        throw CtFileWriteError("Delimiter is NULL.");
     }
 }
 
