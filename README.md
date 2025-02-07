@@ -55,7 +55,7 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
 5. Run the tests:
 
     ```bash
-    ctest --test-dir build -c Release
+    ctest --test-dir build -C Release
     ```
 
 ## Purpose

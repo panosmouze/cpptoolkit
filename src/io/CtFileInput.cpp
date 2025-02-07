@@ -54,6 +54,11 @@ void CtFileInput::setDelimiter(const CtChar* p_delim, CtUInt8 p_delim_size) {
         m_delim_size = p_delim_size;
         m_delim = new CtChar[m_delim_size];
         memcpy(m_delim, p_delim, m_delim_size);
+    } else {
+        m_delim_size = 0;
+        if (m_delim != nullptr) {
+            delete[] m_delim;
+        }
     }
 }
 
