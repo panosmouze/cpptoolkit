@@ -99,22 +99,3 @@ const CtString CtLogger::levelToString(CtLogger::Level level) {
 
     return levelStr;
 }
-
-CtLogger::Level CtLogger::stringToLevel(const CtString& levelStr) {
-    Level level;
-    if (levelStr.compare("DEBUG") == 0) {
-        level = CtLogger::Level::DEBUG;
-    } else if (levelStr.compare("INFO") == 0) {
-        level = CtLogger::Level::INFO;
-    } else if (levelStr.compare("WARNING") == 0) {
-        level = CtLogger::Level::WARNING;
-    } else if (levelStr.compare("ERROR") == 0) {
-        level = CtLogger::Level::ERROR;
-    } else if (levelStr.compare("CRITICAL") == 0) {
-        level = CtLogger::Level::CRITICAL;
-    } else {
-        level = CtLogger::Level::DEBUG;
-    }
-
-    return level;
-}

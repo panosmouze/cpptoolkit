@@ -33,7 +33,7 @@ SOFTWARE.
 
 CtUInt32 CtService::m_slot_time = 10;
 
-CtService::CtService(CtUInt64 nslots, const CtTask& task) : m_nslots(nslots), m_skip_ctr(1), m_exec_ctr(1) {
+CtService::CtService(CtUInt64 nslots, const CtTask& task) : m_nslots(nslots), m_skip_ctr(0), m_exec_ctr(1) {
     m_worker.setTask(task);
 }
 

@@ -38,7 +38,7 @@ SOFTWARE.
 #include "threading/CtWorkerPool.hpp"
 #include "threading/CtThread.hpp"
 #include "time/CtTimer.hpp"
-#include "utils/CtTask.hpp"
+#include "threading/CtTask.hpp"
 
 /**
  * @class CtServicePool

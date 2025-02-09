@@ -36,10 +36,10 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/io/CtFileOutput.cpp
     ${SOURCE_DIR}/io/CtFileInput.cpp
     ${SOURCE_DIR}/time/CtTimer.cpp
-    ${SOURCE_DIR}/utils/CtTask.cpp
     ${SOURCE_DIR}/utils/CtObject.cpp
     ${SOURCE_DIR}/utils/CtConfig.cpp
     ${SOURCE_DIR}/utils/CtLogger.cpp
+    ${SOURCE_DIR}/threading/CtTask.cpp
     ${SOURCE_DIR}/threading/CtThread.cpp
     ${SOURCE_DIR}/threading/CtService.cpp
     ${SOURCE_DIR}/threading/CtServicePool.cpp

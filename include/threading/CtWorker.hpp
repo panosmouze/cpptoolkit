@@ -34,7 +34,7 @@ SOFTWARE.
 
 #include "core.hpp"
 
-#include "utils/CtTask.hpp"
+#include "threading/CtTask.hpp"
 
 #include <thread>
 #include <functional>
@@ -45,7 +45,6 @@ SOFTWARE.
  * 
  * @brief
  * The CtWorker class provides a mechanism for executing tasks asynchronously in a separate thread.
- * The class is thread-safe and can be used in multi-threaded environments.
  * 
  * @code {.cpp}
  * CtWorker worker;
@@ -121,7 +120,7 @@ private:
 
 private:
     CtTask m_task;                                  /*!< The task assigned to the worker. */
-    CtAtomic<CtBool> m_running;                       /*!< Flag indicating if the worker is currently running. */
+    CtAtomic<CtBool> m_running;                     /*!< Flag indicating if the worker is currently running. */
     std::thread m_thread;                           /*!< The worker's thread. */
     std::function<void()> m_callback;               /*!< Callback function to be executed after the task is completed. */
 };

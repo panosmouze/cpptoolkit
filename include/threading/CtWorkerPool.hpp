@@ -36,7 +36,7 @@ SOFTWARE.
 
 #include "threading/CtWorker.hpp"
 #include "threading/CtThread.hpp"
-#include "utils/CtTask.hpp"
+#include "threading/CtTask.hpp"
 
 #include <functional>
 

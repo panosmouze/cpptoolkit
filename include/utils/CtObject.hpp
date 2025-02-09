@@ -34,7 +34,7 @@ SOFTWARE.
 
 #include "core.hpp"
 
-#include "utils/CtTask.hpp"
+#include "threading/CtTask.hpp"
 #include "threading/CtWorkerPool.hpp"
 
 #include <functional>

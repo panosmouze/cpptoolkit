@@ -44,10 +44,6 @@ CtServicePool::~CtServicePool() {
 void CtServicePool::addTask(CtUInt32 nslots, const CtString& id, CtTask& task) {
     std::scoped_lock lock(m_mtx_control);
     m_tasks.push_back({task, id, nslots});
-    try {
-        start();
-    } catch(const CtThreadError& e) {
-    }
 }
 
 void CtServicePool::removeTask(const CtString& id) {

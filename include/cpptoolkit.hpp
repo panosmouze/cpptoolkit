@@ -55,6 +55,7 @@ SOFTWARE.
  * Include objects related to threading
  * 
  */
+#include "threading/CtTask.hpp"
 #include "threading/CtThread.hpp"
 #include "threading/CtWorker.hpp"
 #include "threading/CtWorkerPool.hpp"
@@ -74,6 +75,5 @@ SOFTWARE.
 #include "utils/CtConfig.hpp"
 #include "utils/CtLogger.hpp"
 #include "utils/CtObject.hpp"
-#include "utils/CtTask.hpp"
 
 #endif //INCLUDE_CPPTOOLKIT_HPP_

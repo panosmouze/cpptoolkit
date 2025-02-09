@@ -103,14 +103,6 @@ public:
      */
     EXPORTED_API void log_critical(const CtString& message);
 
-    /**
-     * @brief Given the logger output level in string format this method returns the enum CtLogger::Level format.
-     * 
-     * @param level_str The level in string format.
-     * @return CtLogger::Level The level in enum format.
-     */
-    EXPORTED_API static CtLogger::Level stringToLevel(const CtString& level_str);
-
 private:
     /**
      * @brief Log a message with the specified log level.
