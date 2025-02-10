@@ -58,6 +58,12 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
     ctest --test-dir build -C Release
     ```
 
+6. Create build library products (.so & header files) to build/out:
+
+    ```bash
+    cmake --install build
+    ```
+
 ## Purpose
 
 C++ Toolkit started primarily for educational purposes.

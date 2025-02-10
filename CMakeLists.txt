@@ -48,6 +48,15 @@ add_library(${TARGET_LIBRARY} SHARED
     ${SOURCE_DIR}/networking/CtSocketUdp.cpp
 )
 
+# Install library files
+install(TARGETS ${TARGET_LIBRARY}
+    LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/out/lib
+    ARCHIVE DESTINATION ${CMAKE_BINARY_DIR}/out/lib
+)
+
+# Install header files
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_BINARY_DIR}/out/include)
+
 # Examples Build
 add_executable(ex01_worker ${EXAMPLES_DIR}/ex01_worker.cpp)
 target_link_libraries(ex01_worker ${TARGET_LIBRARY})
