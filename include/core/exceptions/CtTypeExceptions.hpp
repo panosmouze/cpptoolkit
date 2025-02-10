@@ -37,6 +37,9 @@ SOFTWARE.
 /**
  * @brief This exception is thrown when a type cannot be parsed.
  * 
+ * @ref FR-001-001-004
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtTypeParseError : public CtException {
 public:
@@ -46,6 +49,9 @@ public:
 /**
  * @brief This exception is thrown when a key is not found in a container.
  * 
+ * @ref FR-001-001-005
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtKeyNotFoundError : public CtException {
 public:
@@ -55,6 +61,9 @@ public:
 /**
  * @brief This exception is thrown when an index is out of bounds.
  * 
+ * @ref FR-001-001-006
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtOutOfRangeError : public CtException {
 public:

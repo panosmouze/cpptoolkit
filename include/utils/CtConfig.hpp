@@ -50,12 +50,17 @@ class CtConfig {
 public:
     /**
      * @brief Constructor for CtConfig.
+     * 
+     * @ref FR-004-001-001
+     * 
      * @param configFile The path to the configuration file to be parsed.
      */
     EXPORTED_API explicit CtConfig(const CtString& p_configFile);
 
     /**
      * @brief Destructor for cleaning up resources.
+     * 
+     * @ref FR-004-001-002
      */
     EXPORTED_API ~CtConfig();
 
@@ -63,11 +68,18 @@ public:
      * @brief Read data from config file. 
      *          This method can throw CtFileParseError if file cannot be parsed.
      *          This method can throw CtFileError if there is a problem with the file.
+     * 
+     * @ref FR-004-001-006
+     * @ref FR-004-001-009
+     * @ref FR-004-001-007
      */
     EXPORTED_API void read();
 
     /**
      * @brief Write data to config file.
+     * 
+     * @ref FR-004-001-005
+     * @ref FR-004-001-008
      */
     EXPORTED_API void write();
 
@@ -75,6 +87,10 @@ public:
      * @brief Parse a value as a 32-bit signed integer or 
      *          throw CtKeyNotFoundError if key is not found in the map or
      *          throw CtParseError if key value cannot be parsed as int.
+     * 
+     * @ref FR-004-001-010
+     * @ref FR-004-001-003
+     * @ref FR-004-001-013
      * 
      * @param key The key value to be parsed.
      * @return The parsed integer value.
@@ -86,6 +102,10 @@ public:
      *          throw CtKeyNotFoundError if key is not found in the map or
      *          throw CtParseError if key value cannot be parsed as uint.
      * 
+     * @ref FR-004-001-010
+     * @ref FR-004-001-003
+     * @ref FR-004-001-013
+     * 
      * @param key The key value to be parsed.
      * @return The parsed unsigned integer value.
      */
@@ -95,6 +115,10 @@ public:
      * @brief Parse a value as a CtFloat or 
      *          throw CtKeyNotFoundError if key is not found in the map or
      *          throw CtParseError if key value cannot be parsed as CtFloat.
+     * 
+     * @ref FR-004-001-010
+     * @ref FR-004-001-003
+     * @ref FR-004-001-013
      * 
      * @param key The key value to be parsed.
      * @return The parsed floating-point value.
@@ -106,6 +130,10 @@ public:
      *          throw CtKeyNotFoundError if key is not found in the map or
      *          throw CtParseError if key value cannot be parsed as CtDouble.
      * 
+     * @ref FR-004-001-010
+     * @ref FR-004-001-003
+     * @ref FR-004-001-013
+     * 
      * @param key The key value to be parsed.
      * @return The parsed CtDouble value.
      */
@@ -115,6 +143,9 @@ public:
      * @brief Parse a value as a standard C++ string or 
      *          throw CtKeyNotFoundError if key is not found in the map.
      * 
+     * @ref FR-004-001-010
+     * @ref FR-004-001-003
+     * 
      * @param key The key value to be parsed.
      * @return The parsed string.
      */
@@ -122,6 +153,9 @@ public:
     
     /**
      * @brief Write value to key as int.
+     * 
+     * @ref FR-004-001-011
+     * @ref FR-004-001-003
      * 
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
@@ -131,6 +165,9 @@ public:
     /**
      * @brief Write value to key as uint.
      * 
+     * @ref FR-004-001-011
+     * @ref FR-004-001-003
+     * 
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
@@ -138,6 +175,9 @@ public:
 
     /**
      * @brief Write value to key as CtFloat.
+     * 
+     * @ref FR-004-001-011
+     * @ref FR-004-001-003
      * 
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
@@ -147,6 +187,9 @@ public:
     /**
      * @brief Write value to key as CtDouble.
      * 
+     * @ref FR-004-001-011
+     * @ref FR-004-001-003
+     * 
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
@@ -155,6 +198,9 @@ public:
     /**
      * @brief Write value to key as string.
      * 
+     * @ref FR-004-001-011
+     * @ref FR-004-001-003
+     * 
      * @param p_key The key value.
      * @param p_value The value to be written for this key.
      */
@@ -162,6 +208,8 @@ public:
 
     /**
      * @brief This method resets the configuration values.
+     * 
+     * @ref FR-004-001-014 
      * 
      * @return void  
      */
@@ -172,6 +220,9 @@ private:
      * @brief This method returns the value assosiated with the given key or 
      *          throw CtKeyNotFoundError if key is not found in the map.
      * 
+     * @ref FR-004-001-004
+     * @ref FR-004-001-012
+     * 
      * @param key The key value to be parsed.
      * @return CtString The string value assosiated with the given key.
      */
@@ -181,6 +232,9 @@ private:
      * @brief This method gets a line as input and parse it in order to find the key and value
      *          of configured item. These values are stored in the CtMap m_configValues.
      *          This method can throw CtFileParseError if file cannot be parsed.
+     * 
+     * @ref FR-004-001-006
+     * @ref FR-004-001-009
      * 
      * @param line 
      */

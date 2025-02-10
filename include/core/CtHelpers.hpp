@@ -40,10 +40,13 @@ SOFTWARE.
 /**
  * @brief This namespace contains string helper functions.
  * 
+ * @ref FR-001-002-001
  */
 namespace CtStringHelpers {
     /**
      * @brief This method splits the string into substrings using the given delimiter.
+     * 
+     * @ref FR-001-002-002
      * 
      * @param p_string The string to be split.
      * @param p_delimiter This is the delimiter that will be used to split the string.
@@ -54,6 +57,8 @@ namespace CtStringHelpers {
     /**
      * @brief This method trims the string from the left and right side.
      * 
+     * @ref FR-001-002-003
+     * 
      * @param p_string The string to be trimmed.
      * @return CtString The trimmed string.
      */
@@ -61,6 +66,8 @@ namespace CtStringHelpers {
 
     /**
      * @brief This method converts a string to a CtDouble.
+     * 
+     * @ref FR-001-002-007
      * 
      * @details
      * If the string can not be converted to a CtDouble, a CtTypeParseError exception is thrown.
@@ -73,6 +80,8 @@ namespace CtStringHelpers {
     /**
      * @brief This method converts a string to a CtFloat.
      * 
+     * @ref FR-001-002-006
+     * 
      * @details
      * If the string can not be converted to a CtFloat, a CtTypeParseError exception is thrown.
      * 
@@ -84,6 +93,8 @@ namespace CtStringHelpers {
     /**
      * @brief This method converts a string to a CtUInt32.
      * 
+     * @ref FR-001-002-005
+     * 
      * @details
      * If the string can not be converted to a CtUInt32, a CtTypeParseError exception is thrown.
      * 
@@ -94,6 +105,8 @@ namespace CtStringHelpers {
 
     /**
      * @brief This method converts a string to a CtInt32.
+     * 
+     * @ref FR-001-002-004
      * 
      * @details
      * If the string can not be converted to a CtInt32, a CtTypeParseError exception is thrown.
@@ -114,6 +127,8 @@ namespace CtSocketHelpers {
     /**
      * @brief Set the Socket Timeout object
      * 
+     * @ref FR-001-002-100
+     * 
      * @param socketTimeout The target timeout for the poll request.
      */
     EXPORTED_API void setSocketTimeout(CtInt32 socketTimeout);
@@ -121,12 +136,16 @@ namespace CtSocketHelpers {
     /**
      * @brief Get all available interfaces the device.
      * 
+     * @ref FR-001-002-101
+     * 
      * @return CtVector<CtString> The available interfaces.
      */
     EXPORTED_API CtVector<CtString> getInterfaces();
 
     /**
      * @brief Get address of a specific interface.
+     * 
+     * @ref FR-001-002-102
      * 
      * @param p_ifName The name of the interface.
      * @return CtString The address of the interface.
@@ -136,6 +155,8 @@ namespace CtSocketHelpers {
     /**
      * @brief Convert address to uin32_t
      * 
+     * @ref FR-001-002-103
+     * 
      * @param p_addr The address in form of CtString
      * @return CtUInt32 The address in form of CtUInt32
      */
@@ -143,6 +164,8 @@ namespace CtSocketHelpers {
 
     /**
      * @brief Convert address to CtString
+     * 
+     * @ref FR-001-002-103
      * 
      * @param p_addr The address in form of CtUInt32
      * @return CtString The address in form of CtString

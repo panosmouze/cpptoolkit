@@ -81,6 +81,9 @@ SOFTWARE.
 
 /**
  * @brief Struct describing a network address.
+ * 
+ * @ref FR-001-003-001
+ * 
  * @details
  * The network address is described by the IP address and the port number.
  * 
@@ -92,6 +95,8 @@ typedef struct _CtNetAddress {
 
 /**
  * @brief Struct describing raw data buffer.
+ * 
+ * @ref FR-001-003-002
  * 
  * @details
  * The default buffer size is defined as CT_BUFFER_SIZE bytes.
@@ -117,12 +122,20 @@ public:
     /**
      * @brief CtRawData constructor.
      * 
+     * @ref FR-001-003-003
+     * @ref FR-001-003-004
+     * @ref FR-001-003-007
+     * 
      * @param p_size The size of the buffer. The default size is defined as CT_BUFFER_SIZE bytes. 
      */
     EXPORTED_API explicit CtRawData(CtUInt32 p_size = CT_BUFFER_SIZE);
 
     /**
      * @brief CtRawData copy constructor.
+     * 
+     * @ref FR-001-003-003
+     * @ref FR-001-003-005
+     * @ref FR-001-003-007
      * 
      * @param p_data Another CtRawData object that it is used to init the currently created.
      */
@@ -131,12 +144,17 @@ public:
     /**
      * @brief Destructor.
      * 
+     * @ref FR-001-003-006
+     * 
      */
     EXPORTED_API virtual ~CtRawData();
 
     /**
      * @brief Sets the next byte of the buffer. It also raises the size of the buffer.
      *      If the buffer is full an exception will be thrown - CtOutOfRangeError()
+     * 
+     * @ref FR-001-003-008
+     * @ref FR-001-003-019
      * 
      * @param p_data The byte to be added.
      * @return void 
@@ -146,6 +164,9 @@ public:
     /**
      * @brief Sets the next byte of the buffer. It also raises the size of the buffer.
      *      If the buffer is full an exception will be thrown - CtOutOfRangeError()
+     * 
+     * @ref FR-001-003-009
+     * @ref FR-001-003-019
      * 
      * @param p_data The byte to be added.
      * @param p_size The number of bytes to be added.
@@ -157,6 +178,9 @@ public:
      * @brief This method returns a pointer to the last N bytes of the buffer.
      *    If the number of bytes is greater than the buffer size an exception will be thrown - CtOutOfRangeError()
      * 
+     * @ref FR-001-003-010
+     * @ref FR-001-003-019
+     * 
      * @param p_num Number of bytes to be returned.
      * @return CtUInt8* Pointer to the last N bytes of the buffer.
      */
@@ -166,13 +190,19 @@ public:
      * @brief This method removes the last N bytes of the buffer. It also reduces the size of the buffer.
      *   If the number of bytes is greater than the buffer size an exception will be thrown - CtOutOfRangeError()
      * 
+     * @ref FR-001-003-011
+     * @ref FR-001-003-019
+     * 
      * @param p_num Number of bytes to be returned.
-     * @return EXPORTED_API 
+     * @return void 
      */
     EXPORTED_API void removeNLastBytes(CtUInt32 p_num);
 
     /**
      * @brief The actual size of the buffer.
+     * 
+     * @ref FR-001-003-007
+     * @ref FR-001-003-012
      * 
      * @return CtUInt32 The actual size of the buffer.
      */
@@ -181,12 +211,17 @@ public:
     /**
      * @brief The max size of the buffer.
      * 
+     * @ref FR-001-003-007
+     * @ref FR-001-003-013
+     * 
      * @return CtUInt32 The max size of the buffer.
      */
     EXPORTED_API CtUInt32 maxSize();
 
     /**
      * @brief This method returns a pointer to the buffer data.
+     * 
+     * @ref FR-001-003-014
      * 
      * @return CtUInt8* Pointer to the buffer data. 
      */
@@ -196,6 +231,9 @@ public:
      * @brief This method fills the buffer with the data given in the parameters.
      *   This method overwrites the buffer and the actual size. The maximum size of the buffer is preserved.
      *   If the size of the data is greater than the buffer size an exception will be thrown - CtOutOfRangeError()
+     * 
+     * @ref FR-001-003-014
+     * @ref FR-001-003-019
      * 
      * @param p_data A pointer to the data to be cloned.
      * @param p_size The size of the gven buffer.
@@ -209,6 +247,9 @@ public:
      *   This method overwrites the buffer and the actual size. The maximum size of the buffer is preserved.
      *   If the size of the data is greater than the buffer size an exception will be thrown - CtOutOfRangeError()
      * 
+     * @ref FR-001-003-015
+     * @ref FR-001-003-019
+     * 
      * @param p_data A CtRawData object to be cloned.
      * @return void
      */
@@ -218,6 +259,8 @@ public:
      * @brief This method resets the buffer to 0 size. The allocated memory is not freed.
      *   The actual size of the buffer is set to 0.
      * 
+     * @ref FR-001-003-017
+     * 
      * @return void 
      */
     EXPORTED_API void reset();
@@ -225,6 +268,8 @@ public:
     /**
      * @brief Assignment operator for CtRawData.
      * Copies the data from a CtRawData to another CtRawData object.
+     * 
+     * @ref FR-001-003-018
      * 
      * @param other The CtRawData object to copy.
      * 

@@ -42,6 +42,8 @@ SOFTWARE.
 /**
  * @brief This abstract class can be used as a base class for objects that can trigger events.
  * 
+ * @ref FR-004-003-001
+ * 
  * @details
  * The CtObject class provides a mechanism for connecting events with functions that should be triggered.
  * This class is thread-safe and can be used in multi-threaded environments.
@@ -59,6 +61,9 @@ public:
     /**
      * @brief This method connects an event code with a function that should be triggered.
      * 
+     * @ref FR-004-003-006
+     * @ref FR-004-003-008
+     * 
      * @tparam F Type of the callable function.
      * @tparam FArgs Types of the arguments for the callable function.
      * 
@@ -75,6 +80,9 @@ public:
     /**
      * @brief This method connects an event code with a function that should be triggered.
      * 
+     * @ref FR-004-003-006
+     * @ref FR-004-003-008
+     * 
      * @param p_obj The object that hosts the event.
      * @param p_eventCode The event code.
      * @param p_task The task to be executed.
@@ -85,6 +93,9 @@ public:
 
     /**
      * @brief This method connects an event code with a function that should be triggered.
+     * 
+     * @ref FR-004-003-006
+     * @ref FR-004-003-008
      * 
      * @tparam F Type of the callable function.
      * @tparam FArgs Types of the arguments for the callable function.
@@ -101,6 +112,9 @@ public:
     /**
      * @brief This method connects an event code with a function that should be triggered.
      * 
+     * @ref FR-004-003-006
+     * @ref FR-004-003-008
+     * 
      * @param p_eventCode The event code.
      * @param p_task The task to be executed.
      * 
@@ -112,6 +126,8 @@ public:
      * @brief This method holds current thread waiting for all the pending events of this object 
      *      to finish.
      * 
+     * @ref FR-004-003-010
+     * 
      * @return void
      */
     EXPORTED_API void waitPendingEvents();
@@ -120,17 +136,23 @@ protected:
     /**
      * @brief The constructor of the CtObject class.
      * 
+     * @ref FR-004-003-002
      */
     EXPORTED_API CtObject();
 
     /**
      * @brief The destructor of the CtObject class.
      * 
+     * @ref FR-004-003-003
+     * @ref FR-004-003-009
      */
     EXPORTED_API ~CtObject();
 
     /**
      * @brief This method triggers a specific event code.
+     * 
+     * @ref FR-004-003-007
+     * @ref FR-004-003-008
      * 
      * @param p_eventCode The event code to be triggered.
      * 
@@ -141,6 +163,9 @@ protected:
     /**
      * @brief This event registers a specific event code.
      * 
+     * @ref FR-004-003-004
+     * @ref FR-004-003-005
+     * 
      * @param p_eventCode The event code to be registered.
      * 
      * @return void
@@ -150,6 +175,9 @@ protected:
 private:
     /**
      * @brief This methods checks if a specific event code is already registered in this object.
+     * 
+     * @ref FR-004-003-005
+     * @ref FR-004-003-008
      * 
      * @param p_eventCode The event code to be checked.
      * 

@@ -84,17 +84,25 @@ public:
     /**
      * @brief Constructor for CtSocketUdp.
      * 
+     * @ref FR-006-001-001
+     * @ref FR-006-001-003
+     * 
      */
     EXPORTED_API CtSocketUdp();
 
     /**
      * @brief Destructor for CtSocketUdp.
      * 
+     * @ref FR-006-001-002
+     * 
      */
     EXPORTED_API ~CtSocketUdp();
 
     /**
      * @brief Set the socket for subscribing.
+     * 
+     * @ref FR-006-001-004
+     * 
      * @param p_interfaceName The interface name to bind to.
      * @param p_port The port to bind to.
      */
@@ -102,6 +110,9 @@ public:
 
     /**
      * @brief Set the socket for publishing.
+     * 
+     * @ref FR-006-001-005
+     * 
      * @param p_port The port to send data to.
      * @param p_addr The address to send data to. Default to empty string.
      */
@@ -110,6 +121,9 @@ public:
     /**
      * @brief Check if there is data available to read.
      * 
+     * @ref FR-006-001-006
+     * @ref FR-006-001-008
+     * 
      * @return True if data is available, CT_FALSE otherwise.
      */
     EXPORTED_API CtBool pollRead();
@@ -117,12 +131,19 @@ public:
     /**
      * @brief Check if data can be written to the fd.
      * 
+     * @ref FR-006-001-007
+     * @ref FR-006-001-008
+     * 
      * @return True if there is at least one byte available, CT_FALSE otherwise.
      */
     EXPORTED_API CtBool pollWrite();
 
     /**
      * @brief Send data over the socket.
+     * 
+     * @ref FR-006-001-009
+     * @ref FR-006-001-011
+     * 
      * @param p_data Buffer containing the data to sent.
      * @param p_size Size of the buffer.
      */
@@ -130,12 +151,19 @@ public:
 
     /**
      * @brief Send data over the socket.
+     * 
+     * @ref FR-006-001-009
+     * @ref FR-006-001-011
+     * 
      * @param p_message Struct containing the message to sent.
      */
     EXPORTED_API void send(CtRawData& p_message);
 
     /**
      * @brief Receive data from the socket.
+     * 
+     * @ref FR-006-001-010
+     * @ref FR-006-001-012
      * 
      * @param p_data Buffer containing the data to sent.
      * @param p_size Size of the buffer.
@@ -145,6 +173,10 @@ public:
 
     /**
      * @brief Receive data from the socket.
+     * 
+     * @ref FR-006-001-010
+     * @ref FR-006-001-012
+     * 
      * @param p_message Struct to store the message received.
      * @param p_clientAddress Pointer to a CtNetAddress object to store the client's address (output parameter).
      */

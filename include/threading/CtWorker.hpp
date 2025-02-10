@@ -41,10 +41,10 @@ SOFTWARE.
 
 /**
  * @class CtWorker
- * @brief Represents a worker thread that can execute tasks asynchronously.
- * 
  * @brief
  * The CtWorker class provides a mechanism for executing tasks asynchronously in a separate thread.
+ * 
+ * @ref FR-005-003-001
  * 
  * @code {.cpp}
  * CtWorker worker;
@@ -65,16 +65,24 @@ class CtWorker {
 public:
     /**
      * @brief Constructor for CtWorker.
+     * 
+     * @ref FR-005-003-002
+     * 
      */
     EXPORTED_API explicit CtWorker();
 
     /**
      * @brief Destructor for CtWorker.
+     * 
+     * @ref FR-005-003-003
+     * 
      */
     EXPORTED_API ~CtWorker();
 
     /**
      * @brief Returns CT_TRUE if the worker is currently running.
+     * 
+     * @ref FR-005-003-004
      * 
      * @return EXPORTED_API Worker status.
      */
@@ -82,16 +90,28 @@ public:
 
     /**
      * @brief Run the task assigned to the worker.
+     * 
+     * @ref FR-005-003-010
+     * @ref FR-005-003-011
+     * 
      */
     EXPORTED_API void runTask();
 
     /**
      * @brief Join the worker's thread, waiting for the task to complete.
+     * 
+     * @ref FR-005-003-006
+     * 
      */
     EXPORTED_API void joinTask();
 
     /**
      * @brief Set a task for the worker to execute.
+     * 
+     * @ref FR-005-003-007
+     * @ref FR-005-003-008
+     * @ref FR-005-003-009
+     * 
      * @param task The task to be executed by the worker.
      * @param callback The callback function to be executed after the task is completed.
      *                 Default is an empty lambda function.
@@ -100,6 +120,9 @@ public:
 
     /**
      * @brief Set a task function for the worker to execute.
+     * 
+     * @ref FR-005-003-007
+     * @ref FR-005-003-008
      * 
      * @param func The task function to be executed by the worker.
      * @param fargs The arguments of the executed task function.
@@ -110,11 +133,17 @@ public:
 private:
     /**
      * @brief Helper function that checks if the CtWorker is already running and returns an exception.
+     * 
+     * @ref FR-005-003-011
+     * 
      */
     void alreadyRunningCheck();
 
     /**
      * @brief Helper function set the m_running flag.
+     * 
+     * @ref FR-005-003-005
+     * 
      */
     void setRunning(CtBool running);
 

@@ -49,6 +49,8 @@ protected:
     /**
      * @brief Construct a new Ct Exception object
      * 
+     * @ref FR-001-001-003
+     * 
      * @param msg Message to be stored in the exception.
      */
     explicit CtException(const CtString& msg) : m_msg(msg) {};
@@ -56,6 +58,8 @@ protected:
 public:
     /**
      * @brief This method returns the message stored in the exception.
+     * 
+     * @ref FR-001-001-001
      * 
      * @return const char* the message stored in the exception.
      */

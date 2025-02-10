@@ -64,12 +64,17 @@ public:
      * @brief Default constructor for CtTask.
      * Initializes task and callback with empty lambda functions.
      * 
+     * @ref FR-005-001-002
+     * 
      */
     EXPORTED_API explicit CtTask();
 
     /**
      * @brief Copy constructor for CtTask.
      * Copies the task and callback from another CtTask object.
+     * 
+     * @ref FR-005-001-001
+     * @ref FR-005-001-002
      * 
      * @param other The CtTask object to copy.
      * 
@@ -78,11 +83,16 @@ public:
 
     /**
      * @brief Destructor for CtTask.
+     * 
+     * @ref FR-005-001-003
      */
     EXPORTED_API ~CtTask();
 
     /**
      * @brief Set the main task function. The task function can also have arguments.
+     * 
+     * @ref FR-005-001-001
+     * @ref FR-005-001-006
      * 
      * @tparam F Type of the callable function.
      * @tparam FArgs Types of the arguments for the callable function.
@@ -98,6 +108,9 @@ public:
     /**
      * @brief Set the callback function. The callback function can also have arguments.
      * 
+     * @ref FR-005-001-001
+     * @ref FR-005-001-007
+     * 
      * @tparam C Type of the callable function.
      * @tparam CArgs Types of the arguments for the callable function.
      * 
@@ -112,12 +125,18 @@ public:
     /**
      * @brief Get the main task function.
      * 
+     * @ref FR-005-001-001
+     * @ref FR-005-001-004
+     * 
      * @return The main task function.
      */
     EXPORTED_API std::function<void()> getTaskFunc();
 
     /**
      * @brief Get the callback function.
+     * 
+     * @ref FR-005-001-001
+     * @ref FR-005-001-005
      * 
      * @return The callback function.
      */
@@ -126,6 +145,9 @@ public:
     /**
      * @brief Assignment operator for CtTask.
      * Copies the task and callback from another CtTask object.
+     * 
+     * @ref FR-005-001-001
+     * @ref FR-005-001-008
      * 
      * @param other The CtTask object to copy.
      * 

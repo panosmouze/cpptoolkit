@@ -59,12 +59,18 @@ public:
     /**
      * @brief Constructs the CtFileInput object.
      * 
+     * @ref FR-002-001-001
+     * @ref FR-002-001-002
+     * @ref FR-002-001-003
+     * 
      * @param p_fileName Filename.
      */
     EXPORTED_API explicit CtFileInput(const CtString& p_fileName);
 
     /**
      * @brief Destructor for CtFileInput.
+     * 
+     * @ref FR-002-001-004
      *
      * Performs any necessary cleanup.
      */
@@ -73,6 +79,8 @@ public:
     /**
      * @brief Set the the delimiter of read() method.
      * 
+     * @ref FR-002-001-006
+     * 
      * @param p_delim The delimiter.
      * @param p_delim_size The delimiter size.
      */
@@ -80,6 +88,13 @@ public:
 
     /**
      * @brief This method read data from the file.
+     * 
+     * @ref FR-002-001-005
+     * @ref FR-002-001-007
+     * @ref FR-002-001-008
+     * @ref FR-002-001-009
+     * @ref FR-002-001-010
+     * @ref FR-002-001-011
      * 
      * @param p_data Where to store the data read
      * @return CtBool Returns True on success or False on EOF.

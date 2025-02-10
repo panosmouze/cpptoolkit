@@ -52,11 +52,15 @@ class CtLogger {
 public:
     /**
      * @brief Enum representing log levels.
+     * 
+     * @ref FR-004-002-003
      */
     enum class Level { DEBUG, INFO, WARNING, ERROR, CRITICAL };
 
     /**
      * @brief Constructs a CtLogger with a component name.
+     * 
+     * @ref FR-004-002-001
      * 
      * @param level The selected level given as CtLogger::Level. All messages that have level above or equal to this value will be logged.
      * @param componentName The name of the component or module.
@@ -65,11 +69,15 @@ public:
 
     /**
      * @brief Destructor.
+     * 
+     * @ref FR-004-002-002
      */
     EXPORTED_API ~CtLogger();
 
     /**
      * @brief Log a message with debug log level.
+     * 
+     * @ref FR-004-002-004
      * 
      * @param message The log message.
      */
@@ -78,12 +86,16 @@ public:
     /**
      * @brief Log a message with info log level.
      * 
+     * @ref FR-004-002-004
+     * 
      * @param message The log message.
      */
     EXPORTED_API void log_info(const CtString& message);
 
     /**
      * @brief Log a message with warning log level.
+     * 
+     * @ref FR-004-002-004
      * 
      * @param message The log message.
      */
@@ -92,12 +104,16 @@ public:
     /**
      * @brief Log a message with error log level.
      * 
+     * @ref FR-004-002-004
+     * 
      * @param message The log message.
      */
     EXPORTED_API void log_error(const CtString& message);
 
     /**
      * @brief Log a message with critical log level.
+     * 
+     * @ref FR-004-002-004
      * 
      * @param message The log message.
      */
@@ -106,6 +122,10 @@ public:
 private:
     /**
      * @brief Log a message with the specified log level.
+     * 
+     * @ref FR-004-002-004
+     * @ref FR-004-002-005
+     * 
      * @param level The log level.
      * @param componentName The name of the component or module.
      * @param message The log message.
@@ -115,6 +135,8 @@ private:
     /**
      * @brief Given the logger output level in enum CtLogger::Level format this method returns it in a string format.
      * 
+     * @ref FR-004-002-005
+     * 
      * @param level The level in enum CtLogger::Level format.
      * @return CtString The level in string format.
      */
@@ -122,6 +144,8 @@ private:
 
     /**
      * @brief This method generates the message to be printed via logger.
+     * 
+     * @ref FR-004-002-005
      * 
      * @param level The level of the message.
      * @param component_name The component's name.

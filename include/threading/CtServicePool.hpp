@@ -44,6 +44,9 @@ SOFTWARE.
  * @class CtServicePool
  * @brief A service pool for managing and executing tasks at specified intervals using a worker pool.
  * 
+ * @ref FR-005-006-001
+ * @ref FR-005-006-008
+ * 
  * @details
  * The CtServicePool class provides a mechanism for managing and executing tasks at specified intervals using a worker pool.
  * CtService::m_slot_time is used to determine the interval at which tasks are executed. The default slot time is 10 ms.
@@ -69,6 +72,8 @@ private:
     /**
      * @struct CtServicePack
      * @brief Represents a pack containing a task, an ID, and an interval for execution.
+     * 
+     * @ref FR-005-006-007
      */
     typedef struct _CtServicePack {
         CtTask task;
@@ -79,17 +84,26 @@ private:
 public:
     /**
      * @brief Constructor for CtServicePool.
+     * 
+     * @ref FR-005-006-002
+     * 
      * @param nworkers The number of worker threads in the service pool.
      */
     EXPORTED_API explicit CtServicePool(CtUInt32 nworkers);
 
     /**
      * @brief Destructor for CtServicePool.
+     * 
+     * @ref FR-005-006-003
+     * @ref FR-005-006-004
+     * 
      */
     EXPORTED_API ~CtServicePool();
 
     /**
      * @brief Add a task to the service pool with a specified interval and an optional ID.
+     * 
+     * @ref FR-005-006-005
      * 
      * @details
      * Adding a task to the service pool with a specified interval and an optional ID.
@@ -103,6 +117,8 @@ public:
 
     /**
      * @brief Add a task to the service pool with a specified interval and an optional ID.
+     * 
+     * @ref FR-005-006-005
      * 
      * @details
      * Adding a task to the service pool with a specified interval and an optional ID.
@@ -118,23 +134,35 @@ public:
 
     /**
      * @brief Remove a task from the service pool based on its ID.
+     * 
+     * @ref FR-005-006-006
+     * 
      * @param id The ID of the task to be removed.
      */
     EXPORTED_API void removeTask(const CtString& id);
 
     /**
      * @brief Start the services provided by the service pool.
+     * 
+     * @ref FR-005-006-009
+     * 
      */
     EXPORTED_API void startServices();
 
     /**
      * @brief Shutdown the services provided by the service pool.
+     * 
+     * @ref FR-005-006-010
+     * 
      */
     EXPORTED_API void shutdownServices();
 
 private:
     /**
      * @brief Overridden loop function from CtThread, representing the main thread logic.
+     * 
+     * @ref FR-005-006-011
+     * 
      */
     void loop() override;
 
