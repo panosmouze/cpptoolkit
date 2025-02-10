@@ -43,6 +43,10 @@ SOFTWARE.
  * @class CtService
  * @brief A class representing a service that runs a given task at regular intervals using a worker thread.
  * 
+ * @ref FR-005-005-001
+ * @ref FR-005-005-008
+ * @ref FR-005-005-013
+ * 
  * @details
  * The CtService class provides a mechanism for running a task at regular intervals using a worker thread.
  * The service can be configured to run the task immediately or after a certain number of time slots.
@@ -61,6 +65,9 @@ class CtService : private CtThread {
 public:
     /**
      * @brief Constructor for CtService.
+     * 
+     * @ref FR-005-005-002
+     * 
      * @param nslots The number of time slots between task executions. Default is 0 (run immediately).
      * @param task The task to be executed by the service.
      */
@@ -68,6 +75,9 @@ public:
 
     /**
      * @brief Constructor for CtService.
+     * 
+     * @ref FR-005-005-002
+     * 
      * @param nslots The number of time slots between task executions. Default is 0 (run immediately).
      * @param func The task function to be executed by the service.
      * @param fargs The task function's parameters.
@@ -77,11 +87,18 @@ public:
 
     /**
      * @brief Destructor for CtService.
+     * 
+     * @ref FR-005-005-003
+     * @ref FR-005-005-004
+     * 
      */
     EXPORTED_API ~CtService();
 
     /**
      * @brief Run the task provided by the service.
+     * 
+     * @ref FR-005-005-005
+     * @ref FR-005-005-007
      * 
      * @details
      * CtServiceError is thrown in case of service is already running.
@@ -91,11 +108,16 @@ public:
 
     /**
      * @brief Stop the task provided by the service.
+     * 
+     * @ref FR-005-005-006
+     * 
      */
     EXPORTED_API void stopService();
 
     /**
      * @brief Get the Interval Validity Factor.
+     * 
+     * @ref FR-005-005-011
      * 
      * @details
      * This method returns a factor that represents the validity of the interval.
@@ -108,11 +130,22 @@ public:
     EXPORTED_API float getIntervalValidity();
 
 public:
-    static CtUInt32 m_slot_time;    /*!< The time interval for each "slot" in milliseconds. */
+    /**
+     * @brief The time interval for each "slot" in milliseconds.
+     * 
+     * @ref FR-005-005-012
+     * 
+     */
+    static CtUInt32 m_slot_time;
 
 private:
     /**
      * @brief Overridden run function from CtThread, representing the main logic of the service.
+     * 
+     * @ref FR-005-005-008
+     * @ref FR-005-005-009
+     * @ref FR-005-005-010
+     * 
      */
     void loop() override;
 

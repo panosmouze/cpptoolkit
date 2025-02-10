@@ -123,6 +123,7 @@
 | FR-004-001-011 | `CtConfig` must provide a method for writing values to the map given the key and the value.                                              |
 | FR-004-001-012 | `CtKeyNotFoundError` must be thrown if a key requested cannot be found in the internal map.                                              |
 | FR-004-001-013 | `CtTypeParseError` must be thrown if a value can not be parsed with the requested type.                                                  |
+| FR-004-001-014 | `CtConfig` must provide a method for reseting map deleting all stored values.                                                            |
 
 ### CtLogger (002)
 | ID             | Description                                                                                                                              |
@@ -232,9 +233,11 @@
 | FR-005-006-004 | `CtServicePool` must wait for all running activities to stop before closing.                                                             |
 | FR-005-006-005 | `CtServicePool` must provide a method to add a service task either by `CtTask` or by functiona call in a thread-safe way.                |
 | FR-005-006-006 | `CtServicePool` must provide a method to remove a service task either by `CtTask` or by functiona call in a thread-safe way.             |
-| FR-005-006-007 | `CtServicePack` typedef must be used to store tasks' period in number of intervals, identifier and task itself.                          |
+| FR-005-006-007 | `CtServicePack` a struct must be used to store tasks' period in number of intervals, identifier and task itself.                         |
 | FR-005-006-008 | `CtServicePool` must maintain an internal vector of `CtServicePack` objects.                                                             |
 | FR-005-006-009 | `CtServicePool` must provide a method for start running the services.                                                                    |
+| FR-005-006-010 | `CtServicePool` must provide a method for stop running the services.                                                                     |
+| FR-005-006-011 | `CtServicePool` should inherit the `CtThread` and run the given tasks repeatedly at constant rates.                                      |
 
 ## Networking (006)
 

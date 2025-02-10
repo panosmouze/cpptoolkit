@@ -37,6 +37,9 @@ SOFTWARE.
 /**
  * @brief This exception is thrown when a socket error occurs.
  * 
+ * @ref FR-001-001-010
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtSocketError : public CtException {
 public:
@@ -46,6 +49,9 @@ public:
 /**
  * @brief This exception is thrown when a socket bind error occurs.
  * 
+ * @ref FR-001-001-011
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtSocketBindError : public CtException {
 public:
@@ -55,6 +61,9 @@ public:
 /**
  * @brief This exception is thrown when a socket listen error occurs.
  * 
+ * @ref FR-001-001-012
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtSocketPollError : public CtException {
 public:
@@ -64,6 +73,9 @@ public:
 /**
  * @brief This exception is thrown when a socket accept error occurs.
  * 
+ * @ref FR-001-001-013
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtSocketReadError : public CtException {
 public:
@@ -73,6 +85,9 @@ public:
 /**
  * @brief This exception is thrown when a socket connect error occurs.
  * 
+ * @ref FR-001-001-014
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtSocketWriteError : public CtException {
 public:

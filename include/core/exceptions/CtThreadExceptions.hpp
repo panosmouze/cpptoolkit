@@ -37,6 +37,9 @@ SOFTWARE.
 /**
  * @brief This exception is thrown when a thread error occurs.
  * 
+ * @ref FR-001-001-007
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtThreadError : public CtException {
 public:
@@ -46,6 +49,9 @@ public:
 /**
  * @brief This exception is thrown when a service pool error occurs.
  * 
+ * @ref FR-001-001-008
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtServiceError : public CtException {
 public:
@@ -55,6 +61,9 @@ public:
 /**
  * @brief This exception is thrown when a worker error occurs.
  * 
+ * @ref FR-001-001-009
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtWorkerError : public CtException {
 public:

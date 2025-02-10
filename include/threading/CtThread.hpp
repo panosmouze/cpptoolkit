@@ -40,6 +40,8 @@ SOFTWARE.
  * @class CtThread
  * @brief A simple C++ thread management class providing basic thread control and sleep functionality.
  * 
+ * @ref FR-005-002-001
+ * 
  * @details
  * The CtThread class provides a simple interface for creating and managing threads in C++.
  * The class is thread-safe and can be used in multi-threaded environments.
@@ -50,6 +52,9 @@ class CtThread {
 public:
     /**
      * @brief Make the thread sleep for a specified duration in milliseconds.
+     * 
+     * @ref FR-005-002-013
+     * 
      * @param time Duration to sleep in milliseconds.
      */
     EXPORTED_API static void sleepFor(CtUInt64 time);
@@ -57,16 +62,24 @@ public:
 protected:
     /**
      * @brief Constructor for CtThread.
+     * 
+     * @ref FR-005-002-003
      */
     EXPORTED_API CtThread();
 
     /**
      * @brief Virtual destructor for CtThread.
+     * 
+     * @ref FR-005-002-011
      */
     EXPORTED_API virtual ~CtThread();
 
     /**
      * @brief Check if the thread is currently running.
+     * 
+     * @ref FR-005-002-004
+     * @ref FR-005-002-005
+     * 
      * @return True if the thread is running, CT_FALSE otherwise.
      */
     EXPORTED_API CtBool isRunning();
@@ -74,28 +87,44 @@ protected:
     /**
      * @brief Start the thread.
      * @throws CtThreadError if the thread is already running.
+     * 
+     * @ref FR-005-002-007
+     * @ref FR-005-002-008
+     * 
      */
     EXPORTED_API void start();
 
     /**
      * @brief Stop the thread.
+     * 
+     * @ref FR-005-002-009
+     * @ref FR-005-002-010
+     * 
      */
     EXPORTED_API void stop();
 
     /**
      * @brief Join the thread, waiting for it to finish.
+     * 
+     * @ref FR-005-002-012
+     * 
      */
     EXPORTED_API virtual void join();
 
     /**
      * @brief Virtual function to be overridden by derived classes.
      *        Represents the main functionality of the thread.
+     * 
+     * @ref FR-005-002-002
      */
     EXPORTED_API virtual void loop() = 0;
 
 protected:
     /**
      * @brief Set the running state of the thread.
+     * 
+     * @ref FR-005-002-006
+     * 
      * @param running The running state to set.
      */
     void setRunning(CtBool running);

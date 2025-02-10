@@ -56,11 +56,18 @@ class CtFileOutput {
 public:
     /**
      * @brief Enum representing write mode.
+     * 
+     * @ref FR-002-002-003
      */
     enum class WriteMode { Append, Truncate };
 
     /**
      * @brief Constructs the CtFileOutput object.
+     * 
+     * @ref FR-002-002-001
+     * @ref FR-002-002-002
+     * @ref FR-002-002-003
+     * @ref FR-002-002-004
      * 
      * @param p_fileName Filename.
      */
@@ -69,12 +76,16 @@ public:
     /**
      * @brief Destructor for CtFileOutput.
      *
+     * @ref FR-002-002-005
+     * 
      * Performs any necessary cleanup.
      */
     EXPORTED_API ~CtFileOutput();
 
     /**
      * @brief Set the the delimiter of write() method.
+     *
+     * @ref FR-002-002-006
      * 
      * @param p_delim The delimiter.
      * @param p_delim_size The delimiter size.
@@ -83,6 +94,10 @@ public:
 
     /**
      * @brief This method writes to file.
+     *
+     * @ref FR-002-002-007
+     * @ref FR-002-002-008
+     * @ref FR-002-002-010
      * 
      * @details
      * Use this method to write data one by one. After writing the data, the delimiter is written.
@@ -94,6 +109,9 @@ public:
 
     /**
      * @brief This method writes to file.
+     *
+     * @ref FR-002-002-009
+     * @ref FR-002-002-010
      * 
      * @details
      * Use this method to write data in batches. No delimiter is written.

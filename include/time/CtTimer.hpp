@@ -56,37 +56,42 @@ class CtTimer {
 public:
     /**
      * @brief Constructor for CtTimer.
+     * 
+     * @ref FR-003-001-001
      */
     EXPORTED_API CtTimer();
 
     /**
      * @brief Destructor for CtTimer.
+     * 
+     * @ref FR-003-001-002
      */
     EXPORTED_API ~CtTimer();
 
     /**
      * @brief Record the current time as a reference point.
+     * 
+     * @ref FR-003-001-003
      */
     EXPORTED_API void tic();
 
     /**
      * @brief Measure the elapsed time since the last call to tic().
+     * 
+     * @ref FR-003-001-004
+     * 
      * @return Elapsed time in milliseconds.
      */
     EXPORTED_API CtUInt64 toc();
 
     /**
      * @brief Get the current time in milliseconds.
+     * 
+     * @ref FR-003-001-005
+     * 
      * @return Current time in milliseconds.
      */
     EXPORTED_API static CtUInt64 current();
-
-    /**
-     * @brief Convert time from milliseconds to nanoseconds.
-     * @param time Time value in milliseconds.
-     * @return Time value converted to nanoseconds.
-     */
-    EXPORTED_API static CtUInt64 millisToNano(CtUInt64 time);
 
 private:
     CtUInt64 m_reference;           /*!< Reference time for measuring elapsed time. */

@@ -37,6 +37,9 @@ SOFTWARE.
 /**
  * @brief This exception is thrown when a file cannot be read.
  * 
+ * @ref FR-001-001-015
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtFileReadError : public CtException {
 public:
@@ -46,6 +49,9 @@ public:
 /**
  * @brief This exception is thrown when a file cannot be written.
  * 
+ * @ref FR-001-001-016
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtFileWriteError : public CtException {
 public:
@@ -55,6 +61,9 @@ public:
 /**
  * @brief This exception is thrown when a file cannot be parsed.
  * 
+ * @ref FR-001-001-017
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtFileParseError : public CtException {
 public:

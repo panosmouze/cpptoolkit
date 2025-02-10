@@ -37,6 +37,9 @@ SOFTWARE.
 /**
  * @brief This exception is thrown when an event does not exist in the event manager.
  * 
+ * @ref FR-001-001-019
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtEventNotExistsError : public CtException {
 public:
@@ -46,6 +49,9 @@ public:
 /**
  * @brief This exception is thrown when an event already exists in the event manager.
  * 
+ * @ref FR-001-001-018
+ * @ref FR-001-001-002
+ * @ref FR-001-001-003
  */
 class CtEventAlreadyExistsError : public CtException {
 public:

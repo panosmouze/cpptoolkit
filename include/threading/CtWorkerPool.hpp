@@ -44,6 +44,9 @@ SOFTWARE.
  * @class CtWorkerPool
  * @brief Manages a pool of worker threads for executing tasks concurrently.
  * 
+ * @ref FR-005-004-001
+ * @ref FR-005-004-002
+ * 
  * @details
  * The CtWorkerPool class provides a mechanism for managing a pool of worker threads that can execute tasks concurrently.
  * The class is thread-safe and can be used in multi-threaded environments.
@@ -67,23 +70,35 @@ class CtWorkerPool : private CtThread {
 public:
     /**
      * @brief Constructor for CtWorkerPool.
+     * 
+     * @ref FR-005-004-003
+     * 
      * @param nworkers The number of worker threads in the pool.
      */
     EXPORTED_API explicit CtWorkerPool(CtUInt32 nworkers);
 
     /**
      * @brief Destructor for CtWorkerPool.
+     * 
+     * @ref FR-005-004-004
+     * @ref FR-005-004-005
+     * 
      */
     EXPORTED_API ~CtWorkerPool();
 
     /**
      * @brief Add a task to the worker pool.
+     * 
+     * @ref FR-005-004-006
+     * 
      * @param task The task to be added to the pool.
      */
     EXPORTED_API void addTask(const CtTask& task);
 
     /**
      * @brief Add a task function to the worker pool.
+     * 
+     * @ref FR-005-004-006
      * 
      * @param func The task function to be added to the pool.
      * @param fargs The arguments of the task function.
@@ -93,12 +108,18 @@ public:
 
     /**
      * @brief Wait for all worker threads to finish their tasks.
+     * 
+     * @ref FR-005-004-007
+     * 
      */
     EXPORTED_API void join() override;
 
 private:
     /**
      * @brief Assign a task to a specified worker.
+     * 
+     * @ref FR-005-004-008
+     * 
      * @param idx The index of the worker to which the task is assigned.
      * @return True if a task was successfully assigned, CT_FALSE otherwise.
      */
@@ -106,11 +127,18 @@ private:
 
     /**
      * @brief Free resources and clear the worker pool.
+     * 
+     * @ref FR-005-004-004
+     * 
      */
     void free();
 
     /**
      * @brief Main loop for the worker pool.
+     * 
+     * @ref FR-005-004-008
+     * @ref FR-005-004-009
+     * 
      */
     void loop() override;
 
