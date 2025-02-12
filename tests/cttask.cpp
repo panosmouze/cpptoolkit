@@ -42,6 +42,15 @@ SOFTWARE.
  * @details
  * Test the basic functionality of CtTask class.
  * 
+ * @ref FR-005-001-001
+ * @ref FR-005-001-002
+ * @ref FR-005-001-003
+ * @ref FR-005-001-004
+ * @ref FR-005-001-005
+ * @ref FR-005-001-006
+ * @ref FR-005-001-007
+ * @ref FR-005-001-008
+ * 
  */
 TEST(CtTask, CtTaskTest01) {
     CtTask task;
@@ -50,6 +59,16 @@ TEST(CtTask, CtTaskTest01) {
     task.setCallbackFunc([&cnt]{cnt--;});
     std::function<void()> taskFunc = task.getTaskFunc();
     std::function<void()> callbackFunc = task.getCallbackFunc();
+
+    ASSERT_EQ(cnt, 0);
+    taskFunc();
+    ASSERT_EQ(cnt, 1);
+    callbackFunc();
+    ASSERT_EQ(cnt, 0);
+
+    CtTask task2 = task;
+    taskFunc = task2.getTaskFunc();
+    callbackFunc = task2.getCallbackFunc();
 
     ASSERT_EQ(cnt, 0);
     taskFunc();

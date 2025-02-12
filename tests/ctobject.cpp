@@ -106,6 +106,14 @@ public:
  * @details
  * Test main functionality of CtObject methods connectEvent, waitPendingEvents, registerEvent, triggerEvent.
  * 
+ * @ref FR-004-003-001
+ * @ref FR-004-003-002
+ * @ref FR-004-003-003
+ * @ref FR-004-003-004
+ * @ref FR-004-003-006
+ * @ref FR-004-003-007
+ * @ref FR-004-003-010
+ * 
  */
 TEST(CtObject, CtObjectTest01) {
     CtObjectTest01 obj;
@@ -139,14 +147,58 @@ TEST(CtObject, CtObjectTest01) {
     ASSERT_EQ(ctr[2], 3);
 }
 
+
 /**
  * @brief CtObjectTest02
  * 
  * @details
- * Test if CtEventNotExistsError is thrown while calling connectEvent, registerEvent with a not registered event.
+ * Test main functionality of CtObject methods connectEvent, waitPendingEvents, registerEvent, triggerEvent.
+ * 
+ * @ref FR-004-003-009
  * 
  */
 TEST(CtObject, CtObjectTest02) {
+    CtTimer timer;
+    timer.tic();
+    CtUInt8 ctr[3] = {0};
+    {
+        CtObjectTest01 obj;
+        obj.connectEvent(EVENT01, [&ctr](){
+            ctr[0]++;
+            CtThread::sleepFor(SLEEP_TIME);
+        });
+        obj.connectEvent(EVENT02, [&ctr](){
+            ctr[1]++;
+            CtThread::sleepFor(SLEEP_TIME);
+        });
+        obj.connectEvent(EVENT03, [&ctr](){
+            ctr[2]++;
+            CtThread::sleepFor(SLEEP_TIME);
+        });
+
+        for (CtUInt8 i = 0; i < 10; i++) {
+            obj.run();
+        }
+    }
+    CtUInt64 elapsed_time = timer.toc();
+    ASSERT_GE(elapsed_time, SLEEP_TIME*10);
+    ASSERT_LE(elapsed_time, SLEEP_TIME*12);
+
+    ASSERT_EQ(ctr[0], 4);
+    ASSERT_EQ(ctr[1], 3);
+    ASSERT_EQ(ctr[2], 3);
+}
+
+/**
+ * @brief CtObjectTest03
+ * 
+ * @details
+ * Test if CtEventNotExistsError is thrown while calling connectEvent, registerEvent with a not registered event.
+ * 
+ * @ref FR-004-003-008
+ * 
+ */
+TEST(CtObject, CtObjectTest03) {
     CtObjectTest02 obj;
     obj.run();
     EXPECT_THROW({
@@ -155,12 +207,14 @@ TEST(CtObject, CtObjectTest02) {
 }
 
 /**
- * @brief CtObjectTest03
+ * @brief CtObjectTest04
  * 
  * @details
  * Test if CtEventAlreadyExistsError is thrown while calling registerEvent twice with the same event.
  * 
+ * @ref FR-004-003-005
+ * 
  */
-TEST(CtObject, CtObjectTest03) {
+TEST(CtObject, CtObjectTest04) {
     CtObjectTest03 obj;
 }

@@ -232,7 +232,7 @@ public:
      *   This method overwrites the buffer and the actual size. The maximum size of the buffer is preserved.
      *   If the size of the data is greater than the buffer size an exception will be thrown - CtOutOfRangeError()
      * 
-     * @ref FR-001-003-014
+     * @ref FR-001-003-016
      * @ref FR-001-003-019
      * 
      * @param p_data A pointer to the data to be cloned.
