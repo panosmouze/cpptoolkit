@@ -78,7 +78,7 @@
 | FR-002-001-008 | If the delimiter size is zero or the delimiter provided is null the read method call must handle the rest of the file as one batch.      |
 | FR-002-001-009 | The read method of `CtFileInput` must get as argument a `CtRawData` and fill it with the next batch of data or till the buffer is full.  |
 | FR-002-001-010 | The read method must return `FALSE` in case of end-of-file or `TRUE` in any other case.                                                  |
-| FR-002-001-011 | The read method must throw `CtFileReadError` if the file is not open for any reason.                                                     |
+| FR-002-001-011 | `CtFileReadError` must be thrown during read method if the file is not open.                                                             |
 
 ### CtFileOutput (002)
 | ID             | Description                                                                                                                              |
@@ -92,7 +92,7 @@
 | FR-002-002-007 | `CtFileOutput` must provide a method to write data to the file and append the delimiter to them.                                         |
 | FR-002-002-008 | If delimiter size is zero or the delimiter provided is null the write method call must write just the data requested with no delimiter.  |
 | FR-002-002-009 | `CtFileOutput` must provide a method to write data to the file without appending a delimiter to them.                                    |
-| FR-002-002-010 | The write methods of `CtFileOutput` must throw `CtFileWriteError` if the file is not open for any reason.                                |
+| FR-002-002-010 | `CtFileWriteError` must be thrown during write method if the file is not open.                                                           |
 
 ## Time (003)
 
@@ -231,8 +231,8 @@
 | FR-005-006-002 | `CtServicePool` must provide a method to allocate and initialize all resources needed to support its functionality.                      |
 | FR-005-006-003 | `CtServicePool` must provide a method to free its resources.                                                                             |
 | FR-005-006-004 | `CtServicePool` must wait for all running activities to stop before closing.                                                             |
-| FR-005-006-005 | `CtServicePool` must provide a method to add a service task either by `CtTask` or by functiona call in a thread-safe way.                |
-| FR-005-006-006 | `CtServicePool` must provide a method to remove a service task either by `CtTask` or by functiona call in a thread-safe way.             |
+| FR-005-006-005 | `CtServicePool` must provide a method to add a service task either by `CtTask` or by function a call in a thread-safe way.               |
+| FR-005-006-006 | `CtServicePool` must provide a method to remove a service task either by `CtTask` or by function a call in a thread-safe way.            |
 | FR-005-006-007 | `CtServicePack` a struct must be used to store tasks' period in number of intervals, identifier and task itself.                         |
 | FR-005-006-008 | `CtServicePool` must maintain an internal vector of `CtServicePack` objects.                                                             |
 | FR-005-006-009 | `CtServicePool` must provide a method for start running the services.                                                                    |

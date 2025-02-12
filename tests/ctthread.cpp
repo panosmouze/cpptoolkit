@@ -117,6 +117,13 @@ private:
  * @details
  * Test the basic functionality of CtThread class start, stop and sleepFor method.
  * 
+ * @ref FR-005-002-001
+ * @ref FR-005-002-002
+ * @ref FR-005-002-003
+ * @ref FR-005-002-007
+ * @ref FR-005-002-009
+ * @ref FR-005-002-010
+ * 
  */
 TEST(CtThread, CtThreadTest01) {
     CtTestThread01 thread;
@@ -132,6 +139,11 @@ TEST(CtThread, CtThreadTest01) {
  * @details
  * Test the basic functionality of CtThread class join method.
  * 
+ * @ref FR-005-002-004
+ * @ref FR-005-002-005
+ * @ref FR-005-002-006
+ * @ref FR-005-002-012
+ * 
  */
 TEST(CtThread, CtThreadTest02) {
     CtTestThread02 thread;
@@ -146,6 +158,8 @@ TEST(CtThread, CtThreadTest02) {
  * @details
  * Test if CtThreadError is thrown if CtThread started 2 times.
  * 
+ * @ref FR-005-002-008
+ * 
  */
 TEST(CtThread, CtThreadTest03) {
     CtTestThread01 thread;
@@ -153,4 +167,15 @@ TEST(CtThread, CtThreadTest03) {
     EXPECT_THROW({
         thread.start();
     }, CtThreadError);
+}
+
+/**
+ * @brief CtThreadTest04
+ * 
+ * @ref FR-005-002-011
+ * 
+ */
+TEST(CtThread, CtThreadTest04) {
+    CtTestThread01 thread;
+    thread.start();
 }

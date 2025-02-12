@@ -42,6 +42,15 @@ SOFTWARE.
  * @details
  * Test the basic functionality of CtRawData class.
  * 
+ * @ref FR-001-003-003
+ * @ref FR-001-003-004
+ * @ref FR-001-003-006
+ * @ref FR-001-003-007
+ * @ref FR-001-003-008
+ * @ref FR-001-003-012
+ * @ref FR-001-003-013
+ * @ref FR-001-003-017
+ * 
  */
 TEST(CtTypes, CtRawDataTest01) {
     CtRawData data;
@@ -55,6 +64,7 @@ TEST(CtTypes, CtRawDataTest01) {
     ASSERT_EQ(buffer[2], 0x3);
     data.reset();
     ASSERT_EQ(data.size(), 0);
+    ASSERT_EQ(data.maxSize(), 2048);
 }
 
 /**
@@ -79,6 +89,8 @@ TEST(CtTypes, CtRawDataTest02) {
  * @details
  * Test if CtOutOfRangeError is thrown when setNextByte() is called and the buffer is full.
  * 
+ * @ref FR-001-003-019
+ * 
  */
 TEST(CtTypes, CtRawDataTest03) {
     CtRawData data(1);
@@ -93,6 +105,9 @@ TEST(CtTypes, CtRawDataTest03) {
  * 
  * @details
  * Test if the buffer is correct when setNextBytes() is called.
+ * 
+ * @ref FR-001-003-009
+ * @ref FR-001-003-014
  * 
  */
 TEST(CtTypes, CtRawDataTest04) {
@@ -109,6 +124,8 @@ TEST(CtTypes, CtRawDataTest04) {
  * @details
  * Test if CtOutOfRangeError is thrown when setNextBytes() is called and the buffer is full.
  * 
+ * @ref FR-001-003-019
+ * 
  */
 TEST(CtTypes, CtRawDataTest05) {
     CtUInt8 buffer[5] = {0x1C};
@@ -123,6 +140,8 @@ TEST(CtTypes, CtRawDataTest05) {
  * 
  * @details
  * Test if the buffer is correct when a CtRawData object is copied.
+ * 
+ * @ref FR-001-003-005
  * 
  */
 TEST(CtTypes, CtRawDataTest06) {
@@ -140,6 +159,8 @@ TEST(CtTypes, CtRawDataTest06) {
  * 
  * @details
  * Test if getNLastBytes() returns the correct buffer.
+ * 
+ * @ref FR-001-003-010
  * 
  */
 TEST(CtTypes, CtRawDataTest08) {
@@ -162,6 +183,8 @@ TEST(CtTypes, CtRawDataTest08) {
  * @details
  * Test if CtOutOfRangeError is thrown when getNLastBytes() is called and the buffer is not full.
  * 
+ * @ref FR-001-003-019
+ * 
  */
 TEST(CtTypes, CtRawDataTest09) {
     CtRawData data(10);
@@ -181,6 +204,8 @@ TEST(CtTypes, CtRawDataTest09) {
  * 
  * @details
  * Test if the buffer is correct when removeNLastBytes() is called.
+ * 
+ * @ref FR-001-003-011
  * 
  */
 TEST(CtTypes, CtRawDataTest10) {
@@ -204,6 +229,8 @@ TEST(CtTypes, CtRawDataTest10) {
  * @details
  * Test if CtOutOfRangeError is thrown when removeNLastBytes() is called and the buffer is not full.
  * 
+ * @ref FR-001-003-019
+ * 
  */
 TEST(CtTypes, CtRawDataTest11) {
     CtRawData data(10);
@@ -224,6 +251,8 @@ TEST(CtTypes, CtRawDataTest11) {
  * @details
  * Test if the buffer is correct when a CtRawData object is assigned.
  * 
+ * @ref FR-001-003-018
+ * 
  */
 TEST(CtTypes, CtRawDataTest12) {
     CtRawData data1(10);
@@ -243,14 +272,22 @@ TEST(CtTypes, CtRawDataTest12) {
  * @details
  * Test if the buffer is correct when clone() is called.
  * 
+ * @ref FR-001-003-015
+ * @ref FR-001-003-016
+ * 
  */
 TEST(CtTypes, CtRawDataTest13) {
     CtRawData data(2);
+    CtRawData data2(2);
     CtUInt8 buffer[2] = {0x1C};
     ASSERT_EQ(data.size(), 0);
     data.clone(buffer, 2);
     ASSERT_EQ(data.size(), 2);
     CtUInt8 res = memcmp(data.get(), buffer, 2);
+    ASSERT_EQ(res, 0);
+    data2.clone(data);
+    ASSERT_EQ(data2.size(), 2);
+    res = memcmp(data2.get(), data.get(), 2);
     ASSERT_EQ(res, 0);
 }
 
@@ -259,6 +296,8 @@ TEST(CtTypes, CtRawDataTest13) {
  * 
  * @details
  * Test if CtOutOfRangeError is thrown when clone() is called and the buffer is bigger than the CtRawData object.
+ * 
+ * @ref FR-001-003-019
  * 
  */
 TEST(CtTypes, CtRawDataTest14) {

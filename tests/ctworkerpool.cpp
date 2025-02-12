@@ -39,6 +39,17 @@ SOFTWARE.
 
 /********************************* Main test ********************************/
 
+/**
+ * @brief CtWorkerPoolTest01
+ * 
+ * @ref FR-005-004-001
+ * @ref FR-005-004-002
+ * @ref FR-005-004-003
+ * @ref FR-005-004-004
+ * @ref FR-005-004-006
+ * @ref FR-005-004-007
+ * 
+ */
 TEST(CtWorkerPool, CtWorkerPoolTest01) {
     CtWorkerPool pool(POOL_SIZE);
     CtBool flag[NUM_OF_TASKS] = {CT_FALSE};
@@ -46,6 +57,25 @@ TEST(CtWorkerPool, CtWorkerPoolTest01) {
         pool.addTask([&flag, idx]{CtThread::sleepFor(TASK_DURATION_MS); flag[idx] = CT_TRUE;});
     }
     pool.join();
+    for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
+        ASSERT_EQ(flag[idx], CT_TRUE);
+    }
+}
+
+/**
+ * @brief CtWorkerPoolTest02
+ * 
+ * @ref FR-005-004-005
+ * 
+ */
+TEST(CtWorkerPool, CtWorkerPoolTest02) {
+    CtBool flag[NUM_OF_TASKS] = {CT_FALSE};
+    {
+        CtWorkerPool pool(POOL_SIZE);
+        for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
+            pool.addTask([&flag, idx]{CtThread::sleepFor(TASK_DURATION_MS); flag[idx] = CT_TRUE;});
+        }
+    }
     for (CtUInt32 idx = 0; idx < NUM_OF_TASKS; idx++) {
         ASSERT_EQ(flag[idx], CT_TRUE);
     }

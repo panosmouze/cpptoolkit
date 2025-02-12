@@ -44,6 +44,15 @@ SOFTWARE.
  * @details
  * Test the basic functionality of CtServicePool class.
  * 
+ * @ref FR-005-006-001
+ * @ref FR-005-006-002
+ * @ref FR-005-006-003
+ * @ref FR-005-006-005
+ * @ref FR-005-006-008
+ * @ref FR-005-006-009
+ * @ref FR-005-006-010
+ * @ref FR-005-006-011
+ * 
  */
 TEST(CtServicePool, CtServicePool01) {
     CtServicePool pool(4);
@@ -68,6 +77,9 @@ TEST(CtServicePool, CtServicePool01) {
  * @details
  * Test the basic functionality of CtServicePool class.
  * 
+ * @ref FR-005-006-006
+ * @ref FR-005-006-007
+ * 
  */
 TEST(CtServicePool, CtServicePool02) {
     CtServicePool pool(4);
@@ -91,5 +103,32 @@ TEST(CtServicePool, CtServicePool02) {
     }
     for (CtUInt8 idx = NUM_OF_SERVICES/2; idx < NUM_OF_SERVICES; idx++) {
         ASSERT_LE(data[idx], 11);
+    }
+}
+
+/**
+ * @brief CtServicePool03
+ * 
+ * @details
+ * Test the basic functionality of CtServicePool class.
+ * 
+ * @ref FR-005-006-004
+ * 
+ */
+TEST(CtServicePool, CtServicePool03) {
+    CtUInt8 data[NUM_OF_SERVICES] = {0};
+    {
+        CtServicePool pool(4);
+        for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES; idx++) {
+            CtString id = CtString("service") + ToCtString(idx);
+            pool.addTaskFunc(TIME_INTERVAL, id, [&data, idx]() {
+                data[idx] += 1;
+            });
+        }
+        pool.startServices();
+        CtThread::sleepFor(MAIN_SLEEP_MS);
+    }
+    for (CtUInt8 idx = 0; idx < NUM_OF_SERVICES; idx++) {
+        ASSERT_LE(data[idx], 5);
     }
 }
