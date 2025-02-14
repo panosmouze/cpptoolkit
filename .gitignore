@@ -1,4 +1,4 @@
-build
+build*
 /CMakeSettings.json
 /.vs
 .vscode
