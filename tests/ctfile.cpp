@@ -33,6 +33,9 @@ SOFTWARE.
 #include "cpptoolkit.hpp"
 
 /**************************** Helper definitions ****************************/
+#define CT_FILENAME         "test.txt"
+#define CT_DEL              "\n"
+#define CT_NO_DEL           ""
 
 /********************************* Main test ********************************/
 
@@ -43,15 +46,22 @@ SOFTWARE.
  * Test the basic functionality of CtFileInput and CtFileOutput classes.
  * CtFileOutput writes a string to a file and CtFileInput reads it back.
  * CtFileOutput is tested with Truncate mode.
- * The file used is the same for all test cases.
+ * 
+ * @ref FR-002-002-001
+ * @ref FR-002-002-002
+ * @ref FR-002-002-003
+ * @ref FR-002-002-006
+ * @ref FR-002-001-007
  * 
  */
 TEST(CtFileIO, CtFileIOTest01) {
+    int status = system("rm -f test.txt");
+    ASSERT_NE(status, -1);
     /* Write data to a file */
     {
         CtRawData data;
-        CtFileOutput fileOut("file.txt", CtFileOutput::WriteMode::Truncate);
-        fileOut.setDelimiter("\n", 1);
+        CtFileOutput fileOut(CT_FILENAME, CtFileOutput::WriteMode::Truncate);
+        fileOut.setDelimiter(CT_DEL, sizeof(CT_DEL));
 
         data.clone((CtUInt8*)"HelloTest01", 11);
         fileOut.write(&data);
@@ -59,8 +69,8 @@ TEST(CtFileIO, CtFileIOTest01) {
     /* Read data of a file */
     {
         CtRawData data;
-        CtFileInput fileIn("file.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(CT_DEL, sizeof(CT_DEL));
 
         fileIn.read(&data);
         CtUInt8* buffer = data.get();
@@ -76,16 +86,41 @@ TEST(CtFileIO, CtFileIOTest01) {
  * Test the basic functionality of CtFileInput and CtFileOutput classes.
  * CtFileOutput writes a string to a file and CtFileInput reads it back.
  * CtFileOutput is tested with Append mode.
- * The file used is the same for all test cases.
+ * 
+ * @ref FR-002-002-001
+ * @ref FR-002-002-002
+ * @ref FR-002-002-003
+ * @ref FR-002-002-005
+ * @ref FR-002-002-006
+ * @ref FR-002-002-007
+ * 
+ * @ref FR-002-001-001
+ * @ref FR-002-001-002
+ * @ref FR-002-001-004
+ * @ref FR-002-001-005
+ * @ref FR-002-001-006
+ * @ref FR-002-001-007
+ * @ref FR-002-001-009
+ * @ref FR-002-001-010
  * 
  */
 
 TEST(CtFileIO, CtFileIOTest02) {
+    int status = system("rm -f test.txt");
+    ASSERT_NE(status, -1);
     /* Append data to a file */
     {
         CtRawData data;
-        CtFileOutput fileOut("file.txt", CtFileOutput::WriteMode::Append);
-        fileOut.setDelimiter("\n", 1);
+        CtFileOutput fileOut(CT_FILENAME, CtFileOutput::WriteMode::Append);
+        fileOut.setDelimiter(CT_DEL, sizeof(CT_DEL));
+
+        data.clone((CtUInt8*)"HelloTest01", 11);
+        fileOut.write(&data);
+    }
+    {
+        CtRawData data;
+        CtFileOutput fileOut(CT_FILENAME, CtFileOutput::WriteMode::Append);
+        fileOut.setDelimiter(CT_DEL, sizeof(CT_DEL));
 
         data.clone((CtUInt8*)"HelloTest02", 11);
         fileOut.write(&data);
@@ -93,8 +128,8 @@ TEST(CtFileIO, CtFileIOTest02) {
     /* Read data of a file */
     {
         CtRawData data;
-        CtFileInput fileIn("file.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(CT_DEL, sizeof(CT_DEL));
 
         CtBool status = fileIn.read(&data);
         CtUInt8* buffer = data.get();
@@ -117,14 +152,18 @@ TEST(CtFileIO, CtFileIOTest02) {
  * @brief CtFileIOTest03
  * 
  * @details
- * Test CtFileOutput throw CtFileReadError when file does not exists.
+ * Test CtFileInput throw CtFileReadError when file does not exists.
+ * 
+ * @ref FR-002-001-003
  * 
  */
 
 TEST(CtFileIO, CtFileIOTest03) {
+    int status = system("rm -f test.txt");
+    ASSERT_NE(status, -1);
     /* Read a file that does not exists */
     EXPECT_THROW({
-        CtFileInput fileIn("file2.txt");
+        CtFileInput fileIn(CT_FILENAME);
     }, CtFileReadError);
 }
 
@@ -132,20 +171,40 @@ TEST(CtFileIO, CtFileIOTest03) {
  * @brief CtFileIOTest04
  * 
  * @details
+ * Test CtFileOutput throw CtFileWriteError when file cannot be written.
+ * 
+ * @ref FR-002-002-004
+ * 
+ */
+
+TEST(CtFileIO, CtFileIOTest04) {
+    int status = system("rm -f test.txt");
+    ASSERT_NE(status, -1);
+    status = system("touch test.txt");
+    ASSERT_NE(status, -1);
+    status = system("chmod -w test.txt");
+    ASSERT_NE(status, -1);
+    EXPECT_THROW({
+        CtFileOutput fileOut(CT_FILENAME);
+    }, CtFileWriteError);
+}
+
+/**
+ * @brief CtFileIOTest05
+ * 
+ * @details
  * Test reading from an empty file.
  * 
  */
-TEST(CtFileIO, CtFileIOTest04) {
-    /* Create an empty file */
-    {
-        CtFileOutput fileOut("empty.txt", CtFileOutput::WriteMode::Truncate);
-        fileOut.setDelimiter("\n", 1);
-    }
-    /* Read the empty file */
+TEST(CtFileIO, CtFileIOTest05) {
+    int status = system("rm -f test.txt");
+    ASSERT_NE(status, -1);
+    status = system("touch test.txt");
+    ASSERT_NE(status, -1);
     {
         CtRawData data;
-        CtFileInput fileIn("empty.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(CT_DEL, sizeof(CT_DEL));
 
         CtBool status = fileIn.read(&data);
         ASSERT_EQ(status, CT_FALSE);
@@ -153,76 +212,53 @@ TEST(CtFileIO, CtFileIOTest04) {
 }
 
 /**
- * @brief CtFileIOTest05
+ * @brief CtFileIOTest06
  * 
  * @details
  * Test handling file larger than the buffer with no delimiter using write.
  * 
- */
-TEST(CtFileIO, CtFileIOTest05) {
-    CtString largeString(10000, 0x1C);
-    /* Write largeString to large.txt two times with no delimeters */
-    {
-        CtRawData data(10000);
-        CtFileOutput fileOut("large.txt", CtFileOutput::WriteMode::Truncate);
-        fileOut.setDelimiter("", 0);
-
-        data.clone((CtUInt8*)largeString.c_str(), largeString.size());
-        fileOut.write(&data);
-        fileOut.write(&data);
-    }
-    /* Read data in a 1000 bytes buffer */
-    {
-        CtRawData data(1000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
-
-        fileIn.read(&data);
-        ASSERT_EQ(data.size(), 999);
-    }
-    /* Read data in a 100000 bytes buffer */
-    {
-        CtRawData data(100000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
-
-        fileIn.read(&data);
-        ASSERT_EQ(data.size(), 20000);
-    }
-}
-
-/**
- * @brief CtFileIOTest06
- * 
- * @details
- * Test handling file larger than the buffer with no delimiter using writePart.
+ * @ref FR-002-002-007
+ * @ref FR-002-002-008
+ * @ref FR-002-001-008
  * 
  */
 TEST(CtFileIO, CtFileIOTest06) {
+    int status = system("rm -f test.txt");
+    ASSERT_NE(status, -1);
     CtString largeString(10000, 0x1C);
-    /* Write largeString to large.txt two times with no delimeters */
     {
         CtRawData data(10000);
-        CtFileOutput fileOut("large.txt", CtFileOutput::WriteMode::Truncate);
+        CtFileOutput fileOut(CT_FILENAME, CtFileOutput::WriteMode::Truncate);
+        fileOut.setDelimiter(nullptr, 0);
 
         data.clone((CtUInt8*)largeString.c_str(), largeString.size());
-        fileOut.writePart(&data);
-        fileOut.writePart(&data);
+        fileOut.write(&data);
+        fileOut.write(&data);
     }
-    /* Read data in a 1000 bytes buffer */
     {
         CtRawData data(1000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(nullptr, 0);
 
         fileIn.read(&data);
-        ASSERT_EQ(data.size(), 999);
+        ASSERT_EQ(data.size(), 1000);
     }
-    /* Read data in a 100000 bytes buffer */
+    {
+        CtRawData data(1000);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(CT_DEL, sizeof(CT_DEL));
+
+        for (CtInt8 i = 0; i < 20; i++) {
+            fileIn.read(&data);
+            ASSERT_EQ(data.size(), 998);
+        }
+        fileIn.read(&data);
+        ASSERT_EQ(data.size(), 40);
+    }
     {
         CtRawData data(100000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(nullptr, 0);
 
         fileIn.read(&data);
         ASSERT_EQ(data.size(), 20000);
@@ -233,84 +269,51 @@ TEST(CtFileIO, CtFileIOTest06) {
  * @brief CtFileIOTest07
  * 
  * @details
- * Test handling file larger than the buffer with delimiters.
+ * Test handling file larger than the buffer with no delimiter using writePart.
+ * 
+ * @ref FR-002-002-009
+ * @ref FR-002-001-008
  * 
  */
 TEST(CtFileIO, CtFileIOTest07) {
+    int status = system("rm -f test.txt");
+    ASSERT_NE(status, -1);
     CtString largeString(10000, 0x1C);
-    /* Write largeString to large.txt two times with delimeters */
     {
         CtRawData data(10000);
-        CtFileOutput fileOut("large.txt", CtFileOutput::WriteMode::Truncate);
-        fileOut.setDelimiter("\n", 1);
+        CtFileOutput fileOut(CT_FILENAME, CtFileOutput::WriteMode::Truncate);
+        fileOut.setDelimiter(CT_DEL, sizeof(CT_DEL));
 
         data.clone((CtUInt8*)largeString.c_str(), largeString.size());
-        fileOut.write(&data);
-        fileOut.write(&data);
+        fileOut.writePart(&data);
+        fileOut.writePart(&data);
     }
-    /* Read data in a 1000 bytes buffer */
     {
         CtRawData data(1000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(nullptr, 0);
 
         fileIn.read(&data);
-        ASSERT_EQ(data.size(), 999);
+        ASSERT_EQ(data.size(), 1000);
     }
-    /* Read data in a 100000 bytes buffer */
-    {
-        CtRawData data(100000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
-
-        fileIn.read(&data);
-        ASSERT_EQ(data.size(), 10000);
-        fileIn.read(&data);
-        ASSERT_EQ(data.size(), 10000);
-        CtBool res = fileIn.read(&data);
-        ASSERT_EQ(res, CT_FALSE);
-    }
-}
-
-/**
- * @brief CtFileIOTest08
- * 
- * @details
- * Test handling files.
- * 
- */
-TEST(CtFileIO, CtFileIOTest08) {
-    CtString largeString(10000, 0x1C);
-    /* Write largeString to large.txt two times with delimeters */
-    {
-        CtRawData data(10000);
-        CtFileOutput fileOut("large.txt", CtFileOutput::WriteMode::Truncate);
-        fileOut.setDelimiter("\n", 1);
-
-        data.clone((CtUInt8*)largeString.c_str(), largeString.size());
-        fileOut.write(&data);
-        fileOut.write(&data);
-    }
-    /* Read data in a 1000 bytes buffer */
     {
         CtRawData data(1000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(CT_DEL, sizeof(CT_DEL));
 
+        for (CtInt8 i = 0; i < 20; i++) {
+            fileIn.read(&data);
+            ASSERT_EQ(data.size(), 998);
+        }
         fileIn.read(&data);
-        ASSERT_EQ(data.size(), 999);
+        ASSERT_EQ(data.size(), 40);
     }
-    /* Read data in a 100000 bytes buffer */
     {
         CtRawData data(100000);
-        CtFileInput fileIn("large.txt");
-        fileIn.setDelimiter("\n", 1);
+        CtFileInput fileIn(CT_FILENAME);
+        fileIn.setDelimiter(nullptr, 0);
 
         fileIn.read(&data);
-        ASSERT_EQ(data.size(), 10000);
-        fileIn.read(&data);
-        ASSERT_EQ(data.size(), 10000);
-        CtBool res = fileIn.read(&data);
-        ASSERT_EQ(res, CT_FALSE);
+        ASSERT_EQ(data.size(), 20000);
     }
 }

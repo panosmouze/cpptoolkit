@@ -43,6 +43,15 @@ SOFTWARE.
  * @details
  * Test the main functionality of CtWorker methods isRunning, setTaskFunc, runTask and joinTask.
  * 
+ * @ref FR-005-003-001
+ * @ref FR-005-003-002
+ * @ref FR-005-003-003
+ * @ref FR-005-003-004
+ * @ref FR-005-003-006
+ * @ref FR-005-003-007
+ * @ref FR-005-003-008
+ * @ref FR-005-003-010
+ * 
  */
 TEST(CtWorker, CtWorkerTest01) {
     CtWorker worker;
@@ -61,6 +70,8 @@ TEST(CtWorker, CtWorkerTest01) {
  * @details
  * Test if CtWorkerError is thrown when task added while another is still running
  * 
+ * @ref FR-005-003-011
+ * 
  */
 TEST(CtWorker, CtWorkerTest02) {
     CtWorker worker;
@@ -69,6 +80,9 @@ TEST(CtWorker, CtWorkerTest02) {
     EXPECT_THROW({
         worker.setTaskFunc([](){CtThread::sleepFor(TASK_DURATION_MS);});
     }, CtWorkerError);
+    EXPECT_THROW({
+        worker.runTask();
+    }, CtWorkerError);
 }
 
 /**
@@ -76,6 +90,8 @@ TEST(CtWorker, CtWorkerTest02) {
  * 
  * @details
  * Test the main functionality of CtWorker methods and the worker callback functionality.
+ * 
+ * @ref FR-005-003-009
  * 
  */
 TEST(CtWorker, CtWorkerTest03) {

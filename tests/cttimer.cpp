@@ -36,6 +36,16 @@ SOFTWARE.
 
 /********************************* Main test ********************************/
 
+/**
+ * @brief CtTimerTest01
+ * 
+ * @ref FR-003-001-001
+ * @ref FR-003-001-002
+ * @ref FR-003-001-003
+ * @ref FR-003-001-004
+ * @ref FR-005-002-013
+ * 
+ */
 TEST(CtTimer, CtTimerTest01) {
     CtTimer timer;
     timer.tic();

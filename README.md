@@ -4,20 +4,26 @@
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-C++ Toolkit is a lightweight and versatile C++ library that provides essential utilities for common tasks in C++ development. It includes modules for time management, threading, IPC, configuration io and logging.
+C++ Toolkit is a lightweight and versatile C++ library that provides essential utilities for common development tasks. It includes modules for time management, threading, inter-process communication (IPC), configuration I/O, and logging.
 
-## Features
+Unlike traditional error-handling methods that rely on status or error codes, C++ Toolkit uses an exception-driven approach for more intuitive error reporting.
 
-- **Time Management:** Accurate and convenient time management utilities.
-- **Threading:** Simplified thread pool and worker management.
-- **Configuration IO:** A flexible configuration file parser and writer.
-- **Logging:** Simple logging with log levels and timestamp.
-- **Interprocess Communication (IPC):** Simple UDP socket communication.
-- **Event handling:** Simplified object oriented trigger and catch event mechanism.
+Additionally, C++ Toolkit can serve as a valuable reference or foundation for C++ projects, as it covers various stages of software development—including requirements gathering, design, implementation, requirement linking, testing, building, and release.
 
-## Todo
-- [ ] Implement unit tests using gtest.
-- [ ] Design and develop TCP socket communication.
+## Main Features
+
+- **Exception Oriented:** Exception oriented error/status approach.
+- **Time Management:** Accurate and convenient time management utilities. (`CtTimer`)
+- **Threading:** Simplified thread pool, worker and service management. (`CtThread`, `CtWorker`, `CtWorkerPool`, `CtService`, `CtServicePool`)
+- **Configuration I/O:** A flexible configuration file parser and writer. (`CtConfig`)
+- **Logging:** Simple logging with log levels and timestamp. (`CtLogger`)
+- **Interprocess Communication (IPC):** Simple UDP socket communication. (`CtSocketUdp`)
+- **Event handling:** Implements an object-oriented event trigger and catch mechanism. (`CtObject`)
+- **File I/O** Provides easy-to-use file read/write utilities. (`CtFileInput`, `CtFileOutput`)
+
+## Roadmap
+- [ ] Develop TCP socket communication
+- [ ] Implement support for various RTBM (Real-Time Big Data Management) systems
 
 ## Installation
 
@@ -63,10 +69,16 @@ C++ Toolkit is a lightweight and versatile C++ library that provides essential u
     ```bash
     cmake --install build
     ```
+## Contributing
+
+If you're interested in improving C++ Toolkit, feel free to:
+- Report issues or suggest new features via the issue tracker.
+- Submit pull requests with bug fixes, enhancements, or new features.
+- Improve documentation or examples to make the library more accessible.
 
 ## Purpose
 
-C++ Toolkit started primarily for educational purposes.
+C++ Toolkit was originally created for educational purposes.
 
 ## License
 

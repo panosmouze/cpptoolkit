@@ -45,6 +45,14 @@ SOFTWARE.
  * @details
  * Test main functionality of CtService methods runService, stopService.
  * 
+ * @ref FR-005-005-001
+ * @ref FR-005-005-002
+ * @ref FR-005-005-003
+ * @ref FR-005-005-005
+ * @ref FR-005-005-006
+ * @ref FR-005-005-008
+ * @ref FR-005-005-013
+ * 
  */
 TEST(CtService, CtServiceTest01) {
     CtUInt8 cnt;
@@ -63,6 +71,8 @@ TEST(CtService, CtServiceTest01) {
  * @details
  * Test if CtServiceError is thrown if CtService started two times.
  * 
+ * @ref FR-005-005-007
+ * 
  */
 TEST(CtService, CtServiceTest02) {
     CtUInt8 cnt;
@@ -79,6 +89,10 @@ TEST(CtService, CtServiceTest02) {
  * @details
  * Test functionality of getIntervalValidity.
  * 
+ * @ref FR-005-005-009
+ * @ref FR-005-005-010
+ * @ref FR-005-005-011
+ * 
  */
 TEST(CtService, CtServiceTest03) {
     CtUInt8 cnt;
@@ -86,4 +100,48 @@ TEST(CtService, CtServiceTest03) {
     service.runService();
     CtThread::sleepFor(MAIN_SLEEP_MS);
     ASSERT_NE(service.getIntervalValidity(), 1);
+}
+
+/**
+ * @brief CtServiceTest04
+ * 
+ * @details
+ * Test main functionality of CtService methods runService, stopService.
+ * 
+ * @ref FR-005-005-004
+ * 
+ */
+TEST(CtService, CtServiceTest04) {
+    CtUInt8 cnt;
+    {
+        CtService service(SERVICE_INTERVAL_SLOT, [&cnt](){cnt++;});
+        service.runService();
+        CtThread::sleepFor(MAIN_SLEEP_MS);
+        ASSERT_NE(service.getIntervalValidity(), 1);
+    }
+    ASSERT_GE(cnt, 9);
+    ASSERT_LE(cnt, 10);
+}
+
+/**
+ * @brief CtServiceTest05
+ * 
+ * @details
+ * Test main functionality of CtService methods runService, stopService.
+ * 
+ * @ref FR-005-005-012
+ * @ref FR-005-005-013
+ * 
+ */
+TEST(CtService, CtServiceTest05) {
+    CtUInt8 cnt;
+    {
+        CtService::m_slot_time = 20;
+        CtService service(SERVICE_INTERVAL_SLOT, [&cnt](){cnt++;});
+        service.runService();
+        CtThread::sleepFor(MAIN_SLEEP_MS);
+        ASSERT_NE(service.getIntervalValidity(), 1);
+    }
+    ASSERT_GE(cnt, 4);
+    ASSERT_LE(cnt, 5);
 }
